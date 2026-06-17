@@ -197,10 +197,27 @@ function convertAttrs(attrStr) {
     .replace(/href="([^"#][^"]*?)\.html"/g, 'href="/$1"');
 }
 
+// ─── STEP 4: Convert HTML body to JSX
 const jsx = htmlToJsx(bodyHtml);
 
-// ─── STEP 5: Identify dynamic text injections (id-based targets) ───────────────
-const dynamicIds = [...bodyHtml.matchAll(/id="([^"]+)"><\/[a-z]/gi)].map((m) => m[1]);
+// Identify dynamic element IDs from the original HTML
+const dynamicIds = [...bodyHtml.matchAll(/id="([^"]+)"\>\<\/[a-z]/gi)].map((m) => m[1]);
+
+// Build a map of dynamic ID → SITE_DATA.meta (if it exists)
+const dynamicMap = {};
+dynamicIds.forEach(id => {
+  if (SITE_DATA.meta && id in SITE_DATA.meta) {
+    dynamicMap[id] = SITE_DATA.meta[id];
+  } else {
+    dynamicMap[id] = ""; // fallback empty string
+  }
+});
+
+// Inject dynamic data into the generated JSX
+let finalJsx = jsx.replace(/id="([^\"]+)"(?=[^>]*>\s*<\/[^>]+>)/g, (_, id) => {
+  const comment = dynamicMap[id] ? dynamicMap[id] : "TODO: fill data";
+  return `id="${id}" {/* ${comment} */}`;
+});
 
 // ─── STEP 6: Build imports block ──────────────────────────────────────────────
 const hooksNeeded = ["useEffect"];
@@ -345,17 +362,9 @@ const pageTsx = `${imports}
 // 3. Remove or replace any {/* TODO: onclick */} with proper React event handlers.
 // 4. Review the data.ts file and update SITE_DATA with your real content.
 
-export default function ${routeName.charAt(0).toUpperCase() + routeName.slice(1).replace(/-([a-z])/g, (_, c) => c.toUpperCase())}Page() {
-  const d = SITE_DATA;
-  ${buildHooks()}
-  ${dynamicNote}
-
   return (
-    <>
-${jsx.split("\n").map((l) => "      " + l).join("\n")}
-    </>
-  );
-}
+    <>${finalJsx.split("\n").map((l) => "      " + l).join("\n")}</>);
+
 `;
 
 const pagePath = path.join(outDir, "page.tsx");

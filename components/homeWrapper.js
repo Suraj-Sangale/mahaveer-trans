@@ -257,6 +257,516 @@ function useInView(threshold = 0.1) {
   return [ref, inView];
 }
 
+
+
+/* ─── COUNT UP NUMBER ─── */
+function AnimatedNumber({ target, suffix }) {
+  const [ref, inView] = useInView(0.4);
+  const val = useCountUp(target, inView);
+  return (
+    <div className="num-val" ref={ref}>
+      {val.toLocaleString()}<span className="suf">{suffix}</span>
+    </div>
+  );
+}
+
+/* ─── REVEAL WRAPPER ─── */
+function Reveal({ children, delay = 0, className = "" }) {
+  const [ref, inView] = useInView(0.1);
+  return (
+    <div ref={ref} className={`reveal ${inView ? "vis" : ""} ${className}`} style={{ transitionDelay: `${delay}s` }}>
+      {children}
+    </div>
+  );
+}
+
+/* ─── ANIMATED CARD ─── */
+function AnimCard({ children, delay = 0, className = "" }) {
+  const [ref, inView] = useInView(0.1);
+  return (
+    <div ref={ref} className={`${className} ${inView ? "vis" : ""}`} style={{ transitionDelay: `${delay}s` }}>
+      {children}
+    </div>
+  );
+}
+
+/* ─── MAIN COMPONENT ─── */
+export default function HomeWrapper() {
+  const d = SITE_DATA;
+  const [theme, setTheme] = useState("light");
+  const [fontPanelOpen, setFontPanelOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [activeAccent, setActiveAccent] = useState(0);
+  const [activeDisplayFont, setActiveDisplayFont] = useState(0);
+  const [activeBodyFont, setActiveBodyFont] = useState(0);
+  const [trackVal, setTrackVal] = useState("");
+  const [trackState, setTrackState] = useState("idle");
+
+  /* Theme & font CSS variables */
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage?.getItem("vf-theme");
+      if (savedTheme) {
+        setTheme(savedTheme);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+  
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem("vf-theme", theme);
+  }, [theme]);
+
+  useEffect(() => {
+    const a = ACCENT_COLORS[activeAccent];
+    const r = document.documentElement;
+    r.style.setProperty("--accent", a.color);
+    r.style.setProperty("--accent-dk", shadeColor(a.color, -15));
+    r.style.setProperty("--accent-lt", shadeColor(a.color, 90) + "22");
+    r.style.setProperty("--shadow-bl", `0 8px 32px ${a.shadow}`);
+    r.style.setProperty("--blue", a.color);
+  }, [activeAccent]);
+
+  useEffect(() => {
+    document.documentElement.style.setProperty("--font-display", `'${DISPLAY_FONTS[activeDisplayFont].font}', sans-serif`);
+  }, [activeDisplayFont]);
+
+  useEffect(() => {
+    document.documentElement.style.setProperty("--font-body", `'${BODY_FONTS[activeBodyFont].font}', sans-serif`);
+  }, [activeBodyFont]);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const handleTrack = () => {
+    if (!trackVal.trim()) {
+      return;
+    }
+    setTrackState("found");
+    setTimeout(() => setTrackState("idle"), 2500);
+  };
+
+  const heroCountRef = useRef(null);
+  const [heroActive, setHeroActive] = useState(false);
+  const shipVal = useCountUp(d.hero.stats.shipments, heroActive, 1800);
+  const pctVal = useCountUp(d.hero.stats.onTime, heroActive, 1400);
+
+  useEffect(() => {
+    const el = document.getElementById("hero-section");
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setHeroActive(true); io.disconnect(); } }, { threshold: 0.3 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  const tickerItems = d.ticker.map((t, i) => (
+    <span className="t-item" key={i}><span className="t-dot"></span>{t}</span>
+  ));
+
+  return (
+    <>
+      <style>{CSS}</style>
+
+      {/* FONT PANEL */}
+      <div className={`font-panel ${fontPanelOpen ? "open" : ""}`}>
+        <div className="fp-header">
+          <div className="fp-title">{d.meta.fpTitle}</div>
+          <button className="fp-close" onClick={() => setFontPanelOpen(false)}>✕</button>
+        </div>
+        <div className="fp-body">
+          <div>
+            <div className="fp-section-label">{d.meta.fpColorLabel}</div>
+            <div className="fp-colors">
+              {ACCENT_COLORS.map((ac, i) => (
+                <div key={i} className={`fp-color ${activeAccent === i ? "active" : ""}`}
+                  style={{ background: ac.color }} title={ac.title}
+                  onClick={() => setActiveAccent(i)} />
+              ))}
+            </div>
+          </div>
+          <div>
+            <div className="fp-section-label">{d.meta.fpDisplayLabel}</div>
+            {DISPLAY_FONTS.map((f, i) => (
+              <div key={i} className={`fp-font-opt ${activeDisplayFont === i ? "active" : ""}`}
+                onClick={() => setActiveDisplayFont(i)}>
+                <div className="fopt-name">{f.font}</div>
+                <div className="fopt-preview" style={{ fontFamily: `'${f.font}', sans-serif`, fontWeight: 800 }}>Global Logistics</div>
+                <div className="fopt-hint">{f.hint}</div>
+              </div>
+            ))}
+          </div>
+          <div>
+            <div className="fp-section-label">{d.meta.fpBodyLabel}</div>
+            {BODY_FONTS.map((f, i) => (
+              <div key={i} className={`fp-font-opt ${activeBodyFont === i ? "active" : ""}`}
+                onClick={() => setActiveBodyFont(i)}>
+                <div className="fopt-name">{f.font}</div>
+                <div className="fopt-preview" style={{ fontFamily: `'${f.font}', sans-serif`, fontSize: ".9rem", fontWeight: 400 }}>Fast, reliable, global delivery solutions for every business.</div>
+                <div className="fopt-hint">{f.hint}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* MOBILE OVERLAY */}
+      <div className={`mobile-overlay ${drawerOpen ? "open" : ""}`} onClick={() => setDrawerOpen(false)} />
+
+      {/* MOBILE DRAWER */}
+      <div className={`mobile-drawer ${drawerOpen ? "open" : ""}`}>
+        <div className="drawer-header">
+          <div className="drawer-logo">{d.nav.brandShort}<span style={{ opacity: .45 }}> Solutions</span></div>
+          <button className="drawer-close" onClick={() => setDrawerOpen(false)}>✕</button>
+        </div>
+        <div className="drawer-links">
+          {d.nav.drawerLinks.map((l, i) => (
+            <a key={i} href={l.href} onClick={() => setDrawerOpen(false)}>{l.label}</a>
+          ))}
+        </div>
+        <div className="drawer-actions">
+          <div className="drawer-settings">
+            <span className="drawer-settings-lbl">{d.meta.themeLabel}</span>
+            <button className="theme-toggle" onClick={() => setTheme(t => t === "dark" ? "light" : "dark")} />
+          </div>
+          <button className="drawer-font-btn" onClick={() => { setFontPanelOpen(true); setDrawerOpen(false); }}>
+            <span>Aa</span> <span>{d.meta.drawerFontBtnText}</span>
+          </button>
+          <button className="btn-cta" style={{ width: "100%", padding: ".75rem", justifyContent: "center", display: "flex" }}>
+            {d.nav.drawerCta}
+          </button>
+        </div>
+      </div>
+
+      {/* NAV */}
+      <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
+        <a href="#" className="nav-logo">
+          <span>{d.nav.brand}</span>
+          <div className="dot"></div>
+        </a>
+        <div className="nav-links">
+          {d.nav.links.map((l, i) => <a key={i} href={l.href}>{l.label}</a>)}
+        </div>
+        <div className="nav-right">
+          <button className="font-btn" onClick={() => setFontPanelOpen(p => !p)}>
+            <span>Aa</span> <span>{d.meta.fontBtnText}</span>
+          </button>
+          <div style={{ display: "flex", alignItems: "center", gap: ".55rem" }}>
+            <span className="theme-icon">☀️</span>
+            <button className="theme-toggle" onClick={() => setTheme(t => t === "dark" ? "light" : "dark")} />
+            <span className="theme-icon">🌙</span>
+          </div>
+          <button className="btn-ghost">{d.nav.login}</button>
+          <a href="#cta" className="btn-cta">{d.nav.cta}</a>
+          <button className={`hamburger ${drawerOpen ? "open" : ""}`} onClick={() => setDrawerOpen(true)}>
+            <span className="ham-line" /><span className="ham-line" /><span className="ham-line" />
+          </button>
+        </div>
+      </nav>
+
+      {/* HERO */}
+      <section className="hero" id="hero-section">
+        <div className="hero-grid-bg" />
+        <div className="hero-glow" />
+        <div className="hero-inner">
+          <div className="hero-left">
+            <div className="hero-pill"><span className="live-dot" />{d.hero.pill}</div>
+            <h1 className="hero-h1">
+              {d.hero.titleLine1}<br />
+              <span className="hl">{d.hero.titleLine2Hl}</span><br />
+              {d.hero.titleLine3}<span className="hero-chip">{d.hero.chip}</span>
+            </h1>
+            <p className="hero-desc">{d.hero.description}</p>
+            <div className="hero-actions">
+              <button className="btn-primary">{d.hero.cta1}</button>
+              <button className="btn-outline">{d.hero.cta2}</button>
+            </div>
+            <div className="hero-trust">
+              <div className="trust-avs">
+                {d.hero.trust.avatars.map((src, i) => <img key={i} className="t-av" src={src} alt="" />)}
+              </div>
+              <div className="trust-txt"><strong>{d.hero.trust.count}</strong> {d.hero.trust.label}</div>
+            </div>
+          </div>
+          <div className="hero-right">
+            <div className="hero-img-wrap">
+              <img className="hero-main-img" src={d.hero.image} alt="Operations" />
+              <div className="hfloat hf1">
+                <div className="hf-tag">{d.hero.statCard1.label}</div>
+                <div className="hf-val">{heroActive ? shipVal.toLocaleString() : "0"}</div>
+                <div className="hf-sub">{d.hero.statCard1.sub}</div>
+                <div className="hf-badge">{d.hero.statCard1.badge}</div>
+                <div className="hf-bar-wrap">
+                  <div className="hf-tag" style={{ marginTop: ".55rem" }}>{d.hero.statCard1.capacityLabel}</div>
+                  <div className="hf-bar"><div className="hf-fill" /></div>
+                </div>
+              </div>
+              <div className="hfloat hf2">
+                <div className="hf-tag">{d.hero.statCard2.label}</div>
+                <div className="hf-val">{heroActive ? pctVal + "%" : "0%"}</div>
+                <div className="hf-sub">{d.hero.statCard2.sub}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* TICKER */}
+      <div className="ticker-wrap">
+        <div className="ticker">{tickerItems}{tickerItems}</div>
+      </div>
+
+      {/* CLIENTS */}
+      <div className="clients">
+        <div className="clients-inner">
+          <span className="clients-lbl">{d.clients.label}</span>
+          <div className="clients-logos">
+            {d.clients.logos.map((l, i) => <div key={i} className="clogo">{l}</div>)}
+          </div>
+        </div>
+      </div>
+
+      {/* SERVICES */}
+      <section id="services" className="services">
+        {/* <div className="section-wrap"> */}
+          <div className="svc-top reveal">
+            <div>
+              <div className="sec-tag">{d.services.sectionTag}</div>
+              <h2 className="sec-h">{d.services.heading.replace(d.services.headingHl,
+                `<HL>${d.services.headingHl}</HL>`)
+                .split("<HL>").map((part, i) =>
+                  i === 0 ? part : part.split("</HL>").map((p, j) =>
+                    j === 0 ? <span key={j} className="hl">{p}</span> : p
+                  )
+                )}</h2>
+              <p className="svc-top-desc">{d.services.description}</p>
+            </div>
+            <a href="#" className="btn-outline">All Services →</a>
+          </div>
+          <div className="svc-grid">
+            {d.services.items.map((s, i) => (
+              <AnimCard key={i} className="svc-card" delay={i * 0.07}>
+                <img className="svc-img" src={s.image} alt={s.title} />
+                <span className={`svc-tag-pill ${s.tagClass}`}>{s.tag}</span>
+                <div className="svc-icon">{s.icon}</div>
+                <h3 className="svc-title">{s.title}</h3>
+                <p className="svc-desc">{s.description}</p>
+                <a href="#" className="svc-link">{d.services.learnMoreText}</a>
+              </AnimCard>
+            ))}
+          </div>
+        {/* </div> */}
+      </section>
+
+      {/* NUMBERS */}
+      <div className="numbers">
+        {d.numbers.map((n, i) => (
+          <div key={i} className="num-item">
+            <AnimatedNumber target={n.value} suffix={n.suffix} />
+            <div className="num-lbl">{n.label}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* ABOUT */}
+      <section id="about" className="about">
+        <div className="section-wrap">
+          <div className="about-grid">
+            <div className="about-img-col">
+              <div className="about-tag-strip">{d.about.tagStrip}</div>
+              <img className="about-main-img" src={d.about.image} alt="About" />
+              <div className="about-badge">
+                <div className="ab-num">{d.company.rating}</div>
+                <div className="ab-txt">{d.company.ratingLabel}</div>
+              </div>
+            </div>
+            <div className="about-content">
+              <Reveal><div className="sec-tag">{d.about.sectionTag}</div></Reveal>
+              <Reveal delay={0.1}><h2 className="sec-h">{d.about.title}<br /><span className="hl">{d.about.titleHl}</span></h2></Reveal>
+              <Reveal delay={0.2}><p className="desc" style={{ marginBottom: ".75rem" }}>{d.about.p1}</p></Reveal>
+              <Reveal delay={0.25}><p className="desc">{d.about.p2}</p></Reveal>
+              <Reveal delay={0.3}>
+                <div className="about-feats">
+                  {d.about.features.map((f, i) => <div key={i} className="feat">{f}</div>)}
+                </div>
+              </Reveal>
+              <Reveal delay={0.35}><a href="#" className="btn-primary">{d.about.cta}</a></Reveal>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* PROCESS */}
+      <section id="process" className="process">
+        <div className="section-wrap">
+          <Reveal className="proc-head">
+            <div className="sec-tag">{d.process.sectionTag}</div>
+            <h2 className="sec-h">{d.process.heading} <span className="hl">{d.process.headingHl}</span></h2>
+          </Reveal>
+          <div className="proc-steps">
+            {d.process.steps.map((p, i) => (
+              <AnimCard key={i} className="pstep" delay={i * 0.1}>
+                <div className="pstep-n">{p.num}</div>
+                <h3 className="pstep-title">{p.title}</h3>
+                <p className="pstep-desc">{p.desc}</p>
+              </AnimCard>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FLEET */}
+      <section id="fleet" className="fleet">
+        <div className="section-wrap">
+          <div className="fleet-head">
+            <div>
+              <div className="sec-tag">{d.fleet.sectionTag}</div>
+              <h2 className="sec-h">{d.fleet.heading} <span className="hl">{d.fleet.headingHl}</span></h2>
+            </div>
+            <button className="btn-outline">{d.fleet.cta}</button>
+          </div>
+          <div className="gal-grid">
+            {d.fleet.items.map((f, i) => (
+              <div key={i} className={`gi ${f.tall ? "tall" : ""}`}>
+                <img src={f.image} alt={f.title} />
+                <div className="gi-tag">{f.tag}</div>
+                <div className="gi-label"><h4>{f.title}</h4><p>{f.sub}</p></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* TRACKING */}
+      <section id="tracking" className="tracking">
+        <div className="section-wrap">
+          <div className="track-grid">
+            <Reveal>
+              <div className="sec-tag">{d.tracking.sectionTag}</div>
+              <h2 className="sec-h">{d.tracking.heading}<br /><span className="hl">{d.tracking.headingHl}</span></h2>
+              <p style={{ color: "var(--fg2)", marginTop: ".75rem" }}>{d.tracking.description}</p>
+              <div className="track-form">
+                <div className="t-input-row">
+                  <input className="t-input" type="text" placeholder={d.tracking.inputPlaceholder}
+                    value={trackVal} onChange={e => setTrackVal(e.target.value)}
+                    onKeyDown={e => e.key === "Enter" && handleTrack()} />
+                  <button className="t-btn"
+                    style={trackState === "found" ? { background: "#16a34a" } : {}}
+                    onClick={handleTrack}>
+                    {trackState === "found" ? d.tracking.btnFound : d.tracking.btnText}
+                  </button>
+                </div>
+                <div className="t-hints">
+                  {d.tracking.hints.map((h, i) => <span key={i} className="t-hint">{h}</span>)}
+                </div>
+              </div>
+            </Reveal>
+            <Reveal delay={0.2}>
+              <div className="track-card">
+                <div className="tc-hdr">
+                  <div className="tc-id">{d.tracking.demo.id}</div>
+                  <div className="tc-status">{d.tracking.demo.status}</div>
+                </div>
+                <div className="tc-route">
+                  <div className="tc-city">
+                    <div className="tc-city-name">{d.tracking.demo.from}</div>
+                    <div className="tc-city-code">{d.tracking.demo.fromCode}</div>
+                  </div>
+                  <div className="tc-arrow">→</div>
+                  <div className="tc-city" style={{ textAlign: "right" }}>
+                    <div className="tc-city-name">{d.tracking.demo.to}</div>
+                    <div className="tc-city-code">{d.tracking.demo.toCode}</div>
+                  </div>
+                </div>
+                <div>
+                  {d.tracking.demo.timeline.map((t, i) => (
+                    <div key={i} className="tl-row">
+                      <div className={`tl-d tl-${t.status}`} />
+                      <div>
+                        <div className="tl-title">{t.title}</div>
+                        <div className="tl-time">{t.time}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* TESTIMONIALS */}
+      <section id="testimonials" className="testimonials">
+        <div className="section-wrap">
+          <Reveal className="test-head">
+            <div className="sec-tag">{d.testimonials.sectionTag}</div>
+            <h2 className="sec-h">{d.testimonials.heading} <span className="hl">{d.testimonials.headingHl}</span></h2>
+          </Reveal>
+          <div className="test-grid">
+            {d.testimonials.items.map((t, i) => (
+              <AnimCard key={i} className="tc-card" delay={i * 0.1}>
+                <div className="tc-stars">{t.stars}</div>
+                <p className="tc-text">"{t.text}"</p>
+                <div className="tc-author">
+                  <img className="tc-av" src={t.avatar} alt={t.name} />
+                  <div>
+                    <div className="tc-name">{t.name}</div>
+                    <div className="tc-role">{t.role}</div>
+                  </div>
+                </div>
+              </AnimCard>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section id="cta" className="cta-section">
+        <div className="cta-inner">
+          <div className="sec-tag">{d.cta.sectionTag}</div>
+          <h2 className="sec-h">{d.cta.title}<br /><span style={{ opacity: .85 }}>{d.cta.titleHl}</span></h2>
+          <p>{d.cta.description}</p>
+          <div className="cta-btns">
+            <button className="btn-w">{d.cta.cta1}</button>
+            <button className="btn-wg">{d.cta.cta2} {d.company.phone}</button>
+          </div>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer>
+        <div className="f-top">
+          <div className="f-brand">
+            <span className="f-brand-logo">{d.footer.logo}</span>
+            <p>{d.footer.tagline}</p>
+            <div className="f-socs">
+              {d.footer.socials.map((s, i) => <a key={i} href={s.url} className="f-soc">{s.label}</a>)}
+            </div>
+          </div>
+          {d.footer.columns.map((col, i) => (
+            <div key={i} className="f-col">
+              <h4>{col.heading}</h4>
+              <ul className="f-links">
+                {col.links.map(([label, url], j) => <li key={j}><a href={url}>{label}</a></li>)}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <div className="f-bottom">
+          <p>{d.footer.copyright}</p>
+          <p>{d.footer.legal}</p>
+        </div>
+      </footer>
+
+      {/* FAB */}
+      <button className="fab">{d.meta.fabIcon}</button>
+    </>
+  );
+}
 /* ─── CSS ─── */
 const CSS = `
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:wght@400;500;600&family=Playfair+Display:wght@700;800&family=Outfit:wght@400;500;600;700&family=Josefin+Sans:wght@400;600;700&family=Cormorant+Garamond:wght@600;700&family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&family=Nunito:wght@400;500;600&display=swap');
@@ -871,503 +1381,3 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 4
       }
     }
 `;
-
-
-/* ─── COUNT UP NUMBER ─── */
-function AnimatedNumber({ target, suffix }) {
-  const [ref, inView] = useInView(0.4);
-  const val = useCountUp(target, inView);
-  return (
-    <div className="num-val" ref={ref}>
-      {val.toLocaleString()}<span className="suf">{suffix}</span>
-    </div>
-  );
-}
-
-/* ─── REVEAL WRAPPER ─── */
-function Reveal({ children, delay = 0, className = "" }) {
-  const [ref, inView] = useInView(0.1);
-  return (
-    <div ref={ref} className={`reveal ${inView ? "vis" : ""} ${className}`} style={{ transitionDelay: `${delay}s` }}>
-      {children}
-    </div>
-  );
-}
-
-/* ─── ANIMATED CARD ─── */
-function AnimCard({ children, delay = 0, className = "" }) {
-  const [ref, inView] = useInView(0.1);
-  return (
-    <div ref={ref} className={`${className} ${inView ? "vis" : ""}`} style={{ transitionDelay: `${delay}s` }}>
-      {children}
-    </div>
-  );
-}
-
-/* ─── MAIN COMPONENT ─── */
-export default function HomeWrapper() {
-  const d = SITE_DATA;
-  const [theme, setTheme] = useState(() => localStorage?.getItem("vf-theme") || "light");
-  const [fontPanelOpen, setFontPanelOpen] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [activeAccent, setActiveAccent] = useState(0);
-  const [activeDisplayFont, setActiveDisplayFont] = useState(0);
-  const [activeBodyFont, setActiveBodyFont] = useState(0);
-  const [trackVal, setTrackVal] = useState("");
-  const [trackState, setTrackState] = useState("idle");
-
-  /* Theme & font CSS variables */
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    localStorage.setItem("vf-theme", theme);
-  }, [theme]);
-
-  useEffect(() => {
-    const a = ACCENT_COLORS[activeAccent];
-    const r = document.documentElement;
-    r.style.setProperty("--accent", a.color);
-    r.style.setProperty("--accent-dk", shadeColor(a.color, -15));
-    r.style.setProperty("--accent-lt", shadeColor(a.color, 90) + "22");
-    r.style.setProperty("--shadow-bl", `0 8px 32px ${a.shadow}`);
-    r.style.setProperty("--blue", a.color);
-  }, [activeAccent]);
-
-  useEffect(() => {
-    document.documentElement.style.setProperty("--font-display", `'${DISPLAY_FONTS[activeDisplayFont].font}', sans-serif`);
-  }, [activeDisplayFont]);
-
-  useEffect(() => {
-    document.documentElement.style.setProperty("--font-body", `'${BODY_FONTS[activeBodyFont].font}', sans-serif`);
-  }, [activeBodyFont]);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  const handleTrack = () => {
-    if (!trackVal.trim()) {
-      return;
-    }
-    setTrackState("found");
-    setTimeout(() => setTrackState("idle"), 2500);
-  };
-
-  const heroCountRef = useRef(null);
-  const [heroActive, setHeroActive] = useState(false);
-  const shipVal = useCountUp(d.hero.stats.shipments, heroActive, 1800);
-  const pctVal = useCountUp(d.hero.stats.onTime, heroActive, 1400);
-
-  useEffect(() => {
-    const el = document.getElementById("hero-section");
-    if (!el) return;
-    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setHeroActive(true); io.disconnect(); } }, { threshold: 0.3 });
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
-  const tickerItems = d.ticker.map((t, i) => (
-    <span className="t-item" key={i}><span className="t-dot"></span>{t}</span>
-  ));
-
-  return (
-    <>
-      <style>{CSS}</style>
-
-      {/* FONT PANEL */}
-      <div className={`font-panel ${fontPanelOpen ? "open" : ""}`}>
-        <div className="fp-header">
-          <div className="fp-title">{d.meta.fpTitle}</div>
-          <button className="fp-close" onClick={() => setFontPanelOpen(false)}>✕</button>
-        </div>
-        <div className="fp-body">
-          <div>
-            <div className="fp-section-label">{d.meta.fpColorLabel}</div>
-            <div className="fp-colors">
-              {ACCENT_COLORS.map((ac, i) => (
-                <div key={i} className={`fp-color ${activeAccent === i ? "active" : ""}`}
-                  style={{ background: ac.color }} title={ac.title}
-                  onClick={() => setActiveAccent(i)} />
-              ))}
-            </div>
-          </div>
-          <div>
-            <div className="fp-section-label">{d.meta.fpDisplayLabel}</div>
-            {DISPLAY_FONTS.map((f, i) => (
-              <div key={i} className={`fp-font-opt ${activeDisplayFont === i ? "active" : ""}`}
-                onClick={() => setActiveDisplayFont(i)}>
-                <div className="fopt-name">{f.font}</div>
-                <div className="fopt-preview" style={{ fontFamily: `'${f.font}', sans-serif`, fontWeight: 800 }}>Global Logistics</div>
-                <div className="fopt-hint">{f.hint}</div>
-              </div>
-            ))}
-          </div>
-          <div>
-            <div className="fp-section-label">{d.meta.fpBodyLabel}</div>
-            {BODY_FONTS.map((f, i) => (
-              <div key={i} className={`fp-font-opt ${activeBodyFont === i ? "active" : ""}`}
-                onClick={() => setActiveBodyFont(i)}>
-                <div className="fopt-name">{f.font}</div>
-                <div className="fopt-preview" style={{ fontFamily: `'${f.font}', sans-serif`, fontSize: ".9rem", fontWeight: 400 }}>Fast, reliable, global delivery solutions for every business.</div>
-                <div className="fopt-hint">{f.hint}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* MOBILE OVERLAY */}
-      <div className={`mobile-overlay ${drawerOpen ? "open" : ""}`} onClick={() => setDrawerOpen(false)} />
-
-      {/* MOBILE DRAWER */}
-      <div className={`mobile-drawer ${drawerOpen ? "open" : ""}`}>
-        <div className="drawer-header">
-          <div className="drawer-logo">{d.nav.brandShort}<span style={{ opacity: .45 }}> Solutions</span></div>
-          <button className="drawer-close" onClick={() => setDrawerOpen(false)}>✕</button>
-        </div>
-        <div className="drawer-links">
-          {d.nav.drawerLinks.map((l, i) => (
-            <a key={i} href={l.href} onClick={() => setDrawerOpen(false)}>{l.label}</a>
-          ))}
-        </div>
-        <div className="drawer-actions">
-          <div className="drawer-settings">
-            <span className="drawer-settings-lbl">{d.meta.themeLabel}</span>
-            <button className="theme-toggle" onClick={() => setTheme(t => t === "dark" ? "light" : "dark")} />
-          </div>
-          <button className="drawer-font-btn" onClick={() => { setFontPanelOpen(true); setDrawerOpen(false); }}>
-            <span>Aa</span> <span>{d.meta.drawerFontBtnText}</span>
-          </button>
-          <button className="btn-cta" style={{ width: "100%", padding: ".75rem", justifyContent: "center", display: "flex" }}>
-            {d.nav.drawerCta}
-          </button>
-        </div>
-      </div>
-
-      {/* NAV */}
-      <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
-        <a href="#" className="nav-logo">
-          <span>{d.nav.brand}</span>
-          <div className="dot"></div>
-        </a>
-        <div className="nav-links">
-          {d.nav.links.map((l, i) => <a key={i} href={l.href}>{l.label}</a>)}
-        </div>
-        <div className="nav-right">
-          <button className="font-btn" onClick={() => setFontPanelOpen(p => !p)}>
-            <span>Aa</span> <span>{d.meta.fontBtnText}</span>
-          </button>
-          <div style={{ display: "flex", alignItems: "center", gap: ".55rem" }}>
-            <span className="theme-icon">☀️</span>
-            <button className="theme-toggle" onClick={() => setTheme(t => t === "dark" ? "light" : "dark")} />
-            <span className="theme-icon">🌙</span>
-          </div>
-          <button className="btn-ghost">{d.nav.login}</button>
-          <a href="#cta" className="btn-cta">{d.nav.cta}</a>
-          <button className={`hamburger ${drawerOpen ? "open" : ""}`} onClick={() => setDrawerOpen(true)}>
-            <span className="ham-line" /><span className="ham-line" /><span className="ham-line" />
-          </button>
-        </div>
-      </nav>
-
-      {/* HERO */}
-      <section className="hero" id="hero-section">
-        <div className="hero-grid-bg" />
-        <div className="hero-glow" />
-        <div className="hero-inner">
-          <div className="hero-left">
-            <div className="hero-pill"><span className="live-dot" />{d.hero.pill}</div>
-            <h1 className="hero-h1">
-              {d.hero.titleLine1}<br />
-              <span className="hl">{d.hero.titleLine2Hl}</span><br />
-              {d.hero.titleLine3}<span className="hero-chip">{d.hero.chip}</span>
-            </h1>
-            <p className="hero-desc">{d.hero.description}</p>
-            <div className="hero-actions">
-              <button className="btn-primary">{d.hero.cta1}</button>
-              <button className="btn-outline">{d.hero.cta2}</button>
-            </div>
-            <div className="hero-trust">
-              <div className="trust-avs">
-                {d.hero.trust.avatars.map((src, i) => <img key={i} className="t-av" src={src} alt="" />)}
-              </div>
-              <div className="trust-txt"><strong>{d.hero.trust.count}</strong> {d.hero.trust.label}</div>
-            </div>
-          </div>
-          <div className="hero-right">
-            <div className="hero-img-wrap">
-              <img className="hero-main-img" src={d.hero.image} alt="Operations" />
-              <div className="hfloat hf1">
-                <div className="hf-tag">{d.hero.statCard1.label}</div>
-                <div className="hf-val">{heroActive ? shipVal.toLocaleString() : "0"}</div>
-                <div className="hf-sub">{d.hero.statCard1.sub}</div>
-                <div className="hf-badge">{d.hero.statCard1.badge}</div>
-                <div className="hf-bar-wrap">
-                  <div className="hf-tag" style={{ marginTop: ".55rem" }}>{d.hero.statCard1.capacityLabel}</div>
-                  <div className="hf-bar"><div className="hf-fill" /></div>
-                </div>
-              </div>
-              <div className="hfloat hf2">
-                <div className="hf-tag">{d.hero.statCard2.label}</div>
-                <div className="hf-val">{heroActive ? pctVal + "%" : "0%"}</div>
-                <div className="hf-sub">{d.hero.statCard2.sub}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* TICKER */}
-      <div className="ticker-wrap">
-        <div className="ticker">{tickerItems}{tickerItems}</div>
-      </div>
-
-      {/* CLIENTS */}
-      <div className="clients">
-        <div className="clients-inner">
-          <span className="clients-lbl">{d.clients.label}</span>
-          <div className="clients-logos">
-            {d.clients.logos.map((l, i) => <div key={i} className="clogo">{l}</div>)}
-          </div>
-        </div>
-      </div>
-
-      {/* SERVICES */}
-      <section id="services" className="services">
-        {/* <div className="section-wrap"> */}
-          <div className="svc-top reveal">
-            <div>
-              <div className="sec-tag">{d.services.sectionTag}</div>
-              <h2 className="sec-h">{d.services.heading.replace(d.services.headingHl,
-                `<HL>${d.services.headingHl}</HL>`)
-                .split("<HL>").map((part, i) =>
-                  i === 0 ? part : part.split("</HL>").map((p, j) =>
-                    j === 0 ? <span key={j} className="hl">{p}</span> : p
-                  )
-                )}</h2>
-              <p className="svc-top-desc">{d.services.description}</p>
-            </div>
-            <a href="#" className="btn-outline">All Services →</a>
-          </div>
-          <div className="svc-grid">
-            {d.services.items.map((s, i) => (
-              <AnimCard key={i} className="svc-card" delay={i * 0.07}>
-                <img className="svc-img" src={s.image} alt={s.title} />
-                <span className={`svc-tag-pill ${s.tagClass}`}>{s.tag}</span>
-                <div className="svc-icon">{s.icon}</div>
-                <h3 className="svc-title">{s.title}</h3>
-                <p className="svc-desc">{s.description}</p>
-                <a href="#" className="svc-link">{d.services.learnMoreText}</a>
-              </AnimCard>
-            ))}
-          </div>
-        {/* </div> */}
-      </section>
-
-      {/* NUMBERS */}
-      <div className="numbers">
-        {d.numbers.map((n, i) => (
-          <div key={i} className="num-item">
-            <AnimatedNumber target={n.value} suffix={n.suffix} />
-            <div className="num-lbl">{n.label}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* ABOUT */}
-      <section id="about" className="about">
-        <div className="section-wrap">
-          <div className="about-grid">
-            <div className="about-img-col">
-              <div className="about-tag-strip">{d.about.tagStrip}</div>
-              <img className="about-main-img" src={d.about.image} alt="About" />
-              <div className="about-badge">
-                <div className="ab-num">{d.company.rating}</div>
-                <div className="ab-txt">{d.company.ratingLabel}</div>
-              </div>
-            </div>
-            <div className="about-content">
-              <Reveal><div className="sec-tag">{d.about.sectionTag}</div></Reveal>
-              <Reveal delay={0.1}><h2 className="sec-h">{d.about.title}<br /><span className="hl">{d.about.titleHl}</span></h2></Reveal>
-              <Reveal delay={0.2}><p className="desc" style={{ marginBottom: ".75rem" }}>{d.about.p1}</p></Reveal>
-              <Reveal delay={0.25}><p className="desc">{d.about.p2}</p></Reveal>
-              <Reveal delay={0.3}>
-                <div className="about-feats">
-                  {d.about.features.map((f, i) => <div key={i} className="feat">{f}</div>)}
-                </div>
-              </Reveal>
-              <Reveal delay={0.35}><a href="#" className="btn-primary">{d.about.cta}</a></Reveal>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* PROCESS */}
-      <section id="process" className="process">
-        <div className="section-wrap">
-          <Reveal className="proc-head">
-            <div className="sec-tag">{d.process.sectionTag}</div>
-            <h2 className="sec-h">{d.process.heading} <span className="hl">{d.process.headingHl}</span></h2>
-          </Reveal>
-          <div className="proc-steps">
-            {d.process.steps.map((p, i) => (
-              <AnimCard key={i} className="pstep" delay={i * 0.1}>
-                <div className="pstep-n">{p.num}</div>
-                <h3 className="pstep-title">{p.title}</h3>
-                <p className="pstep-desc">{p.desc}</p>
-              </AnimCard>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FLEET */}
-      <section id="fleet" className="fleet">
-        <div className="section-wrap">
-          <div className="fleet-head">
-            <div>
-              <div className="sec-tag">{d.fleet.sectionTag}</div>
-              <h2 className="sec-h">{d.fleet.heading} <span className="hl">{d.fleet.headingHl}</span></h2>
-            </div>
-            <button className="btn-outline">{d.fleet.cta}</button>
-          </div>
-          <div className="gal-grid">
-            {d.fleet.items.map((f, i) => (
-              <div key={i} className={`gi ${f.tall ? "tall" : ""}`}>
-                <img src={f.image} alt={f.title} />
-                <div className="gi-tag">{f.tag}</div>
-                <div className="gi-label"><h4>{f.title}</h4><p>{f.sub}</p></div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* TRACKING */}
-      <section id="tracking" className="tracking">
-        <div className="section-wrap">
-          <div className="track-grid">
-            <Reveal>
-              <div className="sec-tag">{d.tracking.sectionTag}</div>
-              <h2 className="sec-h">{d.tracking.heading}<br /><span className="hl">{d.tracking.headingHl}</span></h2>
-              <p style={{ color: "var(--fg2)", marginTop: ".75rem" }}>{d.tracking.description}</p>
-              <div className="track-form">
-                <div className="t-input-row">
-                  <input className="t-input" type="text" placeholder={d.tracking.inputPlaceholder}
-                    value={trackVal} onChange={e => setTrackVal(e.target.value)}
-                    onKeyDown={e => e.key === "Enter" && handleTrack()} />
-                  <button className="t-btn"
-                    style={trackState === "found" ? { background: "#16a34a" } : {}}
-                    onClick={handleTrack}>
-                    {trackState === "found" ? d.tracking.btnFound : d.tracking.btnText}
-                  </button>
-                </div>
-                <div className="t-hints">
-                  {d.tracking.hints.map((h, i) => <span key={i} className="t-hint">{h}</span>)}
-                </div>
-              </div>
-            </Reveal>
-            <Reveal delay={0.2}>
-              <div className="track-card">
-                <div className="tc-hdr">
-                  <div className="tc-id">{d.tracking.demo.id}</div>
-                  <div className="tc-status">{d.tracking.demo.status}</div>
-                </div>
-                <div className="tc-route">
-                  <div className="tc-city">
-                    <div className="tc-city-name">{d.tracking.demo.from}</div>
-                    <div className="tc-city-code">{d.tracking.demo.fromCode}</div>
-                  </div>
-                  <div className="tc-arrow">→</div>
-                  <div className="tc-city" style={{ textAlign: "right" }}>
-                    <div className="tc-city-name">{d.tracking.demo.to}</div>
-                    <div className="tc-city-code">{d.tracking.demo.toCode}</div>
-                  </div>
-                </div>
-                <div>
-                  {d.tracking.demo.timeline.map((t, i) => (
-                    <div key={i} className="tl-row">
-                      <div className={`tl-d tl-${t.status}`} />
-                      <div>
-                        <div className="tl-title">{t.title}</div>
-                        <div className="tl-time">{t.time}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
-      {/* TESTIMONIALS */}
-      <section id="testimonials" className="testimonials">
-        <div className="section-wrap">
-          <Reveal className="test-head">
-            <div className="sec-tag">{d.testimonials.sectionTag}</div>
-            <h2 className="sec-h">{d.testimonials.heading} <span className="hl">{d.testimonials.headingHl}</span></h2>
-          </Reveal>
-          <div className="test-grid">
-            {d.testimonials.items.map((t, i) => (
-              <AnimCard key={i} className="tc-card" delay={i * 0.1}>
-                <div className="tc-stars">{t.stars}</div>
-                <p className="tc-text">"{t.text}"</p>
-                <div className="tc-author">
-                  <img className="tc-av" src={t.avatar} alt={t.name} />
-                  <div>
-                    <div className="tc-name">{t.name}</div>
-                    <div className="tc-role">{t.role}</div>
-                  </div>
-                </div>
-              </AnimCard>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section id="cta" className="cta-section">
-        <div className="cta-inner">
-          <div className="sec-tag">{d.cta.sectionTag}</div>
-          <h2 className="sec-h">{d.cta.title}<br /><span style={{ opacity: .85 }}>{d.cta.titleHl}</span></h2>
-          <p>{d.cta.description}</p>
-          <div className="cta-btns">
-            <button className="btn-w">{d.cta.cta1}</button>
-            <button className="btn-wg">{d.cta.cta2} {d.company.phone}</button>
-          </div>
-        </div>
-      </section>
-
-      {/* FOOTER */}
-      <footer>
-        <div className="f-top">
-          <div className="f-brand">
-            <span className="f-brand-logo">{d.footer.logo}</span>
-            <p>{d.footer.tagline}</p>
-            <div className="f-socs">
-              {d.footer.socials.map((s, i) => <a key={i} href={s.url} className="f-soc">{s.label}</a>)}
-            </div>
-          </div>
-          {d.footer.columns.map((col, i) => (
-            <div key={i} className="f-col">
-              <h4>{col.heading}</h4>
-              <ul className="f-links">
-                {col.links.map(([label, url], j) => <li key={j}><a href={url}>{label}</a></li>)}
-              </ul>
-            </div>
-          ))}
-        </div>
-        <div className="f-bottom">
-          <p>{d.footer.copyright}</p>
-          <p>{d.footer.legal}</p>
-        </div>
-      </footer>
-
-      {/* FAB */}
-      <button className="fab">{d.meta.fabIcon}</button>
-    </>
-  );
-}

@@ -5,13 +5,13 @@ export default function CtaSection() {
     <>
     <style>{styles}</style>
     <section id="cta">
-      <div class="cta-inner reveal">
-        <div class="sec-tag" id="ctaSectionTag">Get a Free Quote</div>
-        <h2 class="sec-h" id="ctaTitle">Ready to Ship</h2>
+      <div className="cta-inner reveal">
+        <div className="sec-tag" id="ctaSectionTag">Get a Free Quote</div>
+        <h2 className="sec-h" id="ctaTitle">Ready to Ship</h2>
         <p id="ctaDesc">Partner with MahaveerTrans for fast, reliable, and transparent logistics solutions that help your business scale.</p>
-        <div class="cta-btns">
-          <button class="btn-w" id="ctaCta1">Get Free Quote →</button>
-          <button class="btn-wg" id="ctaPhone">📞 Call us</button>
+        <div className="cta-btns">
+          <button className="btn-w" id="ctaCta1">Get Free Quote →</button>
+          <button className="btn-wg" id="ctaPhone">📞 Call us</button>
         </div>
       </div>
     </section>

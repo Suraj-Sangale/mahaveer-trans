@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useState, useEffect, useRef, useCallback } from "react";
 import CtaSection from "./home/ctaSection";
 
@@ -39,7 +39,8 @@ const SITE_DATA = {
   },
   company: {
     name: "MahaveerTrans",
-    tagline: "Delivering the world's goods with precision, speed, and care — your trusted partner in global logistics since 1999.",
+    tagline:
+      "Delivering the world's goods with precision, speed, and care — your trusted partner in global logistics since 1999.",
     founded: "2010",
     phone: "+91 22 4001 8000",
     email: "hello@MahaveerTrans.com",
@@ -54,11 +55,18 @@ const SITE_DATA = {
     titleLine2Hl: "Redefined",
     titleLine3: "For Modern",
     chip: "2025",
-    description: "End-to-end freight solutions powered by real-time AI routing, live shipment tracking, and a global carrier network built for speed and reliability.",
+    description:
+      "End-to-end freight solutions powered by real-time AI routing, live shipment tracking, and a global carrier network built for speed and reliability.",
     cta1: "Start Shipping →",
     cta2: "▶ Watch Demo",
-    image: "https://autobahntrucking.com/storage/app/vehicles/images/Bharatbenz-truck-5528TT.jpg",
-    statCard1: { label: "Monthly Deliveries", sub: "shipments this month", badge: "↑ 18% vs last month", capacityLabel: "Capacity used" },
+    image:
+      "https://autobahntrucking.com/storage/app/vehicles/images/Bharatbenz-truck-5528TT.jpg",
+    statCard1: {
+      label: "Monthly Deliveries",
+      sub: "shipments this month",
+      badge: "↑ 18% vs last month",
+      capacityLabel: "Capacity used",
+    },
     statCard2: { label: "On-time Rate", sub: "last 200 days" },
     trust: {
       count: "4,800+",
@@ -71,26 +79,86 @@ const SITE_DATA = {
     },
     stats: { shipments: 12400, onTime: 99 },
   },
-  ticker: ["Air Freight", "Ocean Shipping", "Road Transport", "Cold Chain", "Customs Clearance", "Warehousing & 3PL", "Last Mile Delivery", "Project Cargo", "Express Courier", "Reverse Logistics"],
+  ticker: [
+    "Air Freight",
+    "Ocean Shipping",
+    "Road Transport",
+    "Cold Chain",
+    "Customs Clearance",
+    "Warehousing & 3PL",
+    "Last Mile Delivery",
+    "Project Cargo",
+    "Express Courier",
+    "Reverse Logistics",
+  ],
   clients: {
     label: "Trusted by",
-    logos: ["MAHINDRA", "RELIANCE", "INFOSYS", "WIPRO", "ADANI", "GODREJ", "TATA"],
+    logos: [
+      "MAHINDRA",
+      "RELIANCE",
+      "INFOSYS",
+      "WIPRO",
+      "ADANI",
+      "GODREJ",
+      "TATA",
+    ],
   },
   services: {
     sectionTag: "What We Do",
     heading: "Complete Logistics Under One Roof",
     headingHl: "Logistics",
-    description: "From a single parcel to a full container — we handle every mode, every route, with zero compromise on visibility.",
+    description:
+      "From a single parcel to a full container — we handle every mode, every route, with zero compromise on visibility.",
     learnMoreText: "Learn more →",
     items: [
-      { tag: "Express", tagClass: "tp-sky", icon: "✈️", title: "Air Freight", description: "Priority air cargo with door-to-door tracking. Partnered with 40+ airlines for daily worldwide departures.", image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=80&auto=format&fit=crop" },
-      { tag: "FCL / LCL", tagClass: "tp-blue", icon: "🚢", title: "Sea Freight", description: "Cost-effective ocean freight across all major trade lanes. Full container or groupage — we handle it all.", image: "https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=600&q=80&auto=format&fit=crop" },
-      { tag: "FTL / LTL", tagClass: "tp-amber", icon: "🚛", title: "Road Transport", description: "GPS-tracked trucks across the full road network. Temperature-controlled options available nationwide.", image: "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=600&q=80&auto=format&fit=crop" },
-      { tag: "3PL", tagClass: "tp-green", icon: "🏭", title: "Warehousing & 3PL", description: "Smart fulfillment centers with WMS integration, pick & pack, kitting, and same-day dispatch capability.", image: "https://images.unsplash.com/photo-1553413077-190dd305871c?w=600&q=80&auto=format&fit=crop" },
+      {
+        tag: "Express",
+        tagClass: "tp-sky",
+        icon: "",
+        title: "Air Freight",
+        description:
+          "Priority air cargo with door-to-door tracking. Partnered with 40+ airlines for daily worldwide departures.",
+        image:
+          "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=80&auto=format&fit=crop",
+      },
+      {
+        tag: "FCL / LCL",
+        tagClass: "tp-blue",
+        icon: "",
+        title: "Sea Freight",
+        description:
+          "Cost-effective ocean freight across all major trade lanes. Full container or groupage — we handle it all.",
+        image:
+          "https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=600&q=80&auto=format&fit=crop",
+      },
+      {
+        tag: "FTL / LTL",
+        tagClass: "tp-amber",
+        icon: "",
+        title: "Road Transport",
+        description:
+          "GPS-tracked trucks across the full road network. Temperature-controlled options available nationwide.",
+        image:
+          "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=600&q=80&auto=format&fit=crop",
+      },
+      {
+        tag: "3PL",
+        tagClass: "tp-green",
+        icon: "",
+        title: "Warehousing & 3PL",
+        description:
+          "Smart fulfillment centers with WMS integration, pick & pack, kitting, and same-day dispatch capability.",
+        image:
+          "https://images.unsplash.com/photo-1553413077-190dd305871c?w=600&q=80&auto=format&fit=crop",
+      },
     ],
   },
   numbers: [
-    { value: 12400, suffix: "+", label: "Monthly shipments processed globally" },
+    {
+      value: 12400,
+      suffix: "+",
+      label: "Monthly shipments processed globally",
+    },
     { value: 99, suffix: "%", label: "On-time delivery rate, 90-day avg" },
     { value: 180, suffix: "+", label: "Countries in active network" },
     { value: 25, suffix: " yrs", label: "Years of logistics experience" },
@@ -103,18 +171,42 @@ const SITE_DATA = {
     p1: "MahaveerTrans was founded in 1999 with a single idea: logistics should be transparent, fast, and accessible to every business. Today we operate in 40+ countries with 3,200 specialists and a proprietary TMS platform that gives clients full supply chain visibility.",
     p2: "Our AI-powered routing engine selects the best combination of speed, cost, and carbon efficiency for every shipment — automatically optimised in real time.",
     cta: "Meet The Team →",
-    image: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=900&q=80&auto=format&fit=crop",
-    features: ["ISO 9001 Certified", "IATA Accredited", "24/7 Control Tower", "AI-Powered Routing", "Carbon Neutral 2030", "Real-time Visibility"],
+    image:
+      "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=900&q=80&auto=format&fit=crop",
+    features: [
+      "ISO 9001 Certified",
+      "IATA Accredited",
+      "24/7 Control Tower",
+      "AI-Powered Routing",
+      "Carbon Neutral 2030",
+      "Real-time Visibility",
+    ],
   },
   process: {
     sectionTag: "Simple Process",
     heading: "Ship in",
     headingHl: "4 Steps",
     steps: [
-      { num: "01", title: "Get a Quote", desc: "Fill our form in under 60 seconds. Our AI returns an instant, competitive quote for your route." },
-      { num: "02", title: "We Plan the Route", desc: "Our team designs the optimal path using AI routing, carrier rates, and customs intelligence." },
-      { num: "03", title: "Pickup & Transit", desc: "Your cargo is collected on schedule and moves through our vetted, insured carrier network." },
-      { num: "04", title: "Delivered ✓", desc: "Track in real time. Receive photo proof of delivery and full digital documentation." },
+      {
+        num: "01",
+        title: "Get a Quote",
+        desc: "Fill our form in under 60 seconds. Our AI returns an instant, competitive quote for your route.",
+      },
+      {
+        num: "02",
+        title: "We Plan the Route",
+        desc: "Our team designs the optimal path using AI routing, carrier rates, and customs intelligence.",
+      },
+      {
+        num: "03",
+        title: "Pickup & Transit",
+        desc: "Your cargo is collected on schedule and moves through our vetted, insured carrier network.",
+      },
+      {
+        num: "04",
+        title: "Delivered ✓",
+        desc: "Track in real time. Receive photo proof of delivery and full digital documentation.",
+      },
     ],
   },
   fleet: {
@@ -123,18 +215,54 @@ const SITE_DATA = {
     headingHl: "Deliver",
     cta: "View All Fleet →",
     items: [
-      { title: "Heavy Haulage Fleet", sub: "200+ trucks across India", tag: "Road", tall: true, image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80&auto=format&fit=crop" },
-      { title: "Container Vessels", sub: "40,000+ TEU capacity", tag: "Ocean", tall: false, image: "https://images.unsplash.com/photo-1562408590-e32931084e23?w=500&q=80&auto=format&fit=crop" },
-      { title: "Air Cargo Network", sub: "40+ airline partners", tag: "Air", tall: false, image: "https://images.unsplash.com/photo-1627579809897-38afb36a8b4c?w=500&q=80&auto=format&fit=crop" },
-      { title: "Smart Warehouses", sub: "3M sq.ft managed", tag: "Storage", tall: false, image: "https://images.unsplash.com/photo-1553413077-190dd305871c?w=500&q=80&auto=format&fit=crop" },
-      { title: "Urban Delivery Tech", sub: "EV fleet + drones", tag: "Last Mile", tall: false, image: "https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=500&q=80&auto=format&fit=crop" },
+      {
+        title: "Heavy Haulage Fleet",
+        sub: "200+ trucks across India",
+        tag: "Road",
+        tall: true,
+        image:
+          "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80&auto=format&fit=crop",
+      },
+      {
+        title: "Container Vessels",
+        sub: "40,000+ TEU capacity",
+        tag: "Ocean",
+        tall: false,
+        image:
+          "https://images.unsplash.com/photo-1562408590-e32931084e23?w=500&q=80&auto=format&fit=crop",
+      },
+      {
+        title: "Air Cargo Network",
+        sub: "40+ airline partners",
+        tag: "Air",
+        tall: false,
+        image:
+          "https://images.unsplash.com/photo-1627579809897-38afb36a8b4c?w=500&q=80&auto=format&fit=crop",
+      },
+      {
+        title: "Smart Warehouses",
+        sub: "3M sq.ft managed",
+        tag: "Storage",
+        tall: false,
+        image:
+          "https://images.unsplash.com/photo-1553413077-190dd305871c?w=500&q=80&auto=format&fit=crop",
+      },
+      {
+        title: "Urban Delivery Tech",
+        sub: "EV fleet + drones",
+        tag: "Last Mile",
+        tall: false,
+        image:
+          "https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=500&q=80&auto=format&fit=crop",
+      },
     ],
   },
   tracking: {
     sectionTag: "Real-Time",
     heading: "Track Your",
     headingHl: "Shipment",
-    description: "Enter your tracking ID for instant live updates — location, status, customs clearance, and ETA all in one view.",
+    description:
+      "Enter your tracking ID for instant live updates — location, status, customs clearance, and ETA all in one view.",
     inputPlaceholder: "e.g. VF-2025-00812",
     btnText: "Track Now",
     btnFound: "✓ Found!",
@@ -147,10 +275,26 @@ const SITE_DATA = {
       to: "Frankfurt",
       toCode: "FRA · Destination",
       timeline: [
-        { status: "done", title: "Picked up from sender", time: "May 28 · 09:14 AM" },
-        { status: "done", title: "Departed Mumbai Airport", time: "May 28 · 11:40 PM" },
-        { status: "now", title: "In transit — Dubai layover", time: "May 29 · 04:22 AM · Now" },
-        { status: "pending", title: "Arriving Frankfurt", time: "May 30 · Est. 08:00 AM" },
+        {
+          status: "done",
+          title: "Picked up from sender",
+          time: "May 28 · 09:14 AM",
+        },
+        {
+          status: "done",
+          title: "Departed Mumbai Airport",
+          time: "May 28 · 11:40 PM",
+        },
+        {
+          status: "now",
+          title: "In transit — Dubai layover",
+          time: "May 29 · 04:22 AM · Now",
+        },
+        {
+          status: "pending",
+          title: "Arriving Frankfurt",
+          time: "May 30 · Est. 08:00 AM",
+        },
       ],
     },
   },
@@ -159,22 +303,45 @@ const SITE_DATA = {
     heading: "What They",
     headingHl: "Say",
     items: [
-      { stars: "★★★★★", text: "MahaveerTrans cut our import lead time from 3 weeks to 9 days. The tracking platform is genuinely world-class — our ops team loves it.", name: "Rajesh Mehta", role: "Supply Chain Director, Tata Consumer", avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&q=80&auto=format&fit=crop&crop=face" },
-      { stars: "★★★★★", text: "We handle 500+ shipments monthly across 30 countries. Zero-exception customs handling and brilliant account support sets MahaveerTrans apart.", name: "Priya Sharma", role: "Head of Operations, GlobalMed", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&q=80&auto=format&fit=crop&crop=face" },
-      { stars: "★★★★★", text: "Cold chain precision is non-negotiable for us. MahaveerTrans's refrigerated fleet and monitoring gave us confidence to expand into five new markets.", name: "Arjun Kapoor", role: "CEO, FreshRoute Agri", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&q=80&auto=format&fit=crop&crop=face" },
+      {
+        stars: "★★★★★",
+        text: "MahaveerTrans cut our import lead time from 3 weeks to 9 days. The tracking platform is genuinely world-class — our ops team loves it.",
+        name: "Rajesh Mehta",
+        role: "Supply Chain Director, Tata Consumer",
+        avatar:
+          "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&q=80&auto=format&fit=crop&crop=face",
+      },
+      {
+        stars: "★★★★★",
+        text: "We handle 500+ shipments monthly across 30 countries. Zero-exception customs handling and brilliant account support sets MahaveerTrans apart.",
+        name: "Priya Sharma",
+        role: "Head of Operations, GlobalMed",
+        avatar:
+          "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&q=80&auto=format&fit=crop&crop=face",
+      },
+      {
+        stars: "★★★★★",
+        text: "Cold chain precision is non-negotiable for us. MahaveerTrans's refrigerated fleet and monitoring gave us confidence to expand into five new markets.",
+        name: "Arjun Kapoor",
+        role: "CEO, FreshRoute Agri",
+        avatar:
+          "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&q=80&auto=format&fit=crop&crop=face",
+      },
     ],
   },
   cta: {
     sectionTag: "Get Started",
     title: "Ready to Ship",
     titleHl: "Smarter?",
-    description: "Get a free consultation with our experts. No commitment, no hidden fees — just the best logistics solution for your business.",
+    description:
+      "Get a free consultation with our experts. No commitment, no hidden fees — just the best logistics solution for your business.",
     cta1: "Get Free Quote →",
     cta2: "📞 Call us",
   },
   footer: {
     logo: "MahaveerTrans",
-    tagline: "Delivering the world's goods with precision and care. Your trusted logistics partner since 1999.",
+    tagline:
+      "Delivering the world's goods with precision and care. Your trusted logistics partner since 1999.",
     socials: [
       { label: "in", url: "#" },
       { label: "tw", url: "#" },
@@ -182,9 +349,36 @@ const SITE_DATA = {
       { label: "ig", url: "#" },
     ],
     columns: [
-      { heading: "Services", links: [["Air Freight", "#"], ["Sea Freight", "#"], ["Road Transport", "#"], ["Warehousing", "#"], ["Cold Chain", "#"], ["Customs", "#"]] },
-      { heading: "Company", links: [["About Us", "#"], ["Careers", "#"], ["Sustainability", "#"], ["Press", "#"], ["Contact", "#"]] },
-      { heading: "Contact", links: [["📍 Mumbai, India", "#"], ["📞 +91 22 4001 8000", "#"], ["✉️ hello@MahaveerTrans.com", "#"], ["🌐 MahaveerTrans.com", "#"]] },
+      {
+        heading: "Services",
+        links: [
+          ["Air Freight", "#"],
+          ["Sea Freight", "#"],
+          ["Road Transport", "#"],
+          ["Warehousing", "#"],
+          ["Cold Chain", "#"],
+          ["Customs", "#"],
+        ],
+      },
+      {
+        heading: "Company",
+        links: [
+          ["About Us", "#"],
+          ["Careers", "#"],
+          ["Sustainability", "#"],
+          ["Press", "#"],
+          ["Contact", "#"],
+        ],
+      },
+      {
+        heading: "Contact",
+        links: [
+          ["📍 Mumbai, India", "#"],
+          ["📞 +91 22 4001 8000", "#"],
+          ["✉️ hello@MahaveerTrans.com", "#"],
+          ["🌐 MahaveerTrans.com", "#"],
+        ],
+      },
     ],
     copyright: "© 2025 MahaveerTrans Logistics Pvt. Ltd. All rights reserved.",
     legal: "Privacy · Terms · Sitemap",
@@ -204,20 +398,53 @@ const ACCENT_COLORS = [
 ];
 
 const DISPLAY_FONTS = [
-  { font: "Syne", hint: "💡 Great for tech brands — geometric, bold, very modern." },
-  { font: "Playfair Display", hint: "💡 Elegant serif — ideal for premium or luxury positioning." },
-  { font: "Outfit", hint: "💡 Clean, rounded, approachable. Perfect for SaaS or startup feel." },
-  { font: "Josefin Sans", hint: "💡 Narrow, art-deco inspired — very distinctive and stylish." },
-  { font: "Cormorant Garamond", hint: "💡 Classic Roman serif — ultra-refined, almost fashion-magazine feel." },
-  { font: "Space Grotesk", hint: "💡 Techy, slightly quirky grotesque — loved in fintech and logistics apps." },
+  {
+    font: "Syne",
+    hint: "💡 Great for tech brands — geometric, bold, very modern.",
+  },
+  {
+    font: "Playfair Display",
+    hint: "💡 Elegant serif — ideal for premium or luxury positioning.",
+  },
+  {
+    font: "Outfit",
+    hint: "💡 Clean, rounded, approachable. Perfect for SaaS or startup feel.",
+  },
+  {
+    font: "Josefin Sans",
+    hint: "💡 Narrow, art-deco inspired — very distinctive and stylish.",
+  },
+  {
+    font: "Cormorant Garamond",
+    hint: "💡 Classic Roman serif — ultra-refined, almost fashion-magazine feel.",
+  },
+  {
+    font: "Space Grotesk",
+    hint: "💡 Techy, slightly quirky grotesque — loved in fintech and logistics apps.",
+  },
 ];
 
 const BODY_FONTS = [
-  { font: "Instrument Sans", hint: "💡 Humanist, warm, readable — excellent for body copy." },
-  { font: "Plus Jakarta Sans", hint: "💡 Balanced, modern, slightly formal — a very safe UI font." },
-  { font: "Outfit", hint: "💡 Very smooth, even rhythm. Good for younger/consumer brands." },
-  { font: "Nunito", hint: "💡 Rounded, friendly — best for consumer-facing products." },
-  { font: "Space Grotesk", hint: "💡 Pairs beautifully with itself for a monofont site." },
+  {
+    font: "Instrument Sans",
+    hint: "💡 Humanist, warm, readable — excellent for body copy.",
+  },
+  {
+    font: "Plus Jakarta Sans",
+    hint: "💡 Balanced, modern, slightly formal — a very safe UI font.",
+  },
+  {
+    font: "Outfit",
+    hint: "💡 Very smooth, even rhythm. Good for younger/consumer brands.",
+  },
+  {
+    font: "Nunito",
+    hint: "💡 Rounded, friendly — best for consumer-facing products.",
+  },
+  {
+    font: "Space Grotesk",
+    hint: "💡 Pairs beautifully with itself for a monofont site.",
+  },
 ];
 
 /* ─── HELPERS ─── */
@@ -226,7 +453,7 @@ function shadeColor(hex, pct) {
   const r = Math.min(255, Math.max(0, ((n >> 16) & 0xff) + pct));
   const g = Math.min(255, Math.max(0, ((n >> 8) & 0xff) + pct));
   const b = Math.min(255, Math.max(0, (n & 0xff) + pct));
-  return "#" + (r << 16 | g << 8 | b).toString(16).padStart(6, "0");
+  return "#" + ((r << 16) | (g << 8) | b).toString(16).padStart(6, "0");
 }
 
 function useCountUp(target, active, duration = 1400) {
@@ -251,14 +478,20 @@ function useInView(threshold = 0.1) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setInView(true); io.disconnect(); } }, { threshold });
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setInView(true);
+          io.disconnect();
+        }
+      },
+      { threshold },
+    );
     io.observe(el);
     return () => io.disconnect();
   }, [threshold]);
   return [ref, inView];
 }
-
-
 
 /* ─── COUNT UP NUMBER ─── */
 function AnimatedNumber({ target, suffix }) {
@@ -266,7 +499,8 @@ function AnimatedNumber({ target, suffix }) {
   const val = useCountUp(target, inView);
   return (
     <div className="num-val" ref={ref}>
-      {val.toLocaleString()}<span className="suf">{suffix}</span>
+      {val.toLocaleString()}
+      <span className="suf">{suffix}</span>
     </div>
   );
 }
@@ -275,7 +509,11 @@ function AnimatedNumber({ target, suffix }) {
 function Reveal({ children, delay = 0, className = "" }) {
   const [ref, inView] = useInView(0.1);
   return (
-    <div ref={ref} className={`reveal ${inView ? "vis" : ""} ${className}`} style={{ transitionDelay: `${delay}s` }}>
+    <div
+      ref={ref}
+      className={`reveal ${inView ? "vis" : ""} ${className}`}
+      style={{ transitionDelay: `${delay}s` }}
+    >
       {children}
     </div>
   );
@@ -285,7 +523,11 @@ function Reveal({ children, delay = 0, className = "" }) {
 function AnimCard({ children, delay = 0, className = "" }) {
   const [ref, inView] = useInView(0.1);
   return (
-    <div ref={ref} className={`${className} ${inView ? "vis" : ""}`} style={{ transitionDelay: `${delay}s` }}>
+    <div
+      ref={ref}
+      className={`${className} ${inView ? "vis" : ""}`}
+      style={{ transitionDelay: `${delay}s` }}
+    >
       {children}
     </div>
   );
@@ -306,7 +548,7 @@ export default function HomeWrapper() {
 
   /* Theme & font CSS variables */
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const savedTheme = localStorage?.getItem("vf-theme");
       if (savedTheme) {
         setTheme(savedTheme);
@@ -315,7 +557,6 @@ export default function HomeWrapper() {
   }, []);
 
   useEffect(() => {
-
     document.documentElement.dataset.theme = theme;
     localStorage.setItem("vf-theme", theme);
   }, [theme]);
@@ -331,11 +572,17 @@ export default function HomeWrapper() {
   }, [activeAccent]);
 
   useEffect(() => {
-    document.documentElement.style.setProperty("--font-display", `'${DISPLAY_FONTS[activeDisplayFont].font}', sans-serif`);
+    document.documentElement.style.setProperty(
+      "--font-display",
+      `'${DISPLAY_FONTS[activeDisplayFont].font}', sans-serif`,
+    );
   }, [activeDisplayFont]);
 
   useEffect(() => {
-    document.documentElement.style.setProperty("--font-body", `'${BODY_FONTS[activeBodyFont].font}', sans-serif`);
+    document.documentElement.style.setProperty(
+      "--font-body",
+      `'${BODY_FONTS[activeBodyFont].font}', sans-serif`,
+    );
   }, [activeBodyFont]);
 
   useEffect(() => {
@@ -360,13 +607,24 @@ export default function HomeWrapper() {
   useEffect(() => {
     const el = document.getElementById("hero-section");
     if (!el) return;
-    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setHeroActive(true); io.disconnect(); } }, { threshold: 0.3 });
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setHeroActive(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.3 },
+    );
     io.observe(el);
     return () => io.disconnect();
   }, []);
 
   const tickerItems = d.ticker.map((t, i) => (
-    <span className="t-item" key={i}><span className="t-dot"></span>{t}</span>
+    <span className="t-item" key={i}>
+      <span className="t-dot"></span>
+      {t}
+    </span>
   ));
 
   return (
@@ -377,26 +635,43 @@ export default function HomeWrapper() {
       <div className={`font-panel ${fontPanelOpen ? "open" : ""}`}>
         <div className="fp-header">
           <div className="fp-title">{d.meta.fpTitle}</div>
-          <button className="fp-close" onClick={() => setFontPanelOpen(false)}>✕</button>
+          <button className="fp-close" onClick={() => setFontPanelOpen(false)}>
+            ✕
+          </button>
         </div>
         <div className="fp-body">
           <div>
             <div className="fp-section-label">{d.meta.fpColorLabel}</div>
             <div className="fp-colors">
               {ACCENT_COLORS.map((ac, i) => (
-                <div key={i} className={`fp-color ${activeAccent === i ? "active" : ""}`}
-                  style={{ background: ac.color }} title={ac.title}
-                  onClick={() => setActiveAccent(i)} />
+                <div
+                  key={i}
+                  className={`fp-color ${activeAccent === i ? "active" : ""}`}
+                  style={{ background: ac.color }}
+                  title={ac.title}
+                  onClick={() => setActiveAccent(i)}
+                />
               ))}
             </div>
           </div>
           <div>
             <div className="fp-section-label">{d.meta.fpDisplayLabel}</div>
             {DISPLAY_FONTS.map((f, i) => (
-              <div key={i} className={`fp-font-opt ${activeDisplayFont === i ? "active" : ""}`}
-                onClick={() => setActiveDisplayFont(i)}>
+              <div
+                key={i}
+                className={`fp-font-opt ${activeDisplayFont === i ? "active" : ""}`}
+                onClick={() => setActiveDisplayFont(i)}
+              >
                 <div className="fopt-name">{f.font}</div>
-                <div className="fopt-preview" style={{ fontFamily: `'${f.font}', sans-serif`, fontWeight: 800 }}>Global Logistics</div>
+                <div
+                  className="fopt-preview"
+                  style={{
+                    fontFamily: `'${f.font}', sans-serif`,
+                    fontWeight: 800,
+                  }}
+                >
+                  Global Logistics
+                </div>
                 <div className="fopt-hint">{f.hint}</div>
               </div>
             ))}
@@ -404,10 +679,22 @@ export default function HomeWrapper() {
           <div>
             <div className="fp-section-label">{d.meta.fpBodyLabel}</div>
             {BODY_FONTS.map((f, i) => (
-              <div key={i} className={`fp-font-opt ${activeBodyFont === i ? "active" : ""}`}
-                onClick={() => setActiveBodyFont(i)}>
+              <div
+                key={i}
+                className={`fp-font-opt ${activeBodyFont === i ? "active" : ""}`}
+                onClick={() => setActiveBodyFont(i)}
+              >
                 <div className="fopt-name">{f.font}</div>
-                <div className="fopt-preview" style={{ fontFamily: `'${f.font}', sans-serif`, fontSize: ".9rem", fontWeight: 400 }}>Fast, reliable, global delivery solutions for every business.</div>
+                <div
+                  className="fopt-preview"
+                  style={{
+                    fontFamily: `'${f.font}', sans-serif`,
+                    fontSize: ".9rem",
+                    fontWeight: 400,
+                  }}
+                >
+                  Fast, reliable, global delivery solutions for every business.
+                </div>
                 <div className="fopt-hint">{f.hint}</div>
               </div>
             ))}
@@ -416,28 +703,55 @@ export default function HomeWrapper() {
       </div>
 
       {/* MOBILE OVERLAY */}
-      <div className={`mobile-overlay ${drawerOpen ? "open" : ""}`} onClick={() => setDrawerOpen(false)} />
+      <div
+        className={`mobile-overlay ${drawerOpen ? "open" : ""}`}
+        onClick={() => setDrawerOpen(false)}
+      />
 
       {/* MOBILE DRAWER */}
       <div className={`mobile-drawer ${drawerOpen ? "open" : ""}`}>
         <div className="drawer-header">
-          <div className="drawer-logo">{d.nav.brandShort}<span style={{ opacity: .45 }}> Solutions</span></div>
-          <button className="drawer-close" onClick={() => setDrawerOpen(false)}>✕</button>
+          <div className="drawer-logo">
+            {d.nav.brandShort}
+            <span style={{ opacity: 0.45 }}> Solutions</span>
+          </div>
+          <button className="drawer-close" onClick={() => setDrawerOpen(false)}>
+            ✕
+          </button>
         </div>
         <div className="drawer-links">
           {d.nav.drawerLinks.map((l, i) => (
-            <a key={i} href={l.href} onClick={() => setDrawerOpen(false)}>{l.label}</a>
+            <a key={i} href={l.href} onClick={() => setDrawerOpen(false)}>
+              {l.label}
+            </a>
           ))}
         </div>
         <div className="drawer-actions">
           <div className="drawer-settings">
             <span className="drawer-settings-lbl">{d.meta.themeLabel}</span>
-            <button className="theme-toggle" onClick={() => setTheme(t => t === "dark" ? "light" : "dark")} />
+            <button
+              className="theme-toggle"
+              onClick={() => setTheme((t) => (t === "dark" ? "light" : "dark"))}
+            />
           </div>
-          <button className="drawer-font-btn" onClick={() => { setFontPanelOpen(true); setDrawerOpen(false); }}>
+          <button
+            className="drawer-font-btn"
+            onClick={() => {
+              setFontPanelOpen(true);
+              setDrawerOpen(false);
+            }}
+          >
             <span>Aa</span> <span>{d.meta.drawerFontBtnText}</span>
           </button>
-          <button className="btn-cta" style={{ width: "100%", padding: ".75rem", justifyContent: "center", display: "flex" }}>
+          <button
+            className="btn-cta"
+            style={{
+              width: "100%",
+              padding: ".75rem",
+              justifyContent: "center",
+              display: "flex",
+            }}
+          >
             {d.nav.drawerCta}
           </button>
         </div>
@@ -450,21 +764,38 @@ export default function HomeWrapper() {
           <div className="dot"></div>
         </a>
         <div className="nav-links">
-          {d.nav.links.map((l, i) => <a key={i} href={l.href}>{l.label}</a>)}
+          {d.nav.links.map((l, i) => (
+            <a key={i} href={l.href}>
+              {l.label}
+            </a>
+          ))}
         </div>
         <div className="nav-right">
-          <button className="font-btn" onClick={() => setFontPanelOpen(p => !p)}>
+          <button
+            className="font-btn"
+            onClick={() => setFontPanelOpen((p) => !p)}
+          >
             <span>Aa</span> <span>{d.meta.fontBtnText}</span>
           </button>
           <div style={{ display: "flex", alignItems: "center", gap: ".55rem" }}>
             <span className="theme-icon">☀️</span>
-            <button className="theme-toggle" onClick={() => setTheme(t => t === "dark" ? "light" : "dark")} />
+            <button
+              className="theme-toggle"
+              onClick={() => setTheme((t) => (t === "dark" ? "light" : "dark"))}
+            />
             <span className="theme-icon">🌙</span>
           </div>
           <button className="btn-ghost">{d.nav.login}</button>
-          <a href="#cta" className="btn-cta">{d.nav.cta}</a>
-          <button className={`hamburger ${drawerOpen ? "open" : ""}`} onClick={() => setDrawerOpen(true)}>
-            <span className="ham-line" /><span className="ham-line" /><span className="ham-line" />
+          <a href="#cta" className="btn-cta">
+            {d.nav.cta}
+          </a>
+          <button
+            className={`hamburger ${drawerOpen ? "open" : ""}`}
+            onClick={() => setDrawerOpen(true)}
+          >
+            <span className="ham-line" />
+            <span className="ham-line" />
+            <span className="ham-line" />
           </button>
         </div>
       </nav>
@@ -475,11 +806,17 @@ export default function HomeWrapper() {
         <div className="hero-glow" />
         <div className="hero-inner">
           <div className="hero-left">
-            <div className="hero-pill"><span className="live-dot" />{d.hero.pill}</div>
+            <div className="hero-pill">
+              <span className="live-dot" />
+              {d.hero.pill}
+            </div>
             <h1 className="hero-h1">
-              {d.hero.titleLine1}<br />
-              <span className="hl">{d.hero.titleLine2Hl}</span><br />
-              {d.hero.titleLine3}<span className="hero-chip">{d.hero.chip}</span>
+              {d.hero.titleLine1}
+              <br />
+              <span className="hl">{d.hero.titleLine2Hl}</span>
+              <br />
+              {d.hero.titleLine3}
+              <span className="hero-chip">{d.hero.chip}</span>
             </h1>
             <p className="hero-desc">{d.hero.description}</p>
             <div className="hero-actions">
@@ -488,22 +825,36 @@ export default function HomeWrapper() {
             </div>
             <div className="hero-trust">
               <div className="trust-avs">
-                {d.hero.trust.avatars.map((src, i) => <img key={i} className="t-av" src={src} alt="" />)}
+                {d.hero.trust.avatars.map((src, i) => (
+                  <img key={i} className="t-av" src={src} alt="" />
+                ))}
               </div>
-              <div className="trust-txt"><strong>{d.hero.trust.count}</strong> {d.hero.trust.label}</div>
+              <div className="trust-txt">
+                <strong>{d.hero.trust.count}</strong> {d.hero.trust.label}
+              </div>
             </div>
           </div>
           <div className="hero-right">
             <div className="hero-img-wrap">
-              <img className="hero-main-img" src={d.hero.image} alt="Operations" />
+              <img
+                className="hero-main-img"
+                src={d.hero.image}
+                alt="Operations"
+              />
               <div className="hfloat hf1">
                 <div className="hf-tag">{d.hero.statCard1.label}</div>
-                <div className="hf-val">{heroActive ? shipVal.toLocaleString() : "0"}</div>
+                <div className="hf-val">
+                  {heroActive ? shipVal.toLocaleString() : "0"}
+                </div>
                 <div className="hf-sub">{d.hero.statCard1.sub}</div>
                 <div className="hf-badge">{d.hero.statCard1.badge}</div>
                 <div className="hf-bar-wrap">
-                  <div className="hf-tag" style={{ marginTop: ".55rem" }}>{d.hero.statCard1.capacityLabel}</div>
-                  <div className="hf-bar"><div className="hf-fill" /></div>
+                  <div className="hf-tag" style={{ marginTop: ".55rem" }}>
+                    {d.hero.statCard1.capacityLabel}
+                  </div>
+                  <div className="hf-bar">
+                    <div className="hf-fill" />
+                  </div>
                 </div>
               </div>
               <div className="hfloat hf2">
@@ -518,7 +869,10 @@ export default function HomeWrapper() {
 
       {/* TICKER */}
       <div className="ticker-wrap">
-        <div className="ticker">{tickerItems}{tickerItems}</div>
+        <div className="ticker">
+          {tickerItems}
+          {tickerItems}
+        </div>
       </div>
 
       {/* CLIENTS */}
@@ -526,7 +880,11 @@ export default function HomeWrapper() {
         <div className="clients-inner">
           <span className="clients-lbl">{d.clients.label}</span>
           <div className="clients-logos">
-            {d.clients.logos.map((l, i) => <div key={i} className="clogo">{l}</div>)}
+            {d.clients.logos.map((l, i) => (
+              <div key={i} className="clogo">
+                {l}
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -536,26 +894,44 @@ export default function HomeWrapper() {
         <div className="svc-top reveal">
           <div>
             <div className="sec-tag">{d.services.sectionTag}</div>
-            <h2 className="sec-h">{d.services.heading.replace(d.services.headingHl,
-              `<HL>${d.services.headingHl}</HL>`)
-              .split("<HL>").map((part, i) =>
-                i === 0 ? part : part.split("</HL>").map((p, j) =>
-                  j === 0 ? <span key={j} className="hl">{p}</span> : p
+            <h2 className="sec-h">
+              {d.services.heading
+                .replace(
+                  d.services.headingHl,
+                  `<HL>${d.services.headingHl}</HL>`,
                 )
-              )}</h2>
+                .split("<HL>")
+                .map((part, i) =>
+                  i === 0
+                    ? part
+                    : part.split("</HL>").map((p, j) =>
+                        j === 0 ? (
+                          <span key={j} className="hl">
+                            {p}
+                          </span>
+                        ) : (
+                          p
+                        ),
+                      ),
+                )}
+            </h2>
             <p className="svc-top-desc">{d.services.description}</p>
           </div>
-          <a href="#" className="btn-outline">All Services →</a>
+          <a href="#" className="btn-outline">
+            All Services →
+          </a>
         </div>
         <div className="svc-grid">
           {d.services.items.map((s, i) => (
             <AnimCard key={i} className="svc-card" delay={i * 0.07}>
               <img className="svc-img" src={s.image} alt={s.title} />
               <span className={`svc-tag-pill ${s.tagClass}`}>{s.tag}</span>
-              <div className="svc-icon">{s.icon}</div>
+              {s.icon && <div className="svc-icon">{s.icon}</div>}
               <h3 className="svc-title">{s.title}</h3>
               <p className="svc-desc">{s.description}</p>
-              <a href="#" className="svc-link">{d.services.learnMoreText}</a>
+              <a href="#" className="svc-link">
+                {d.services.learnMoreText}
+              </a>
             </AnimCard>
           ))}
         </div>
@@ -584,16 +960,38 @@ export default function HomeWrapper() {
               </div>
             </div>
             <div className="about-content">
-              <Reveal><div className="sec-tag">{d.about.sectionTag}</div></Reveal>
-              <Reveal delay={0.1}><h2 className="sec-h">{d.about.title}<br /><span className="hl">{d.about.titleHl}</span></h2></Reveal>
-              <Reveal delay={0.2}><p className="desc" style={{ marginBottom: ".75rem" }}>{d.about.p1}</p></Reveal>
-              <Reveal delay={0.25}><p className="desc">{d.about.p2}</p></Reveal>
+              <Reveal>
+                <div className="sec-tag">{d.about.sectionTag}</div>
+              </Reveal>
+              <Reveal delay={0.1}>
+                <h2 className="sec-h">
+                  {d.about.title}
+                  <br />
+                  <span className="hl">{d.about.titleHl}</span>
+                </h2>
+              </Reveal>
+              <Reveal delay={0.2}>
+                <p className="desc" style={{ marginBottom: ".75rem" }}>
+                  {d.about.p1}
+                </p>
+              </Reveal>
+              <Reveal delay={0.25}>
+                <p className="desc">{d.about.p2}</p>
+              </Reveal>
               <Reveal delay={0.3}>
                 <div className="about-feats">
-                  {d.about.features.map((f, i) => <div key={i} className="feat">{f}</div>)}
+                  {d.about.features.map((f, i) => (
+                    <div key={i} className="feat">
+                      {f}
+                    </div>
+                  ))}
                 </div>
               </Reveal>
-              <Reveal delay={0.35}><a href="#" className="btn-primary">{d.about.cta}</a></Reveal>
+              <Reveal delay={0.35}>
+                <a href="#" className="btn-primary">
+                  {d.about.cta}
+                </a>
+              </Reveal>
             </div>
           </div>
         </div>
@@ -604,7 +1002,10 @@ export default function HomeWrapper() {
         <div className="section-wrap">
           <Reveal className="proc-head">
             <div className="sec-tag">{d.process.sectionTag}</div>
-            <h2 className="sec-h">{d.process.heading} <span className="hl">{d.process.headingHl}</span></h2>
+            <h2 className="sec-h">
+              {d.process.heading}{" "}
+              <span className="hl">{d.process.headingHl}</span>
+            </h2>
           </Reveal>
           <div className="proc-steps">
             {d.process.steps.map((p, i) => (
@@ -624,7 +1025,10 @@ export default function HomeWrapper() {
           <div className="fleet-head">
             <div>
               <div className="sec-tag">{d.fleet.sectionTag}</div>
-              <h2 className="sec-h">{d.fleet.heading} <span className="hl">{d.fleet.headingHl}</span></h2>
+              <h2 className="sec-h">
+                {d.fleet.heading}{" "}
+                <span className="hl">{d.fleet.headingHl}</span>
+              </h2>
             </div>
             <button className="btn-outline">{d.fleet.cta}</button>
           </div>
@@ -633,7 +1037,10 @@ export default function HomeWrapper() {
               <div key={i} className={`gi ${f.tall ? "tall" : ""}`}>
                 <img src={f.image} alt={f.title} />
                 <div className="gi-tag">{f.tag}</div>
-                <div className="gi-label"><h4>{f.title}</h4><p>{f.sub}</p></div>
+                <div className="gi-label">
+                  <h4>{f.title}</h4>
+                  <p>{f.sub}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -646,21 +1053,42 @@ export default function HomeWrapper() {
           <div className="track-grid">
             <Reveal>
               <div className="sec-tag">{d.tracking.sectionTag}</div>
-              <h2 className="sec-h">{d.tracking.heading}<br /><span className="hl">{d.tracking.headingHl}</span></h2>
-              <p style={{ color: "var(--fg2)", marginTop: ".75rem" }}>{d.tracking.description}</p>
+              <h2 className="sec-h">
+                {d.tracking.heading}
+                <br />
+                <span className="hl">{d.tracking.headingHl}</span>
+              </h2>
+              <p style={{ color: "var(--fg2)", marginTop: ".75rem" }}>
+                {d.tracking.description}
+              </p>
               <div className="track-form">
                 <div className="t-input-row">
-                  <input className="t-input" type="text" placeholder={d.tracking.inputPlaceholder}
-                    value={trackVal} onChange={e => setTrackVal(e.target.value)}
-                    onKeyDown={e => e.key === "Enter" && handleTrack()} />
-                  <button className="t-btn"
-                    style={trackState === "found" ? { background: "#16a34a" } : {}}
-                    onClick={handleTrack}>
-                    {trackState === "found" ? d.tracking.btnFound : d.tracking.btnText}
+                  <input
+                    className="t-input"
+                    type="text"
+                    placeholder={d.tracking.inputPlaceholder}
+                    value={trackVal}
+                    onChange={(e) => setTrackVal(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && handleTrack()}
+                  />
+                  <button
+                    className="t-btn"
+                    style={
+                      trackState === "found" ? { background: "#16a34a" } : {}
+                    }
+                    onClick={handleTrack}
+                  >
+                    {trackState === "found"
+                      ? d.tracking.btnFound
+                      : d.tracking.btnText}
                   </button>
                 </div>
                 <div className="t-hints">
-                  {d.tracking.hints.map((h, i) => <span key={i} className="t-hint">{h}</span>)}
+                  {d.tracking.hints.map((h, i) => (
+                    <span key={i} className="t-hint">
+                      {h}
+                    </span>
+                  ))}
                 </div>
               </div>
             </Reveal>
@@ -673,7 +1101,9 @@ export default function HomeWrapper() {
                 <div className="tc-route">
                   <div className="tc-city">
                     <div className="tc-city-name">{d.tracking.demo.from}</div>
-                    <div className="tc-city-code">{d.tracking.demo.fromCode}</div>
+                    <div className="tc-city-code">
+                      {d.tracking.demo.fromCode}
+                    </div>
                   </div>
                   <div className="tc-arrow">→</div>
                   <div className="tc-city" style={{ textAlign: "right" }}>
@@ -703,7 +1133,10 @@ export default function HomeWrapper() {
         <div className="section-wrap">
           <Reveal className="test-head">
             <div className="sec-tag">{d.testimonials.sectionTag}</div>
-            <h2 className="sec-h">{d.testimonials.heading} <span className="hl">{d.testimonials.headingHl}</span></h2>
+            <h2 className="sec-h">
+              {d.testimonials.heading}{" "}
+              <span className="hl">{d.testimonials.headingHl}</span>
+            </h2>
           </Reveal>
           <div className="test-grid">
             {d.testimonials.items.map((t, i) => (
@@ -744,14 +1177,22 @@ export default function HomeWrapper() {
             <span className="f-brand-logo">{d.footer.logo}</span>
             <p>{d.footer.tagline}</p>
             <div className="f-socs">
-              {d.footer.socials.map((s, i) => <a key={i} href={s.url} className="f-soc">{s.label}</a>)}
+              {d.footer.socials.map((s, i) => (
+                <a key={i} href={s.url} className="f-soc">
+                  {s.label}
+                </a>
+              ))}
             </div>
           </div>
           {d.footer.columns.map((col, i) => (
             <div key={i} className="f-col">
               <h4>{col.heading}</h4>
               <ul className="f-links">
-                {col.links.map(([label, url], j) => <li key={j}><a href={url}>{label}</a></li>)}
+                {col.links.map(([label, url], j) => (
+                  <li key={j}>
+                    <a href={url}>{label}</a>
+                  </li>
+                ))}
               </ul>
             </div>
           ))}

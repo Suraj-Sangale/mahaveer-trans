@@ -315,7 +315,7 @@ export default function HomeWrapper() {
   }, []);
 
   useEffect(() => {
-  
+
     document.documentElement.dataset.theme = theme;
     localStorage.setItem("vf-theme", theme);
   }, [theme]);
@@ -533,33 +533,31 @@ export default function HomeWrapper() {
 
       {/* SERVICES */}
       <section id="services" className="services">
-        <div className="section-wrap">
-          <div className="svc-top reveal">
-            <div>
-              <div className="sec-tag">{d.services.sectionTag}</div>
-              <h2 className="sec-h">{d.services.heading.replace(d.services.headingHl,
-                `<HL>${d.services.headingHl}</HL>`)
-                .split("<HL>").map((part, i) =>
-                  i === 0 ? part : part.split("</HL>").map((p, j) =>
-                    j === 0 ? <span key={j} className="hl">{p}</span> : p
-                  )
-                )}</h2>
-              <p className="svc-top-desc">{d.services.description}</p>
-            </div>
-            <a href="#" className="btn-outline">All Services →</a>
+        <div className="svc-top reveal">
+          <div>
+            <div className="sec-tag">{d.services.sectionTag}</div>
+            <h2 className="sec-h">{d.services.heading.replace(d.services.headingHl,
+              `<HL>${d.services.headingHl}</HL>`)
+              .split("<HL>").map((part, i) =>
+                i === 0 ? part : part.split("</HL>").map((p, j) =>
+                  j === 0 ? <span key={j} className="hl">{p}</span> : p
+                )
+              )}</h2>
+            <p className="svc-top-desc">{d.services.description}</p>
           </div>
-          <div className="svc-grid">
-            {d.services.items.map((s, i) => (
-              <AnimCard key={i} className="svc-card" delay={i * 0.07}>
-                <img className="svc-img" src={s.image} alt={s.title} />
-                <span className={`svc-tag-pill ${s.tagClass}`}>{s.tag}</span>
-                <div className="svc-icon">{s.icon}</div>
-                <h3 className="svc-title">{s.title}</h3>
-                <p className="svc-desc">{s.description}</p>
-                <a href="#" className="svc-link">{d.services.learnMoreText}</a>
-              </AnimCard>
-            ))}
-          </div>
+          <a href="#" className="btn-outline">All Services →</a>
+        </div>
+        <div className="svc-grid">
+          {d.services.items.map((s, i) => (
+            <AnimCard key={i} className="svc-card" delay={i * 0.07}>
+              <img className="svc-img" src={s.image} alt={s.title} />
+              <span className={`svc-tag-pill ${s.tagClass}`}>{s.tag}</span>
+              <div className="svc-icon">{s.icon}</div>
+              <h3 className="svc-title">{s.title}</h3>
+              <p className="svc-desc">{s.description}</p>
+              <a href="#" className="svc-link">{d.services.learnMoreText}</a>
+            </AnimCard>
+          ))}
         </div>
       </section>
 
@@ -951,7 +949,7 @@ body { font-family: var(--font-body); background: var(--bg); color: var(--ink); 
 
 /* CLIENTS */
 .clients { padding: 2rem 2rem; border-bottom: 1px solid var(--border); }
-.clients-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; }
+.clients-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; justify-content: center; }
 .clients-lbl { font-size: .78rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--fg3); white-space: nowrap; }
 .clients-logos { display: flex; gap: 1.75rem; flex-wrap: wrap; align-items: center; }
 .clogo { font-family: var(--font-display); font-weight: 800; font-size: .85rem; color: var(--fg3); letter-spacing: .05em; transition: color .2s; cursor: default; }
@@ -967,6 +965,7 @@ body { font-family: var(--font-body); background: var(--bg); color: var(--ink); 
 /* SERVICES */
  #services {
       background: var(--bg2);
+      padding: 5.5rem 5%;
     }
 
     .svc-top {

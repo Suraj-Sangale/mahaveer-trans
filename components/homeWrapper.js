@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useRef, useCallback } from "react";
 import CtaSection from "./home/ctaSection";
+import Header from "./layout/header";
 
 /* ─── SITE DATA ─── */
 const SITE_DATA = {
@@ -399,6 +400,10 @@ const ACCENT_COLORS = [
 
 const DISPLAY_FONTS = [
   {
+    font: "Cormorant Garamond",
+    hint: "💡 Classic Roman serif — ultra-refined, almost fashion-magazine feel.",
+  },
+  {
     font: "Syne",
     hint: "💡 Great for tech brands — geometric, bold, very modern.",
   },
@@ -413,10 +418,6 @@ const DISPLAY_FONTS = [
   {
     font: "Josefin Sans",
     hint: "💡 Narrow, art-deco inspired — very distinctive and stylish.",
-  },
-  {
-    font: "Cormorant Garamond",
-    hint: "💡 Classic Roman serif — ultra-refined, almost fashion-magazine feel.",
   },
   {
     font: "Space Grotesk",
@@ -632,7 +633,7 @@ export default function HomeWrapper() {
       <style>{CSS}</style>
 
       {/* FONT PANEL */}
-      <div className={`font-panel ${fontPanelOpen ? "open" : ""}`}>
+      {/* <div className={`font-panel ${fontPanelOpen ? "open" : ""}`}>
         <div className="fp-header">
           <div className="fp-title">{d.meta.fpTitle}</div>
           <button className="fp-close" onClick={() => setFontPanelOpen(false)}>
@@ -700,16 +701,16 @@ export default function HomeWrapper() {
             ))}
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* MOBILE OVERLAY */}
-      <div
+      {/* <div
         className={`mobile-overlay ${drawerOpen ? "open" : ""}`}
         onClick={() => setDrawerOpen(false)}
-      />
+      /> */}
 
       {/* MOBILE DRAWER */}
-      <div className={`mobile-drawer ${drawerOpen ? "open" : ""}`}>
+      {/* <div className={`mobile-drawer ${drawerOpen ? "open" : ""}`}>
         <div className="drawer-header">
           <div className="drawer-logo">
             {d.nav.brandShort}
@@ -755,10 +756,10 @@ export default function HomeWrapper() {
             {d.nav.drawerCta}
           </button>
         </div>
-      </div>
+      </div> */}
 
       {/* NAV */}
-      <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
+      {/* <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
         <a href="#" className="nav-logo">
           <span>{d.nav.brand}</span>
           <div className="dot"></div>
@@ -798,7 +799,8 @@ export default function HomeWrapper() {
             <span className="ham-line" />
           </button>
         </div>
-      </nav>
+      </nav> */}
+      <Header />
 
       {/* HERO */}
       <section className="hero" id="hero-section">
@@ -948,7 +950,7 @@ export default function HomeWrapper() {
       </div>
 
       {/* ABOUT */}
-      <section id="about" className="about">
+      {/* <section id="about" className="about">
         <div className="section-wrap">
           <div className="about-grid">
             <div className="about-img-col">
@@ -995,7 +997,7 @@ export default function HomeWrapper() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* PROCESS */}
       <section id="process" className="process">
@@ -1277,72 +1279,6 @@ const CSS = `
     }
 
 body { font-family: var(--font-body); background: var(--bg); color: var(--ink); line-height: 1.6; overflow-x: hidden; transition: background .3s, color .3s; }
-
-/* NAV */
-.navbar {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 900;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: .85rem 2rem; background: var(--nav-bg);
-  backdrop-filter: blur(16px); border-bottom: 1px solid transparent;
-  transition: border-color .3s, box-shadow .3s;
-}
-.navbar.scrolled { border-color: var(--border); box-shadow: 0 2px 20px rgba(0,0,0,.08); }
-.nav-logo { display: flex; align-items: center; gap: .35rem; font-family: var(--font-display); font-weight: 800; font-size: 1.15rem; cursor: pointer; color: var(--ink); text-decoration: none; }
-.nav-logo .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
-.nav-links { display: flex; gap: 2rem; }
-.nav-links a { color: var(--fg2); text-decoration: none; font-size: .9rem; font-weight: 500; transition: color .2s; }
-.nav-links a:hover { color: var(--accent); }
-.nav-right { display: flex; align-items: center; gap: .75rem; }
-.font-btn { background: var(--bg3); border: 1px solid var(--border); color: var(--fg2); padding: .4rem .8rem; border-radius: 6px; cursor: pointer; font-size: .8rem; display: flex; align-items: center; gap: .4rem; font-family: var(--font-body); transition: all .2s; }
-.font-btn:hover { color: var(--accent); border-color: var(--accent); }
-.theme-icon { font-size: .9rem; }
-.theme-toggle { width: 44px; height: 24px; border-radius: 12px; background: var(--bg3); border: 1px solid var(--border); cursor: pointer; position: relative; transition: background .3s; }
-.theme-toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: var(--accent); transition: transform .3s; }
-[data-theme="dark"] .theme-toggle::after { transform: translateX(20px); }
-.btn-ghost { background: none; border: 1px solid var(--border); color: var(--fg2); padding: .4rem .9rem; border-radius: 8px; cursor: pointer; font-size: .85rem; font-family: var(--font-body); transition: all .2s; }
-.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
-.btn-cta { background: var(--accent); color: #fff; padding: .45rem 1.1rem; border-radius: 8px; border: none; cursor: pointer; font-size: .85rem; font-weight: 600; font-family: var(--font-body); text-decoration: none; display: inline-flex; align-items: center; transition: background .2s, transform .15s; }
-.btn-cta:hover { background: var(--accent-dk); transform: translateY(-1px); }
-.hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: .3rem; }
-.ham-line { display: block; width: 22px; height: 2px; background: var(--ink); border-radius: 2px; transition: transform .3s, opacity .3s; }
-.hamburger.open .ham-line:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-.hamburger.open .ham-line:nth-child(2) { opacity: 0; }
-.hamburger.open .ham-line:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-/* MOBILE DRAWER */
-.mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 950; }
-.mobile-overlay.open { display: block; }
-.mobile-drawer { position: fixed; top: 0; right: 0; width: 300px; height: 100vh; background: var(--bg2); z-index: 1000; transform: translateX(100%); transition: transform .3s; display: flex; flex-direction: column; overflow-y: auto; }
-.mobile-drawer.open { transform: none; }
-.drawer-header { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); }
-.drawer-logo { font-family: var(--font-display); font-weight: 800; font-size: 1.05rem; }
-.drawer-close { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--fg2); }
-.drawer-links { padding: 1rem 1.5rem; display: flex; flex-direction: column; gap: .25rem; flex: 1; }
-.drawer-links a { color: var(--ink); text-decoration: none; padding: .65rem 0; font-weight: 500; border-bottom: 1px solid var(--border); transition: color .2s; }
-.drawer-links a:hover { color: var(--accent); }
-.drawer-actions { padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: .75rem; border-top: 1px solid var(--border); }
-.drawer-settings { display: flex; align-items: center; justify-content: space-between; }
-.drawer-settings-lbl { font-size: .85rem; color: var(--fg2); }
-.drawer-font-btn { background: var(--bg3); border: 1px solid var(--border); color: var(--fg2); padding: .7rem 1rem; border-radius: 8px; cursor: pointer; font-size: .85rem; display: flex; align-items: center; gap: .5rem; font-family: var(--font-body); }
-
-/* FONT PANEL */
-.font-panel { position: fixed; top: 0; right: 0; width: 360px; height: 100vh; background: var(--bg2); z-index: 1100; transform: translateX(100%); transition: transform .35s; border-left: 1px solid var(--border); display: flex; flex-direction: column; }
-.font-panel.open { transform: none; }
-.fp-header { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); }
-.fp-title { font-family: var(--font-display); font-weight: 700; font-size: 1rem; }
-.fp-close { background: none; border: none; font-size: 1.1rem; cursor: pointer; color: var(--fg2); }
-.fp-body { flex: 1; overflow-y: auto; padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 1.5rem; }
-.fp-section-label { font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--fg3); margin-bottom: .75rem; }
-.fp-colors { display: flex; gap: .5rem; flex-wrap: wrap; }
-.fp-color { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: border-color .2s, transform .15s; }
-.fp-color:hover { transform: scale(1.15); }
-.fp-color.active { border-color: var(--ink); }
-.fp-font-opt { padding: .75rem; border: 1.5px solid var(--border); border-radius: 10px; cursor: pointer; margin-bottom: .5rem; transition: border-color .2s, background .2s; }
-.fp-font-opt.active { border-color: var(--accent); background: var(--accent-lt); }
-.fp-font-opt:hover { border-color: var(--accent); }
-.fopt-name { font-size: .78rem; font-weight: 700; color: var(--fg3); margin-bottom: .3rem; }
-.fopt-preview { font-size: 1.1rem; font-weight: 700; color: var(--ink); margin-bottom: .4rem; }
-.fopt-hint { font-size: .72rem; color: var(--fg3); line-height: 1.5; }
 
 /* HERO */
 .hero { min-height: 100vh; display: flex; align-items: center; padding: 7rem 2rem 4rem; position: relative; overflow: hidden; }
@@ -2033,12 +1969,7 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 4
         padding: 3rem 4% 1.5rem;
       }
 
-      .font-panel {
-        width: 100%;
-        border-left: none;
-        border-top: 1px solid var(--border);
-      }
-
+    
       .fp-color {
         width: 28px;
         height: 28px;

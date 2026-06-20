@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Wedding Gallery Carousel</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .wg-root {
+    width: 100%;
+    padding: 30px 0 50px;
+    overflow: hidden;
+    user-select: none;
+  }
+
+  /* 3-D stage */
+  .wg-stage {
+    width: 100%;
+    height: 460px;
+    position: relative;
+    perspective: 1000px;
+    perspective-origin: 50% 60%;
+    cursor: grab;
+  }
+  .wg-stage:active { cursor: grabbing; }
+
+  .wg-track {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+  }
+
+  /* Cards */
+  .wg-card {
+    position: absolute;
+    width: 200px;
+    height: 300px;
+    top: 50%; left: 50%;
+    margin-top: -150px;
+    margin-left: -100px;
+    border-radius: 6px;
+    overflow: hidden;
+    will-change: transform, filter;
+    backface-visibility: hidden;
+  }
+  .wg-card img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    pointer-events: none;
+  }
+  .wg-card-overlay {
+    position: absolute;
+    inset: 0;
+    border-radius: 6px;
+    pointer-events: none;
+  }
+
+  @media (max-width: 768px) {
+    .wg-stage  { height: 340px; }
+    .wg-card   { width:140px; height:210px; margin-top:-105px; margin-left:-70px; }
+  }
+  @media (max-width: 480px) {
+    .wg-stage  { height: 260px; }
+    .wg-card   { width:110px; height:165px; margin-top:-82px; margin-left:-55px; }
+  }
+</style>
+</head>
+<body>
+<div class="wg-root">
+  <div class="wg-stage" id="stage">
+    <div class="wg-track" id="track"></div>
+  </div>
+</div>
+<script>
+/* ── Images ── */
+const IMGS = [
+  "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=600&q=80",
+  "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=600&q=80",
+  "https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80",
+  "https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=600&q=80",
+  "https://images.unsplash.com/photo-1587271407850-8d438ca9fdf2?w=600&q=80",
+  "https://images.unsplash.com/photo-1617469767053-d3b523a0b982?w=600&q=80",
+  "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=600&q=80",
+  "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600&q=80",
+  "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=600&q=80",
+];
+
+/* ── Layout constants ── */
+const N            = IMGS.length;
+const STEP         = 148;    // px between card centres
+const VISIBLE      = 3.2;    // half-fan in card units
+const AUTO_SPEED   = 0.011;  // cards per frame
+
+/* Inverted arc: outer cards are BIGGER, BRIGHTER, come FORWARD */
+const CENTER_SCALE  = 0.72;
+const EDGE_SCALE    = 1.18;
+const EDGE_ROTATE   = 52;    // tilt angle at outermost card (deg)
+const CENTER_TZ     = 0;
+const EDGE_TZ       = 60;    // outer cards come forward (px)
+const CENTER_TY     = 30;    // centre cards sit slightly lower (px)
+const EDGE_TY       = 0;
+const CENTER_BRIGHT = 0.72;
+const EDGE_BRIGHT   = 1.0;
+
+/* ── Build DOM (3× buffer for seamless loop) ── */
+const track = document.getElementById("track");
+const cards  = [];
+
+for (let i = 0; i < N * 3; i++) {
+  const card = document.createElement("div");
+  card.className = "wg-card";
+
+  const img = document.createElement("img");
+  img.src = IMGS[i % N]; img.alt = "Wedding photo"; img.draggable = false;
+
+  const ov = document.createElement("div");
+  ov.className = "wg-card-overlay";
+
+  card.appendChild(img);
+  card.appendChild(ov);
+  track.appendChild(card);
+  cards.push(card);
+}
+
+/* ── Helpers ── */
+const lerp   = (a, b, t) => a + (b - a) * t;
+const easeIn = x => x * x;   // ease: more weight toward edges
+
+/* ── Layout pass ── */
+let offset = 0;
+
+function positionCards() {
+  cards.forEach((card, i) => {
+    const rel = i - offset - N;
+    const abs = Math.abs(rel);
+
+    if (abs > VISIBLE + 1.4) { card.style.visibility = "hidden"; return; }
+    card.style.visibility = "visible";
+
+    const t    = Math.min(1, abs / VISIBLE);   // 0 = centre, 1 = edge
+    const et   = easeIn(t);
+    const sign = Math.sign(rel) || 1;
+
+    const scale  = lerp(CENTER_SCALE,  EDGE_SCALE,  et);
+    const rotY   = sign * lerp(0, EDGE_ROTATE, et);   // tilts inward
+    const tz     = lerp(CENTER_TZ,     EDGE_TZ,     et);
+    const ty     = lerp(CENTER_TY,     EDGE_TY,     et);
+    const tx     = rel * STEP;
+    const bright = lerp(CENTER_BRIGHT, EDGE_BRIGHT, et);
+
+    const sh1 = lerp(8,  40, et).toFixed(0);
+    const sh2 = lerp(20, 90, et).toFixed(0);
+    const sha = lerp(0.10, 0.30, et).toFixed(2);
+
+    card.style.transform  =
+      `translateX(${tx}px) translateY(${ty}px) translateZ(${tz}px) rotateY(${-rotY}deg) scale(${scale})`;
+    card.style.filter     = `brightness(${bright})`;
+    card.style.zIndex     = Math.round(et * 80);
+    card.style.boxShadow  = `0 ${sh1}px ${sh2}px rgba(0,0,0,${sha})`;
+  });
+
+  if (offset >  N) offset -= N;
+  if (offset < -N) offset += N;
+}
+
+/* ── Animation loop ── */
+let vel = AUTO_SPEED;
+let autoOn = true;
+
+function loop() {
+  if (autoOn) { vel = AUTO_SPEED; } else { vel *= 0.91; }
+  offset += vel;
+  positionCards();
+  requestAnimationFrame(loop);
+}
+positionCards();
+loop();
+
+/* ── Pointer / touch drag ── */
+let drag = { active: false, startX: 0, startOff: 0, lastX: 0, lastV: 0 };
+
+function pDown(x) { drag = { active: true, startX: x, startOff: offset, lastX: x, lastV: 0 }; autoOn = false; }
+function pMove(x) {
+  if (!drag.active) return;
+  drag.lastV = (x - drag.lastX) / STEP;
+  drag.lastX = x;
+  offset = drag.startOff - (x - drag.startX) / STEP;
+  positionCards();
+}
+function pUp() {
+  if (!drag.active) return;
+  drag.active = false;
+  vel = -drag.lastV * 0.6;
+  setTimeout(() => { autoOn = true; }, 1300);
+}
+
+const stage = document.getElementById("stage");
+stage.addEventListener("mousedown",  e => pDown(e.clientX));
+window.addEventListener("mousemove", e => pMove(e.clientX));
+window.addEventListener("mouseup",   pUp);
+stage.addEventListener("touchstart", e => pDown(e.touches[0].clientX), { passive: true });
+window.addEventListener("touchmove", e => pMove(e.touches[0].clientX), { passive: true });
+window.addEventListener("touchend",  pUp);
+stage.addEventListener("mouseenter", () => { autoOn = true; });
+</script>
+</body>
+</html>

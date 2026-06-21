@@ -18,7 +18,7 @@ const d = {
     brand: "MahaveerTrans Solutions",
     brandShort: "MahaveerTrans",
     login: "Log in",
-    cta: "Get Quote →",
+    getQuoteBtn: { text: "Get a Quote →", isDisabled: true, url: "/quote" },
     links: [
       { label: "Services", href: "#services" },
       { label: "About", href: "#about" },
@@ -152,6 +152,10 @@ export default function Header() {
     return applyCSS(className, mainStyles, style2);
   };
 
+  const toggleTheme = () => {
+    setTheme((t) => (t === "dark" ? "light" : "dark"));
+  };
+
   return (
     <>
       <style>{CSS}</style>
@@ -183,7 +187,7 @@ export default function Header() {
               {ACCENT_COLORS.map((ac, i) => (
                 <div
                   key={i}
-                  className={`${css("fp-color")} ${activeAccent === i ?  css("active") : ""}`}
+                  className={`${css("fp-color")} ${activeAccent === i ? css("active") : ""}`}
                   style={{ background: ac.color }}
                   title={ac.title}
                   onClick={() => setActiveAccent(i)}
@@ -282,7 +286,7 @@ export default function Header() {
             </span>
             <button
               className={`${css("theme-toggle")} ${theme === "dark" ? css("dark") : ""}`}
-              onClick={() => setTheme((t) => (t === "dark" ? "light" : "dark"))}
+              onClick={toggleTheme}
               aria-label="Toggle theme"
             />
           </div>
@@ -344,11 +348,7 @@ export default function Header() {
             <span className={css("theme-icon")}>☀️</span>
             <button
               className={`${css("theme-toggle")} ${theme === "dark" ? css("dark") : css("light")}`}
-              onClick={() =>
-                setTheme((t) =>
-                  t === "dark" ? css("light") : css("dark"),
-                )
-              }
+              onClick={toggleTheme}
               aria-label="Toggle theme"
             />
             <span className={css("theme-icon")}>🌙</span>
@@ -360,13 +360,18 @@ export default function Header() {
           </button>
 
           {/* Get Quote — desktop only */}
-          <a href="#cta" className={css("btn-cta,desktop-only")}>
-            {d.nav.cta}
-          </a>
+          {!d.nav.getQuoteBtn.isDisabled && (
+            <a
+              href={d.nav.getQuoteBtn.url}
+              className={css("btn-cta,desktop-only")}
+            >
+              {d.nav.getQuoteBtn.text}
+            </a>
+          )}
 
           {/* Hamburger — tablet + mobile */}
           <button
-            className={`hamburger ${drawerOpen ? css("open") : ""}`}
+            className={`${css("hamburger")} ${drawerOpen ? css("open") : ""}`}
             onClick={() => setDrawerOpen(true)}
             aria-label="Open menu"
           >

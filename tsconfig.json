@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-  ],
+, "components/fleet/statsRow.jsx", "components/fleet/routeMap.jsx", "components/fleet/navbar.jsx", "components/fleet/gallery.jsx", "components/fleet/ctaRevealClient.js", "components/fleet/clients.jsx", "components/fleet/canvasRoute.js"  ],
   "exclude": ["node_modules"]
 }

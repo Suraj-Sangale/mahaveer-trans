@@ -1,8 +1,13 @@
-import React from 'react'
+import FleetWrapper from "../../components/fleet/fleetWrapper";
+
+// const HeroParticles = dynamic(() => import("@/components/HeroParticles"), {
+//   ssr: false,
+// });
 
 export default function Page() {
   return (
-    <div>app</div>
-  )
+    <>
+      <FleetWrapper />
+    </>
+  );
 }
-``

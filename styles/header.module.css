@@ -262,6 +262,7 @@
     box-shadow 0.4s ease,
     border-color 0.4s ease,
     height 0.4s ease;
+  color: var(--ink);
 }
 
 /* ── Scrolled: floating pill ── */
@@ -279,6 +280,7 @@
     contrast(1.05) !important;
   backdrop-filter: blur(10px) saturate(2.8) brightness(1.15) contrast(1.05) !important;
   background: #ffffff00 !important;
+  color: var(--fg2);
 }
 
 /* ── Nav pieces ── */
@@ -306,17 +308,39 @@
   gap: 1.75rem;
 }
 .nav-links a {
-  color: var(--fg2);
+  color: var(--ink);
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 500;
   transition: color 0.2s;
   white-space: nowrap;
 }
-.nav-links a:hover {
+.navbar.scrolled .nav-links a {
+  color: var(--fg2);
+}
+
+.navbar.scrolled .nav-links a:hover {
   color: var(--accent);
 }
 .nav-right {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-shrink: 0;
+}
+
+/* Inherit text colour for logo and right‑hand controls */
+.navbar .nav-logo,
+.navbar .nav-right > * {
+  color: var(--ink);
+  transition: color 0.3s;
+}
+
+.navbar.scrolled .nav-logo,
+.navbar.scrolled .nav-right > * {
+  color: var(--fg2);
+
+
   display: flex;
   align-items: center;
   gap: 0.65rem;

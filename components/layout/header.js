@@ -320,7 +320,7 @@ export default function Header() {
       {/* ── NAVBAR ──────────────────────────────────────────── */}
       <nav className={`${css("navbar")} ${scrolled ? css("scrolled") : ""}`}>
         {/* Logo */}
-        <a href="#" className={css("nav-logo")}>
+        <a href="/" className={css("nav-logo")}>
           <span>{d.nav.brand}</span>
           <div className={css("dot")} />
         </a>

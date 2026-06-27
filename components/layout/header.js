@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useRef, useState } from "react";
 import styles from "@/styles/header.module.css";
 import { applyCSS } from "../../utilities/utils";
@@ -21,19 +21,12 @@ const d = {
     login: "Log in",
     getQuoteBtn: { text: "Get a Quote →", isDisabled: true, url: "/quote" },
     links: [
-      { label: "Services", href: "#services" },
-      { label: "About", href: "#about" },
-      { label: "Fleet", href: "/fleet" },
-      { label: "Track", href: "#tracking" },
-      { label: "Reviews", href: "#testimonials" },
-    ],
-    drawerLinks: [
-      { label: "Services", href: "#services" },
-      { label: "About", href: "#about" },
-      { label: "Fleet", href: "#fleet" },
-      { label: "Track Shipment", href: "#tracking" },
-      { label: "Client Reviews", href: "#testimonials" },
-      { label: "Get a Quote", href: "#cta" },
+      { label: "Services", href: "/services", herader: true, sidebar: true },
+      { label: "About", href: "/about", herader: true, sidebar: true },
+      { label: "Fleet", href: "/fleet", herader: true, sidebar: true },
+      { label: "Track", href: "/tracking", herader: true, sidebar: true },
+      { label: "Reviews", href: "/testimonials", herader: true, sidebar: true },
+      { label: "Get a Quote", href: "/quote", herader: false, sidebar: true },
     ],
     drawerCta: "Get Free Quote →",
   },
@@ -272,10 +265,14 @@ export default function Header() {
         </div>
 
         <div className={css("drawer-links")}>
-          {d.nav.drawerLinks.map((l, i) => (
-            <a key={i} href={l.href} onClick={() => setDrawerOpen(false)}>
-              {l.label}
-            </a>
+          {d.nav.links.map((l, i) => (
+            <React.Fragment key={i}>
+              {l.sidebar && (
+                <a href={l.href} onClick={() => setDrawerOpen(false)}>
+                  {l.label}
+                </a>
+              )}
+            </React.Fragment>
           ))}
         </div>
 
@@ -328,9 +325,13 @@ export default function Header() {
         {/* Desktop links */}
         <div className={css("nav-links")}>
           {d.nav.links.map((l, i) => (
-            <a key={i} href={l.href}>
-              {l.label}
-            </a>
+            <React.Fragment key={i}>
+              {l.herader && (
+                <a href={l.href}>
+                  {l.label}
+                </a>
+              )}
+            </React.Fragment>
           ))}
         </div>
 

@@ -453,9 +453,9 @@
 }
 
 /* SERVICES */
-:global(#services) {
+#services {
   background: var(--bg2);
-  padding: 5.5rem 5%;
+  padding: 3rem 5%;
 }
 
 .svc-top {
@@ -1253,7 +1253,7 @@
 }
 @media (max-width: 640px) {
   :global(section) {
-    padding: 3rem 4%;
+    padding: 1rem 4%;
   }
 
   :global(nav) {
@@ -1327,6 +1327,7 @@
 
   .clients-logos {
     gap: 1.5rem;
+    justify-content: center;
   }
 
   .clogo {
@@ -1430,6 +1431,22 @@
     opacity: 1;
     transform: translateY(0);
     background: linear-gradient(to top, rgba(13, 17, 23, 0.85), transparent);
+  }
+
+  .hero-glow {
+    width: 60%;
+    height: 20%;
+  }
+  .proc-head {
+    margin-bottom: 2rem;
+  }
+
+  .proc-steps::before {
+    top: -1rem;
+  }
+
+  .section-wrap {
+    padding: 1rem;
   }
 
   .track-grid {

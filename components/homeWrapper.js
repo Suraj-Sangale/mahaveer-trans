@@ -956,7 +956,7 @@ export default function HomeWrapper() {
       </div>
 
       {/* ABOUT */}
-      {/* <section id="about" className={cx("about")}>
+      <section id="about" className={cx("about")}>
         <div className={cx("section-wrap")}>
           <div className={cx("about-grid")}>
             <div className={cx("about-img-col")}>
@@ -1003,7 +1003,7 @@ export default function HomeWrapper() {
             </div>
           </div>
         </div>
-      </section> */}
+      </section>
 
       {/* PROCESS */}
       <div id="process" className={cx("process")}>

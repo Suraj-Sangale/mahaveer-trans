@@ -3,16 +3,16 @@ import { useEffect, useRef } from "react";
 import { DATA } from "@/constants/data";
 import CanvasRoute from "./canvasRoute";
 import styles from "@/styles/fleet.module.css";
-
+import { applyCSS } from "../../utilities/utils";
 
 export default function RouteMap() {
   const fillRefs = useRef([]);
   const leftRef = useRef(null);
   const rightRef = useRef(null);
 
-    const css = (className, mainStyles = styles, style2 = {}) => {
-      return applyCSS(className, mainStyles, style2);
-    };
+  const css = (className, mainStyles = styles, style2 = {}) => {
+    return applyCSS(className, mainStyles, style2);
+  };
 
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -24,7 +24,7 @@ export default function RouteMap() {
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
     [leftRef, rightRef].forEach((r) => {
       if (r.current) obs.observe(r.current);
@@ -40,7 +40,7 @@ export default function RouteMap() {
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.3 },
     );
     fillRefs.current.forEach((el) => {
       if (el) barObs.observe(el);
@@ -53,42 +53,44 @@ export default function RouteMap() {
   }, []);
 
   return (
-    <section className="route-map">
+    <section className={css("route-map")}>
       <CanvasRoute />
-      <div className="route-inner">
-        <div className="route-left sr" ref={leftRef}>
-          <div className="sec-tag">{DATA.routeMap.tag}</div>
-          <h2 className="sec-h">
+      <div className={css("route-inner")}>
+        <div className={css("route-left,sr")} ref={leftRef}>
+          <div className={css("sec-tag")}>{DATA.routeMap.tag}</div>
+          <h2 className={css("sec-h")}>
             {DATA.routeMap.headingPart1}{" "}
-            <span className="hl">{DATA.routeMap.headingHl}</span>
+            <span className={css("hl")}>{DATA.routeMap.headingHl}</span>
           </h2>
           <p>{DATA.routeMap.description}</p>
-          <div className="route-points">
+          <div className={css("route-points")}>
             {DATA.routeMap.routes.map((r) => (
-              <div className="rp" key={r.city}>
-                <span className="rp-dot" style={{ background: r.color }} />
-                <span className="rp-city">{r.city}</span>
-                <span className="rp-dist">{r.dist}</span>
+              <div className={css("rp")} key={r.city}>
+                <span className={css("rp-dot")} style={{ background: r.color }} />
+                <span className={css("rp-city")}>{r.city}</span>
+                <span className={css("rp-dist")}>{r.dist}</span>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="route-right sr" ref={rightRef}>
+        <div className={css("route-right,sr")} ref={rightRef}>
           {DATA.routeMap.cards.map((c, i) => (
-            <div className="route-stat-card" key={c.label}>
-              <div className="rsc-top">
-                <span className="rsc-label">{c.label}</span>
-                <span className={`rsc-badge ${c.badgeCls}`}>{c.badge}</span>
+            <div className={css("route-stat-card")} key={c.label}>
+              <div className={css("rsc-top")}>
+                <span className={css("rsc-label")}>{c.label}</span>
+                <span className={`${css("rsc-badge")} ${c.badgeCls}`}>{c.badge}</span>
               </div>
-              <div className="rsc-val">{c.val}</div>
-              <div className="rsc-sub">{c.sub}</div>
-              <div className="rsc-bar">
+              <div className={css("rsc-val")}>{c.val}</div>
+              <div className={css("rsc-sub")}>{c.sub}</div>
+              <div className={css("rsc-bar")}>
                 <div
-                  className="rsc-fill"
+                  className={css("rsc-fill")}
                   data-pct={c.barPct}
                   style={{ width: "0%" }}
-                  ref={(el) => { fillRefs.current[i] = el; }}
+                  ref={(el) => {
+                    fillRefs.current[i] = el;
+                  }}
                 />
               </div>
             </div>

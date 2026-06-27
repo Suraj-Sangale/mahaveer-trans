@@ -42,7 +42,7 @@ export default function HeroParticles() {
       void main(){
         float d = length(gl_PointCoord - vec2(.5));
         if(d > .5) discard;
-        gl_FragColor = vec4(0.054,0.647,0.914, vOpacity*(1.0-d*1.6));
+       gl_FragColor = vec4(0.6, 0.3, 1.0, vOpacity * (1.0 - d * 1.6));
       }`;
 
     function compileShader(type, source) {
@@ -114,7 +114,16 @@ export default function HeroParticles() {
       canvas.width = W();
       canvas.height = H();
       gl.viewport(0, 0, W(), H());
+      // gl.clearColor(0, 0, 0, 0);
+      // Transparent
       gl.clearColor(0, 0, 0, 0);
+      // Black
+      // gl.clearColor(0, 0, 0, 1);
+      // White
+      // gl.clearColor(1, 1, 1, 1);
+
+      // Blue (#0EA5E9)
+      gl.clearColor(0.054, 0.647, 0.914, 1);
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.enable(gl.BLEND);
       gl.blendFunc(gl.SRC_ALPHA, gl.ONE);

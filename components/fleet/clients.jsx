@@ -32,7 +32,7 @@ export default function Clients() {
 
   return (
     <section className={css("clients-section")}>
-      <div className={css("clients-head sr")} ref={headRef}>
+      <div className={css("clients-head,sr")} ref={headRef}>
         <div>
           <div className={css("sec-tag")}>{DATA.clients.tag}</div>
           <h2 className={css("sec-h")}>
@@ -75,7 +75,7 @@ export default function Clients() {
                 alt={c.company}
                 loading="lazy"
               />
-              <span className={`cc-industry-tag ${c.tagCls}`}>
+              <span className={`${css("cc-industry-tag")} ${c.tagCls}`}>
                 {c.industry}
               </span>
             </div>

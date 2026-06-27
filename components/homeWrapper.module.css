@@ -728,7 +728,7 @@
 
 .proc-head {
   text-align: center;
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
 }
 
 .proc-head .sec-tag {
@@ -749,7 +749,7 @@
 .proc-steps::before {
   content: "";
   position: absolute;
-  top: 1.4rem;
+  top: 3.4rem;
   left: calc(12.5% + 2rem);
   right: calc(12.5% + 1rem);
   height: 1px;
@@ -764,7 +764,13 @@
 .pstep {
   text-align: center;
   opacity: 0;
-  transform: translateY(18px);
+  transform: translateY(24px);
+  padding: 2rem 1.5rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid transparent;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  background: transparent;
+  position: relative;
 }
 
 .pstep.vis {
@@ -772,9 +778,16 @@
   transform: translateY(0);
 }
 
+.pstep.vis:hover {
+  background: var(--card);
+  border-color: var(--border);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-8px);
+}
+
 .pstep-n {
-  width: 50px;
-  height: 50px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   background: var(--card);
   border: 2px solid var(--border2);
@@ -782,11 +795,11 @@
   align-items: center;
   justify-content: center;
   font-family: var(--font-display);
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 800;
   color: var(--muted);
-  margin: 0 auto 1.35rem;
-  transition: all 0.3s;
+  margin: 0 auto 1.5rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   z-index: 1;
 }
@@ -795,6 +808,7 @@
   background: var(--accent);
   border-color: var(--accent);
   color: #fff;
+  transform: scale(1.15) rotate(4deg);
   box-shadow: var(--shadow-bl);
 }
 
@@ -1391,25 +1405,48 @@
 
   .proc-steps {
     grid-template-columns: 1fr;
-    gap: 1.25rem;
+    gap: 1.5rem;
+    padding-left: 0.5rem;
+  }
+
+  .proc-steps::before {
+    top: 2rem;
+    bottom: 2rem;
+    left: 3.1rem;
+    right: auto;
+    width: 2px;
+    height: auto;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      var(--accent),
+      transparent
+    );
   }
 
   .pstep {
     text-align: left;
     display: flex;
-    gap: 1.1rem;
+    gap: 1.5rem;
     align-items: flex-start;
+    padding: 1.5rem 1rem;
+  }
+
+  .pstep.vis:hover {
+    transform: translateX(8px);
   }
 
   .pstep-n {
     margin: 0;
     flex-shrink: 0;
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
+    font-size: 1rem;
   }
 
   .pstep-content {
     flex: 1;
+    padding-top: 0.2rem;
   }
 
   .gal-grid {
@@ -1441,9 +1478,6 @@
     margin-bottom: 2rem;
   }
 
-  .proc-steps::before {
-    top: -1rem;
-  }
 
   .section-wrap {
     padding: 1rem;

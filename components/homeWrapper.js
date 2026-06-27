@@ -1019,8 +1019,10 @@ export default function HomeWrapper() {
             {d.process.steps.map((p, i) => (
               <AnimCard key={i} className={cx("pstep")} delay={i * 0.1}>
                 <div className={cx("pstep-n")}>{p.num}</div>
-                <h3 className={cx("pstep-title")}>{p.title}</h3>
-                <p className={cx("pstep-desc")}>{p.desc}</p>
+                <div className={cx("pstep-content")}>
+                  <h3 className={cx("pstep-title")}>{p.title}</h3>
+                  <p className={cx("pstep-desc")}>{p.desc}</p>
+                </div>
               </AnimCard>
             ))}
           </div>

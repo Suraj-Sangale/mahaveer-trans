@@ -2,7 +2,8 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import CtaSection from "./home/ctaSection";
 import Header from "./layout/header";
-import styles from './homeWrapper.module.css';
+import styles from '@/styles/homeWrapper.module.css';
+import Footer from "./layout/footer";
 
 const cx = (...args) => {
   return args.flat().filter(Boolean).map(str => String(str).trim().split(/\s+/).map(c => styles[c] || c).join(' ')).join(' ');
@@ -1181,7 +1182,8 @@ export default function HomeWrapper() {
       </section> */}
 
       {/* FOOTER */}
-      <footer>
+      {/* <Footer /> */}
+      {/* <footer>
         <div className={cx("f-top")}>
           <div className={cx("f-brand")}>
             <span className={cx("f-brand-logo")}>{d.footer.logo}</span>
@@ -1211,7 +1213,7 @@ export default function HomeWrapper() {
           <p>{d.footer.copyright}</p>
           <p>{d.footer.legal}</p>
         </div>
-      </footer>
+      </footer> */}
 
       {/* FAB */}
       <button className={cx("fab")}>{d.meta.fabIcon}</button>

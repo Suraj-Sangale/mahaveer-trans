@@ -40,14 +40,7 @@ export default function Clients() {
             <span className={css("hl")}>{DATA.clients.headingHl}</span>
           </h2>
         </div>
-        <p
-          style={{
-            maxWidth: "310px",
-            color: "var(--muted)",
-            fontSize: ".88rem",
-            lineHeight: "1.65",
-          }}
-        >
+        <p className={css("desc")}>
           {DATA.clients.description}
         </p>
       </div>

@@ -511,7 +511,16 @@
     font-weight: 800;
     line-height: 1.06;
     letter-spacing: -0.03em;
-    color: var(--ink);
+    /* color: var(--ink); */
+    color: #f1f5f9;
+  }
+
+  .desc {
+    /* max-width: 310px; */
+    /* color: var(--muted); */
+    color: #f1f5f9;
+    font-size: .88rem;
+    line-height: 1.65;
   }
 
   .sec-h .hl {
@@ -1597,6 +1606,7 @@
   }
 
   .cta-btns {
+    margin-top: 2rem;
     display: flex;
     gap: 0.85rem;
     justify-content: center;

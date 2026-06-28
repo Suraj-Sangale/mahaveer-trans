@@ -121,7 +121,7 @@ export default function FleetWrapper() {
             {DATA.cta.headingPart1}{" "}
             <span className={css("hl")}>{DATA.cta.headingHl}</span>
           </h2>
-          <p>{DATA.cta.description}</p>
+          <p className={css("desc")}>{DATA.cta.description}</p>
           <div className={css("cta-btns")}>
             <button className={css("btn-w")}>{DATA.cta.btn1}</button>
             <button className={css("btn-wg")}>{DATA.cta.btn2}</button>

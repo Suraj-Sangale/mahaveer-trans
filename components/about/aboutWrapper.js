@@ -458,18 +458,6 @@ export default function AboutWrapper() {
 
   return (
     <>
-      {/* TICKER */}
-      <div className={styles.tickerWrap}>
-        <div className={styles.ticker}>
-          {tickerContent.map((item, i) => (
-            <span key={i} className={styles.tItem}>
-              <span className={styles.tDot} />
-              {item}
-            </span>
-          ))}
-        </div>
-      </div>
-
       {/* BREADCRUMB */}
       <div className={styles.breadcrumb}>
         <a href="/" className={styles.bcItem}>
@@ -552,6 +540,18 @@ export default function AboutWrapper() {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* TICKER */}
+      <div className={styles.tickerWrap}>
+        <div className={styles.ticker}>
+          {tickerContent.map((item, i) => (
+            <span key={i} className={styles.tItem}>
+              <span className={styles.tDot} />
+              {item}
+            </span>
+          ))}
         </div>
       </div>
 

@@ -129,39 +129,6 @@ export default function FleetWrapper() {
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer>
-        <div className={css("f-top")}>
-          <div className={css("f-brand")}>
-            <span className={css("f-brand-logo")}>{DATA.footer.logo}</span>
-            <p>{DATA.footer.tagline}</p>
-            <div className={css("f-socs")}>
-              {DATA.footer.socials.map((s) => (
-                <a key={s.label} href={s.url} className={css("f-soc")}>
-                  {s.label}
-                </a>
-              ))}
-            </div>
-          </div>
-          {DATA.footer.columns.map((col) => (
-            <div className={css("f-col")} key={col.heading}>
-              <h4>{col.heading}</h4>
-              <ul className={css("f-links")}>
-                {col.links.map(([label, href]) => (
-                  <li key={label}>
-                    <a href={href}>{label}</a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-        <div className={css("f-bottom")}>
-          <p>{DATA.footer.copyright}</p>
-          <p>{DATA.footer.footerLinks}</p>
-        </div>
-      </footer>
-
       {/* FAB */}
       <button className={css("fab")}>{DATA.fab}</button>
 

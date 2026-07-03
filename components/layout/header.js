@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "@/styles/header.module.css";
 import { applyCSS } from "../../utilities/utils";
-import { ThemeToggle } from "../common/themeToggle";
+import ThemeToggle from "../common/themeToggle";
 
 const d = {
   meta: {
@@ -96,6 +96,7 @@ const ACCENT_COLORS = [
 
 export default function Header() {
   const [theme, setTheme] = useState("light");
+  console.log("🚀 ~ Header ~ theme:", theme)
   const [fontPanelOpen, setFontPanelOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [activeAccent, setActiveAccent] = useState(0);
@@ -277,10 +278,10 @@ export default function Header() {
           ))}
         </div>
 
-          <ThemeToggle />
+          <ThemeToggle  key={theme} checked={theme === "dark"} onChange={toggleTheme} />
         <div className={css("drawer-actions")}>
           {/* Theme toggle */}
-          <div className={css("drawer-settings")}>
+          {/* <div className={css("drawer-settings")}>
             
             <span className={css("drawer-settings-lbl")}>
               {theme === "dark" ? "🌙 Dark mode" : "☀️ Light mode"}
@@ -290,7 +291,7 @@ export default function Header() {
               onClick={toggleTheme}
               aria-label="Toggle theme"
             />
-          </div>
+          </div> */}
           {/* Font button */}
           <button
             className={css("drawer-font-btn")}
@@ -350,15 +351,15 @@ export default function Header() {
 
           {/* Theme toggle — desktop only */}
           <div className={css("theme-row")}>
-          <ThemeToggle />
+          <ThemeToggle  key={theme} checked={theme === "dark"} onChange={toggleTheme} />
 
-            <span className={css("theme-icon")}>☀️</span>
-            <button
-              className={`${css("theme-toggle")} ${theme === "dark" ? css("dark") : css("light")}`}
-              onClick={toggleTheme}
-              aria-label="Toggle theme"
-            />
-            <span className={css("theme-icon")}>🌙</span>
+              {/* <span className={css("theme-icon")}>☀️</span>
+              <button
+                className={`${css("theme-toggle")} ${theme === "dark" ? css("dark") : css("light")}`}
+                onClick={toggleTheme}
+                aria-label="Toggle theme"
+              />
+              <span className={css("theme-icon")}>🌙</span> */}
           </div>
 
           {/* Login — desktop only */}

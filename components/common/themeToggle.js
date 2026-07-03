@@ -49,20 +49,38 @@ const Wrapper = styled.div`
     position: relative;
     overflow: hidden;
     background: linear-gradient(180deg, #6ec8ff, #8ddcff);
-    transition: background 0.5s ease;
+    transition: background 0.65s ease;
   }
 
   /* ---------- Thumb ---------- */
+  /* --x and --scale are combined into ONE transform so hover/active/checked
+     never overwrite each other's motion mid-transition. Only these two
+     custom properties change; transform itself always reads both. */
 
   .thumb {
+    --x: 0px;
+    --scale: 1;
     position: absolute;
-    left: 3px;
-    top: 3px;
-    width: 36px;
-    height: 36px;
+    left: 3.5px;
+    top: 4px;
+    width: 33px;
+    height: 33px;
     border-radius: 50%;
-    transition: transform 0.45s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+    transform: translateX(var(--x)) scale(var(--scale));
+    transition: transform 0.65s cubic-bezier(0.45, 0, 0.2, 1);
     z-index: 10;
+  }
+
+  input:checked + .toggle .thumb {
+    --x: 40px;
+  }
+
+  .toggle:hover .thumb {
+    --scale: 1.05;
+  }
+
+  .toggle:active .thumb {
+    --scale: 0.95;
   }
 
   .sunMoon {
@@ -73,7 +91,7 @@ const Wrapper = styled.div`
     box-shadow:
       0 0 25px rgba(255, 213, 79, 0.8),
       inset -4px -4px 0 rgba(255, 255, 255, 0.3);
-    transition: all 0.45s ease;
+    transition: background 0.65s ease, box-shadow 0.65s ease;
     position: relative;
   }
 
@@ -83,7 +101,7 @@ const Wrapper = styled.div`
     position: absolute;
     background: white;
     border-radius: 999px;
-    transition: all 0.45s ease;
+    transition: all 0.65s ease;
   }
 
   .cloud::before,
@@ -146,7 +164,7 @@ const Wrapper = styled.div`
     border-radius: 50%;
     opacity: 0;
     transform: scale(0);
-    transition: all 0.4s ease;
+    transition: all 0.65s ease;
   }
 
   .stars span:nth-child(1) {
@@ -178,10 +196,6 @@ const Wrapper = styled.div`
 
   input:checked + .toggle .sky {
     background: linear-gradient(180deg, #16213e, #0f3460);
-  }
-
-  input:checked + .toggle .thumb {
-    transform: translateX(40px);
   }
 
   input:checked + .toggle .sunMoon {
@@ -241,25 +255,5 @@ const Wrapper = styled.div`
 
   input:checked + .toggle .stars span:nth-child(5) {
     transition-delay: 0.25s;
-  }
-
-  /* Hover */
-
-  .toggle:hover .thumb {
-    transform: scale(1.05);
-  }
-
-  input:checked + .toggle:hover .thumb {
-    transform: translateX(40px) scale(1.05);
-  }
-
-  /* Active */
-
-  .toggle:active .thumb {
-    transform: scale(0.95);
-  }
-
-  input:checked + .toggle:active .thumb {
-    transform: translateX(40px) scale(0.95);
   }
 `;

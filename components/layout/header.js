@@ -351,7 +351,7 @@ export default function Header() {
 
           {/* Theme toggle — desktop only */}
           <div className={css("theme-row")}>
-          <ThemeToggle  key={theme} checked={theme === "dark"} onChange={toggleTheme} />
+          <ThemeToggle checked={theme === "dark"} onChange={toggleTheme} />
 
               {/* <span className={css("theme-icon")}>☀️</span>
               <button

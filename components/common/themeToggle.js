@@ -1,245 +1,265 @@
-import React, { useState } from "react";
+import React, { useId } from "react";
 import styled from "styled-components";
 
-export default function ThemeToggle() {
-  const [checked, setChecked] = useState(false);
+export default function ThemeToggle({ checked, onChange }) {
+  const id = useId();
 
   return (
-    <StyledWrapper>
-      <div className="toggleWrapper">
-        <input
-          id="dn"
-          className="input"
-          type="checkbox"
-          checked={checked}
-          onChange={() => setChecked(!checked)}
-        />
+    <Wrapper>
+      <input id={id} type="checkbox" checked={checked} onChange={onChange} />
 
-        <label className="toggle" htmlFor="dn">
-          <span className="toggle__handler">
-            <span className="crater crater--1" />
-            <span className="crater crater--2" />
-            <span className="crater crater--3" />
-          </span>
+      <label htmlFor={id} className="toggle">
+        <div className="sky">
+          <div className="cloud cloud1" />
+          <div className="cloud cloud2" />
 
-          <span className="star star--1" />
-          <span className="star star--2" />
-          <span className="star star--3" />
-          <span className="star star--4" />
-          <span className="star star--5" />
-          <span className="star star--6" />
-        </label>
-      </div>
-    </StyledWrapper>
+          <div className="stars">
+            <span />
+            <span />
+            <span />
+            <span />
+            <span />
+          </div>
+
+          <div className="thumb">
+            <div className="sunMoon" />
+          </div>
+        </div>
+      </label>
+    </Wrapper>
   );
 }
 
-const StyledWrapper = styled.div`
-  /* Paste your entire CSS here exactly as it is */
-
-  .toggleWrapper {
-    display: inline-flex;
-    align-items: center;
+const Wrapper = styled.div`
+  input {
+    display: none;
   }
-
-  .input {
-    position: absolute;
-    left: -9999px;
-  }
-
-  /* Rest of your CSS... */
 
   .toggle {
+    width: 82px;
+    height: 42px;
+    display: block;
     cursor: pointer;
-    display: inline-block;
+  }
+
+  .sky {
+    width: 100%;
+    height: 100%;
+    border-radius: 999px;
     position: relative;
-    width: 90px;
-    height: 50px;
-    background-color: #83d8ff;
-    border-radius: 84px;
-    transition: background-color 200ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
+    overflow: hidden;
+    background: linear-gradient(180deg, #6ec8ff, #8ddcff);
+    transition: background 0.5s ease;
   }
 
-  .toggle:before {
-    content: "AM";
+  /* ---------- Thumb ---------- */
+
+  .thumb {
     position: absolute;
-    left: -50px;
-    top: 15px;
-    font-size: 18px;
-    color: #749ed7;
-  }
-
-  .toggle:after {
-    content: "PM";
-    position: absolute;
-    right: -48px;
-    top: 15px;
-    font-size: 18px;
-  }
-
-  .toggle__handler {
-    display: inline-block;
-    position: relative;
-    z-index: 1;
-    top: 3px;
     left: 3px;
-    width: 44px;
-    height: 44px;
-    background-color: #ffcf96;
-    border-radius: 50px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    transition: all 400ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    transform: rotate(-45deg);
+    top: 3px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    transition: transform 0.45s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+    z-index: 10;
   }
 
-  .toggle__handler .crater {
+  .sunMoon {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #ffd54f;
+    box-shadow:
+      0 0 25px rgba(255, 213, 79, 0.8),
+      inset -4px -4px 0 rgba(255, 255, 255, 0.3);
+    transition: all 0.45s ease;
+    position: relative;
+  }
+
+  /* ---------- Clouds ---------- */
+
+  .cloud {
     position: absolute;
-    background-color: #e8cda5;
-    opacity: 0;
-    transition: opacity 200ms ease-in-out;
-    border-radius: 100%;
+    background: white;
+    border-radius: 999px;
+    transition: all 0.45s ease;
   }
 
-  .toggle__handler .crater--1 {
-    top: 18px;
-    left: 10px;
-    width: 4px;
-    height: 4px;
-  }
-
-  .toggle__handler .crater--2 {
-    top: 28px;
-    left: 22px;
-    width: 6px;
-    height: 6px;
-  }
-
-  .toggle__handler .crater--3 {
-    top: 10px;
-    left: 25px;
-    width: 8px;
-    height: 8px;
-  }
-
-  .star {
+  .cloud::before,
+  .cloud::after {
+    content: "";
     position: absolute;
-    background-color: #fff;
-    transition: all 300ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
+    background: inherit;
     border-radius: 50%;
   }
 
-  .star--1 {
+  .cloud1 {
+    width: 22px;
+    height: 10px;
     top: 10px;
-    left: 35px;
-    z-index: 0;
-    width: 30px;
-    height: 3px;
-  }
-
-  .star--2 {
-    top: 18px;
-    left: 28px;
-    z-index: 1;
-    width: 30px;
-    height: 3px;
-  }
-
-  .star--3 {
-    top: 27px;
     left: 40px;
-    z-index: 0;
-    width: 30px;
-    height: 3px;
   }
 
-  .star--4,
-  .star--5,
-  .star--6 {
-    opacity: 0;
-    transition: all 300ms 0 cubic-bezier(0.445, 0.05, 0.55, 0.95);
+  .cloud1::before {
+    width: 12px;
+    height: 12px;
+    left: 3px;
+    top: -5px;
   }
 
-  .star--4 {
-    top: 16px;
-    left: 11px;
-    z-index: 0;
-    width: 2px;
-    height: 2px;
-    transform: translate3d(3px, 0, 0);
+  .cloud1::after {
+    width: 14px;
+    height: 14px;
+    right: 2px;
+    top: -7px;
   }
 
-  .star--5 {
-    top: 32px;
-    left: 17px;
-    z-index: 0;
+  .cloud2 {
+    width: 18px;
+    height: 8px;
+    top: 24px;
+    left: 54px;
+  }
+
+  .cloud2::before {
+    width: 10px;
+    height: 10px;
+    top: -4px;
+    left: 2px;
+  }
+
+  .cloud2::after {
+    width: 10px;
+    height: 10px;
+    right: 1px;
+    top: -5px;
+  }
+
+  /* ---------- Stars ---------- */
+
+  .stars span {
+    position: absolute;
     width: 3px;
     height: 3px;
-    transform: translate3d(3px, 0, 0);
+    background: white;
+    border-radius: 50%;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.4s ease;
   }
 
-  .star--6 {
-    top: 36px;
-    left: 28px;
-    z-index: 0;
-    width: 2px;
-    height: 2px;
-    transform: translate3d(3px, 0, 0);
+  .stars span:nth-child(1) {
+    top: 8px;
+    right: 18px;
   }
 
-  .input:checked + .toggle {
-    background-color: #749dd6;
+  .stars span:nth-child(2) {
+    top: 15px;
+    right: 30px;
   }
 
-  .input:checked + .toggle:before {
-    color: #fff;
+  .stars span:nth-child(3) {
+    top: 28px;
+    right: 15px;
   }
 
-  .input:checked + .toggle:after {
-    color: #749ed7;
+  .stars span:nth-child(4) {
+    top: 22px;
+    right: 42px;
   }
 
-  .input:checked + .toggle .toggle__handler {
-    background-color: #ffe5b5;
-    transform: translate3d(40px, 0, 0) rotate(0);
+  .stars span:nth-child(5) {
+    top: 7px;
+    right: 44px;
   }
 
-  .input:checked + .toggle .toggle__handler .crater {
+  /* ---------- Checked ---------- */
+
+  input:checked + .toggle .sky {
+    background: linear-gradient(180deg, #16213e, #0f3460);
+  }
+
+  input:checked + .toggle .thumb {
+    transform: translateX(40px);
+  }
+
+  input:checked + .toggle .sunMoon {
+    background: #ececec;
+    box-shadow: inset -8px -4px 0 #c8c8c8;
+  }
+
+  /* Moon crater */
+
+  input:checked + .toggle .sunMoon::before {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #d0d0d0;
+    border-radius: 50%;
+    left: 9px;
+    top: 10px;
+  }
+
+  input:checked + .toggle .sunMoon::after {
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: #d0d0d0;
+    border-radius: 50%;
+    right: 9px;
+    bottom: 9px;
+  }
+
+  input:checked + .toggle .cloud {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  input:checked + .toggle .stars span {
     opacity: 1;
+    transform: scale(1);
   }
 
-  .input:checked + .toggle .star--1 {
-    width: 2px;
-    height: 2px;
+  input:checked + .toggle .stars span:nth-child(1) {
+    transition-delay: 0.05s;
   }
 
-  .input:checked + .toggle .star--2 {
-    width: 4px;
-    height: 4px;
-    transform: translate3d(-5px, 0, 0);
+  input:checked + .toggle .stars span:nth-child(2) {
+    transition-delay: 0.1s;
   }
 
-  .input:checked + .toggle .star--3 {
-    width: 2px;
-    height: 2px;
-    transform: translate3d(-7px, 0, 0);
+  input:checked + .toggle .stars span:nth-child(3) {
+    transition-delay: 0.15s;
   }
 
-  .input:checked + .toggle .star--4,
-  .input:checked + .toggle .star--5,
-  .input:checked + .toggle .star--6 {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
+  input:checked + .toggle .stars span:nth-child(4) {
+    transition-delay: 0.2s;
   }
 
-  .input:checked + .toggle .star--4 {
-    transition: all 300ms 200ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
+  input:checked + .toggle .stars span:nth-child(5) {
+    transition-delay: 0.25s;
   }
 
-  .input:checked + .toggle .star--5 {
-    transition: all 300ms 300ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
+  /* Hover */
+
+  .toggle:hover .thumb {
+    transform: scale(1.05);
   }
 
-  .input:checked + .toggle .star--6 {
-    transition: all 300ms 400ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
+  input:checked + .toggle:hover .thumb {
+    transform: translateX(40px) scale(1.05);
+  }
+
+  /* Active */
+
+  .toggle:active .thumb {
+    transform: scale(0.95);
+  }
+
+  input:checked + .toggle:active .thumb {
+    transform: translateX(40px) scale(0.95);
   }
 `;

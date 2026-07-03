@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "@/styles/header.module.css";
 import { applyCSS } from "../../utilities/utils";
+import { ThemeToggle } from "../common/themeToggle";
 
 const d = {
   meta: {
@@ -276,9 +277,11 @@ export default function Header() {
           ))}
         </div>
 
+          <ThemeToggle />
         <div className={css("drawer-actions")}>
           {/* Theme toggle */}
           <div className={css("drawer-settings")}>
+            
             <span className={css("drawer-settings-lbl")}>
               {theme === "dark" ? "🌙 Dark mode" : "☀️ Light mode"}
             </span>
@@ -347,6 +350,8 @@ export default function Header() {
 
           {/* Theme toggle — desktop only */}
           <div className={css("theme-row")}>
+          <ThemeToggle />
+
             <span className={css("theme-icon")}>☀️</span>
             <button
               className={`${css("theme-toggle")} ${theme === "dark" ? css("dark") : css("light")}`}

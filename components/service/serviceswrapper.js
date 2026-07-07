@@ -387,72 +387,7 @@ export default function ServicesWrapper() {
   return (
     <div className={styles.wrapper}>
       {/* MOBILE DRAWER OVERLAY */}
-      <div
-        className={cx(styles.mobOverlay, drawerOpen && styles.open)}
-        onClick={() => setDrawerOpen(false)}
-      />
-
-      {/* MOBILE DRAWER */}
-      <div className={cx(styles.mobDrawer, drawerOpen && styles.open)}>
-        <div className={styles.drHeader}>
-          <div className={styles.drLogo}>{D.nav.logoPrefix}{D.nav.logoSuffix}</div>
-          <button className={styles.drClose} onClick={() => setDrawerOpen(false)}>✕</button>
-        </div>
-        <div className={styles.drLinks}>
-          {D.nav.links.map((l) => (
-            <a
-              key={l.label}
-              href={l.href}
-              className={l.active ? 'active' : ''}
-              onClick={() => setDrawerOpen(false)}
-            >
-              {l.label}
-            </a>
-          ))}
-        </div>
-        <div className={styles.drFoot}>
-          <div className={styles.drTheme}>
-            <span className={styles.drThemeLbl}>{D.nav.themeLabel}</span>
-            <button
-              className={cx(styles.themeToggle, theme === 'dark' && styles.dark)}
-              onClick={toggleTheme}
-            />
-          </div>
-          <button className={styles.drCta}>{D.nav.drawerCta}</button>
-        </div>
-      </div>
-
-      {/* NAV */}
-      <nav className={cx(styles.nav, scrolled && styles.navScrolled)}>
-        <div className={styles.navLogo}>
-          <span>{D.nav.logoPrefix}</span>{D.nav.logoSuffix}<div className={styles.dot} />
-        </div>
-        <div className={styles.navLinks}>
-          {D.nav.links.map((l) => (
-            <a key={l.label} href={l.href} className={l.active ? 'active' : ''}>{l.label}</a>
-          ))}
-        </div>
-        <div className={styles.navRight}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '.55rem' }}>
-            <span className={styles.themeIcon}>☀️</span>
-            <button
-              className={cx(styles.themeToggle, theme === 'dark' && styles.dark)}
-              onClick={toggleTheme}
-            />
-            <span className={styles.themeIcon}>🌙</span>
-          </div>
-          <button className={styles.btnGhost}>{D.nav.loginBtn}</button>
-          <button className={styles.btnCta}>{D.nav.quoteBtn}</button>
-          <button
-            className={cx(styles.hamburger, drawerOpen && styles.open)}
-            onClick={() => setDrawerOpen(true)}
-          >
-            <span className={styles.hamLine} />
-            <span className={styles.hamLine} />
-            <span className={styles.hamLine} />
-          </button>
-        </div>
-      </nav>
+      
 
       {/* BREADCRUMB */}
       <div className={styles.breadcrumb}>

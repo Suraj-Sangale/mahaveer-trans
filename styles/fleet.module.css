@@ -511,14 +511,14 @@
     font-weight: 800;
     line-height: 1.06;
     letter-spacing: -0.03em;
-    /* color: var(--ink); */
-    color: #f1f5f9;
+    color: var(--ink);
+    /* color: #f1f5f9; */
   }
 
   .desc {
     /* max-width: 310px; */
-    /* color: var(--muted); */
-    color: #f1f5f9;
+    color: var(--muted);
+    /* color: #f1f5f9; */
     font-size: .88rem;
     line-height: 1.65;
   }
@@ -609,7 +609,7 @@
     font-weight: 800;
     line-height: 0.98;
     letter-spacing: -0.03em;
-    color: #f1f5f9;
+    /* color: #f1f5f9; */
     margin-bottom: 1.5rem;
     animation: fadeUp 0.7s 0.25s ease-out both;
   }
@@ -718,7 +718,7 @@
     font-family: var(--font-d);
     font-size: 2rem;
     font-weight: 800;
-    color: #f1f5f9;
+    /* color: #f1f5f9; */
     line-height: 1;
   }
 
@@ -1071,7 +1071,7 @@
     font-family: var(--font-d);
     font-size: 1.1rem;
     font-weight: 700;
-    color: #f1f5f9;
+    /* color: #f1f5f9; */
   }
 
   .lb-caption p {
@@ -1141,7 +1141,7 @@
   }
 
   .route-left .sec-h {
-    color: #f1f5f9;
+    /* color: #f1f5f9; */
     margin-bottom: 1rem;
   }
 
@@ -1241,7 +1241,7 @@
     font-family: var(--font-d);
     font-size: 1.55rem;
     font-weight: 800;
-    color: #f1f5f9;
+    /* color: #f1f5f9; */
     line-height: 1;
   }
 
@@ -1269,7 +1269,7 @@
   /* ── CLIENTS ── */
   .clients-section {
     background: var(--bg2);
-    padding: 5.5rem 5%;
+    padding: 5.5rem 10%;
   }
 
   .clients-head {
@@ -1594,7 +1594,7 @@
   }
 
   .cta-inner-center .sec-h {
-    color: #f1f5f9;
+    /* color: #f1f5f9; */
     font-size: clamp(2.2rem, 5vw, 3.8rem);
     margin-bottom: 1.1rem;
   }

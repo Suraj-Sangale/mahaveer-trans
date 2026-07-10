@@ -26,6 +26,16 @@ function cx(...parts) {
   return parts.filter(Boolean).join(' ');
 }
 
+// ── Tooltip component ──
+function Tooltip({ text }) {
+  return (
+    <span className={styles.tooltipWrap} tabIndex={0} aria-label={text}>
+      <span className={styles.tooltipIcon}>i</span>
+      <span className={styles.tooltipBubble} role="tooltip">{text}</span>
+    </span>
+  );
+}
+
 const TOTAL_STEPS = 4;
 
 export default function QuoteWrapper() {
@@ -312,7 +322,7 @@ export default function QuoteWrapper() {
 
             <div className={styles.fieldRow}>
               <div className={styles.fieldGroup}>
-                <label className={styles.fieldLabel}>Commodity type<span className={styles.req}>*</span></label>
+                <label className={styles.fieldLabel}>Commodity type<span className={styles.req}>*</span><Tooltip text="Select the category that best describes your goods — affects regulatory routing and tariff classification." /></label>
                 <select className={styles.fieldSelect} value={commodity} onChange={(e) => setCommodity(e.target.value)}>
                   <option value="">Select category</option>
                   {COMMODITY_OPTIONS.map((o) => <option key={o}>{o}</option>)}
@@ -320,7 +330,7 @@ export default function QuoteWrapper() {
               </div>
               <div className={styles.fieldGroup}>
                 <label className={styles.fieldLabel}>
-                  HS Code <span style={{ color: 'var(--muted2)', fontWeight: 400 }}>(optional)</span>
+                  HS Code <span style={{ color: 'var(--muted2)', fontWeight: 400 }}>(optional)</span><Tooltip text="Harmonised System code for your product (e.g. 8471.30). Helps expedite customs clearance." />
                 </label>
                 <input className={styles.fieldInput} type="text" placeholder="e.g. 8471.30" value={hscode} onChange={(e) => setHscode(e.target.value)} />
                 <span className={styles.fieldHint}>Leave blank if unknown — we'll classify for you.</span>
@@ -329,29 +339,29 @@ export default function QuoteWrapper() {
 
             <div className={cx(styles.fieldRow, styles.triple)}>
               <div className={styles.fieldGroup}>
-                <label className={styles.fieldLabel}>Weight (kg)<span className={styles.req}>*</span></label>
+                <label className={styles.fieldLabel}>Weight (kg)<span className={styles.req}>*</span><Tooltip text="Total gross weight of the shipment in kilograms — used to calculate freight cost and chargeable weight." /></label>
                 <input className={styles.fieldInput} type="number" min="0.1" placeholder="e.g. 250" value={weight} onChange={(e) => setWeight(e.target.value)} />
               </div>
               <div className={styles.fieldGroup}>
-                <label className={styles.fieldLabel}>Volume (CBM)<span className={styles.req}>*</span></label>
+                <label className={styles.fieldLabel}>Volume (CBM)<span className={styles.req}>*</span><Tooltip text="Cubic metres (L × W × H ÷ 1,000,000) — we use the higher of actual vs. volumetric weight to quote you fairly." /></label>
                 <input className={styles.fieldInput} type="number" min="0.01" step="0.01" placeholder="e.g. 1.5" value={volume} onChange={(e) => setVolume(e.target.value)} />
               </div>
               <div className={styles.fieldGroup}>
-                <label className={styles.fieldLabel}>No. of pieces</label>
+                <label className={styles.fieldLabel}>No. of pieces<Tooltip text="Total count of individual packages, cartons, or pallets in this shipment." /></label>
                 <input className={styles.fieldInput} type="number" min="1" placeholder="e.g. 10" value={pieces} onChange={(e) => setPieces(e.target.value)} />
               </div>
             </div>
 
             <div className={styles.fieldRow}>
               <div className={styles.fieldGroup}>
-                <label className={styles.fieldLabel}>Packaging type<span className={styles.req}>*</span></label>
+                <label className={styles.fieldLabel}>Packaging type<span className={styles.req}>*</span><Tooltip text="How your cargo is packed — determines handling equipment, stacking rules, and container compatibility." /></label>
                 <select className={styles.fieldSelect} value={packaging} onChange={(e) => setPackaging(e.target.value)}>
                   <option value="">Select type</option>
                   {PACKAGING_OPTIONS.map((o) => <option key={o}>{o}</option>)}
                 </select>
               </div>
               <div className={styles.fieldGroup}>
-                <label className={styles.fieldLabel}>Cargo value (₹)<span className={styles.req}>*</span></label>
+                <label className={styles.fieldLabel}>Cargo value (₹)<span className={styles.req}>*</span><Tooltip text="Declared commercial value of the goods in INR — used to compute cargo insurance premium." /></label>
                 <input className={styles.fieldInput} type="number" placeholder="e.g. 500000" value={cargoValue} onChange={(e) => setCargoValue(e.target.value)} />
                 <span className={styles.fieldHint}>Required for insurance calculation.</span>
               </div>
@@ -359,7 +369,7 @@ export default function QuoteWrapper() {
 
             <div className={cx(styles.fieldRow, styles.single)}>
               <div className={styles.fieldGroup}>
-                <label className={styles.fieldLabel}>Special handling requirements</label>
+                <label className={styles.fieldLabel}>Special handling requirements<Tooltip text="Select any requirements that apply — these may affect routing, carrier selection, and regulatory compliance." /></label>
                 <div className={styles.specialRow}>
                   {SPECIAL_HANDLING_OPTIONS.map((label) => (
                     <label className={styles.specialLabel} key={label}>
@@ -390,25 +400,25 @@ export default function QuoteWrapper() {
 
             <div className={styles.fieldRow}>
               <div className={styles.fieldGroup}>
-                <label className={styles.fieldLabel}>Origin city / port<span className={styles.req}>*</span></label>
+                <label className={styles.fieldLabel}>Origin city / port<span className={styles.req}>*</span><Tooltip text="City or port where the cargo will be collected or handed over to us (e.g. Mumbai, JNPT)." /></label>
                 <input className={styles.fieldInput} type="text" placeholder="e.g. Mumbai, India" value={origin} onChange={(e) => setOrigin(e.target.value)} />
               </div>
               <div className={styles.fieldGroup}>
-                <label className={styles.fieldLabel}>Destination city / port<span className={styles.req}>*</span></label>
+                <label className={styles.fieldLabel}>Destination city / port<span className={styles.req}>*</span><Tooltip text="Final delivery city or port — determines transit lanes, duties, and local delivery charges." /></label>
                 <input className={styles.fieldInput} type="text" placeholder="e.g. Frankfurt, Germany" value={destination} onChange={(e) => setDestination(e.target.value)} />
               </div>
             </div>
 
             <div className={styles.fieldRow}>
               <div className={styles.fieldGroup}>
-                <label className={styles.fieldLabel}>Pickup type<span className={styles.req}>*</span></label>
+                <label className={styles.fieldLabel}>Pickup type<span className={styles.req}>*</span><Tooltip text="Door pickup means we collect from your premises; port drop-off means you deliver to our terminal." /></label>
                 <select className={styles.fieldSelect} value={pickupType} onChange={(e) => setPickupType(e.target.value)}>
                   <option value="">Select</option>
                   {PICKUP_OPTIONS.map((o) => <option key={o}>{o}</option>)}
                 </select>
               </div>
               <div className={styles.fieldGroup}>
-                <label className={styles.fieldLabel}>Delivery type<span className={styles.req}>*</span></label>
+                <label className={styles.fieldLabel}>Delivery type<span className={styles.req}>*</span><Tooltip text="Door delivery means we bring cargo to the consignee; port collection means the receiver picks it up at the port." /></label>
                 <select className={styles.fieldSelect} value={deliveryType} onChange={(e) => setDeliveryType(e.target.value)}>
                   <option value="">Select</option>
                   {DELIVERY_OPTIONS.map((o) => <option key={o}>{o}</option>)}
@@ -417,7 +427,7 @@ export default function QuoteWrapper() {
             </div>
 
             <div className={styles.fieldGroup} style={{ marginBottom: '.85rem' }}>
-              <label className={styles.fieldLabel}>Incoterm<span className={styles.req}>*</span></label>
+              <label className={styles.fieldLabel}>Incoterm<span className={styles.req}>*</span><Tooltip text="International trade term defining who bears cost and risk at each stage (e.g. EXW = seller's warehouse, DDP = buyer's door)." /></label>
               <div className={styles.incoRow}>
                 {INCOTERMS.map((v) => (
                   <label
@@ -433,7 +443,7 @@ export default function QuoteWrapper() {
             </div>
 
             <div className={styles.fieldGroup} style={{ marginBottom: '.85rem' }}>
-              <label className={styles.fieldLabel}>Preferred ready date<span className={styles.req}>*</span></label>
+              <label className={styles.fieldLabel}>Preferred ready date<span className={styles.req}>*</span><Tooltip text="The date your cargo will be packed and ready for pickup or drop-off — we schedule around this." /></label>
               <div className={styles.dateStrip}>
                 {dateOptions.map((d) => (
                   <div
@@ -460,7 +470,7 @@ export default function QuoteWrapper() {
 
             <div className={cx(styles.fieldRow, styles.single)}>
               <div className={styles.fieldGroup}>
-                <label className={styles.fieldLabel}>Shipment frequency</label>
+                <label className={styles.fieldLabel}>Shipment frequency<Tooltip text="How often you ship similar cargo — regular shippers qualify for preferential rates and a dedicated lane manager." /></label>
                 <select className={styles.fieldSelect} value={frequency} onChange={(e) => setFrequency(e.target.value)}>
                   <option value="">One-time shipment</option>
                   {FREQUENCY_OPTIONS.map((o) => <option key={o}>{o}</option>)}
@@ -528,7 +538,7 @@ export default function QuoteWrapper() {
 
             <div className={styles.fieldRow}>
               <div className={styles.fieldGroup}>
-                <label className={styles.fieldLabel}>Full name<span className={styles.req}>*</span></label>
+                <label className={styles.fieldLabel}>Full name<span className={styles.req}>*</span><Tooltip text="Your full name so our account manager can address you correctly when following up." /></label>
                 <input
                   className={cx(styles.fieldInput, fieldErrors.cName && styles.error)}
                   type="text" placeholder="Rajesh Sharma" value={cName}
@@ -536,13 +546,13 @@ export default function QuoteWrapper() {
                 />
               </div>
               <div className={styles.fieldGroup}>
-                <label className={styles.fieldLabel}>Company<span className={styles.req}>*</span></label>
+                <label className={styles.fieldLabel}>Company<span className={styles.req}>*</span><Tooltip text="Your registered business name — required for commercial invoicing and credit checks." /></label>
                 <input className={styles.fieldInput} type="text" placeholder="Acme Exports Ltd." value={cCompany} onChange={(e) => setCCompany(e.target.value)} />
               </div>
             </div>
             <div className={styles.fieldRow}>
               <div className={styles.fieldGroup}>
-                <label className={styles.fieldLabel}>Email<span className={styles.req}>*</span></label>
+                <label className={styles.fieldLabel}>Email<span className={styles.req}>*</span><Tooltip text="We'll send your detailed quote and shipment confirmation to this address." /></label>
                 <input
                   className={cx(styles.fieldInput, fieldErrors.cEmail && styles.error)}
                   type="email" placeholder="rajesh@acme.com" value={cEmail}
@@ -550,7 +560,7 @@ export default function QuoteWrapper() {
                 />
               </div>
               <div className={styles.fieldGroup}>
-                <label className={styles.fieldLabel}>Phone / WhatsApp<span className={styles.req}>*</span></label>
+                <label className={styles.fieldLabel}>Phone / WhatsApp<span className={styles.req}>*</span><Tooltip text="Our ops team will call or message you on this number to confirm details and activate your shipment." /></label>
                 <input
                   className={cx(styles.fieldInput, fieldErrors.cPhone && styles.error)}
                   type="tel" placeholder="+91 98765 43210" value={cPhone}
@@ -560,7 +570,7 @@ export default function QuoteWrapper() {
             </div>
             <div className={cx(styles.fieldRow, styles.single)}>
               <div className={styles.fieldGroup}>
-                <label className={styles.fieldLabel}>Additional notes</label>
+                <label className={styles.fieldLabel}>Additional notes<Tooltip text="Any special requirements, delivery instructions, or questions you'd like our team to know before reviewing your quote." /></label>
                 <textarea
                   className={styles.fieldTextarea}
                   placeholder="Any special requirements, references, or questions for our team…"

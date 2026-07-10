@@ -1076,3 +1076,97 @@
     width: 100%;
   }
 }
+
+/* ═══════════ TOOLTIP ═══════════ */
+.tooltipWrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.35rem;
+  cursor: default;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.tooltipIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 900;
+  color: var(--muted2, #94a3b8);
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+  line-height: 1;
+  transition: color 0.18s, border-color 0.18s, transform 0.18s;
+  user-select: none;
+}
+
+.tooltipWrap:hover .tooltipIcon,
+.tooltipWrap:focus .tooltipIcon {
+  color: var(--accent, #0ea5e9);
+  border-color: var(--accent, #0ea5e9);
+  transform: scale(1.15);
+  outline: none;
+}
+
+.tooltipBubble {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  white-space: pre-line;
+  max-width: 280px;
+  width: max-content;
+  white-space: normal;
+  background: #1e293b;
+  color: #f1f5f9;
+  font-size: 0.72rem;
+  font-weight: 400;
+  line-height: 1.45;
+  padding: 0.45rem 0.7rem;
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  z-index: 10;
+  text-align: left;
+}
+
+/* arrow */
+.tooltipBubble::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: #1e293b;
+}
+
+.tooltipWrap:hover .tooltipBubble,
+.tooltipWrap:focus .tooltipBubble {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Prevent bubble from overflowing on small screens */
+@media (max-width: 480px) {
+  .tooltipBubble {
+    left: 0;
+    transform: translateX(0) translateY(4px);
+    max-width: 220px;
+  }
+  .tooltipBubble::after {
+    left: 1rem;
+    transform: none;
+  }
+  .tooltipWrap:hover .tooltipBubble,
+  .tooltipWrap:focus .tooltipBubble {
+    transform: translateX(0) translateY(0);
+  }
+}

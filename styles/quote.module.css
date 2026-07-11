@@ -517,7 +517,7 @@
   align-items: center;
   gap: 0.35rem;
   flex-wrap: wrap;
-  margin-top: auto;
+  /* margin-top: auto; */
 }
 .svcOptBadge {
   display: inline-flex;

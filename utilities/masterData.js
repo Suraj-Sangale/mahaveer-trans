@@ -44,7 +44,7 @@ export const SERVICES = {
     key: 'cold',
     name: 'Cold Chain',
     icon: '❄️',
-    img: '/services/svc_cold.png',
+    img: '/services/svc_cold.jpeg',
     desc: 'Pharma & food, real-time temp monitoring.',
     base: 8500,
     unit: 'per pallet/day',

@@ -1,6 +1,8 @@
 // className="([^"]+)"
 // className={css("$1")}
 
+import { constantsList } from "../constant";
+
 export const applyCSS = (
 	classNames,
 	style1 = {},
@@ -20,4 +22,8 @@ export const applyCSS = (
 			return [class1, class2].filter(Boolean).join(" ");
 		})
 		.join(" ");
+};
+
+export const getConstant = (key) => {
+  return constantsList[key.toUpperCase()] ?? null;
 };

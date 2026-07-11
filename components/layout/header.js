@@ -96,7 +96,6 @@ const ACCENT_COLORS = [
 
 export default function Header() {
   const [theme, setTheme] = useState("light");
-  console.log("🚀 ~ Header ~ theme:", theme)
   const [fontPanelOpen, setFontPanelOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [activeAccent, setActiveAccent] = useState(0);
@@ -278,20 +277,23 @@ export default function Header() {
           ))}
         </div>
 
-          <ThemeToggle  key={theme} checked={theme === "dark"} onChange={toggleTheme} />
         <div className={css("drawer-actions")}>
           {/* Theme toggle */}
-          {/* <div className={css("drawer-settings")}>
-            
-            <span className={css("drawer-settings-lbl")}>
+          <div className={css("drawer-settings")}>
+            {/* <span className={css("drawer-settings-lbl")}>
               {theme === "dark" ? "🌙 Dark mode" : "☀️ Light mode"}
-            </span>
-            <button
+            </span> */}
+            {/* <ThemeToggle
+              key={theme}
+              checked={theme === "dark"}
+              onChange={toggleTheme}
+            /> */}
+            {/* <button
               className={`${css("theme-toggle")} ${theme === "dark" ? css("dark") : ""}`}
               onClick={toggleTheme}
               aria-label="Toggle theme"
-            />
-          </div> */}
+            /> */}
+          </div>
           {/* Font button */}
           <button
             className={css("drawer-font-btn")}
@@ -326,15 +328,18 @@ export default function Header() {
           <div className={css("dot")} />
         </a>
 
+        <div className={"mt-3"}>
+          <ThemeToggle
+            key={theme}
+            checked={theme === "dark"}
+            onChange={toggleTheme}
+          />
+        </div>
         {/* Desktop links */}
         <div className={css("nav-links")}>
           {d.nav.links.map((l, i) => (
             <React.Fragment key={i}>
-              {l.herader && (
-                <a href={l.href}>
-                  {l.label}
-                </a>
-              )}
+              {l.herader && <a href={l.href}>{l.label}</a>}
             </React.Fragment>
           ))}
         </div>
@@ -351,9 +356,9 @@ export default function Header() {
 
           {/* Theme toggle — desktop only */}
           <div className={css("theme-row")}>
-          <ThemeToggle checked={theme === "dark"} onChange={toggleTheme} />
+            <ThemeToggle checked={theme === "dark"} onChange={toggleTheme} />
 
-              {/* <span className={css("theme-icon")}>☀️</span>
+            {/* <span className={css("theme-icon")}>☀️</span>
               <button
                 className={`${css("theme-toggle")} ${theme === "dark" ? css("dark") : css("light")}`}
                 onClick={toggleTheme}

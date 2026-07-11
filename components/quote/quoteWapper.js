@@ -527,6 +527,7 @@ export default function QuoteWrapper() {
                     styles.svcOpt,
                     selectedSvc === s.key && styles.selected,
                   )}
+                  style={{ backgroundImage: `url(${s.img})` }}
                   onClick={() => setSelectedSvc(s.key)}
                 >
                   <input
@@ -536,12 +537,22 @@ export default function QuoteWrapper() {
                     checked={selectedSvc === s.key}
                     readOnly
                   />
-                  <div className={styles.svcOptIcon}>{s.icon}</div>
-                  <div>
-                    <div className={styles.svcOptName}>{s.name}</div>
+
+                  {/* Dark scrim so text stays readable */}
+                  <div className={styles.svcOptScrim} />
+
+                  {/* Content */}
+                  <div className={styles.svcOptContent}>
+                    <div className={styles.svcOptTop}>
+                      <span className={styles.svcOptName}>{s.name}</span>
+                      <span className={styles.svcOptCheck}>✓</span>
+                    </div>
                     <div className={styles.svcOptDesc}>{s.desc}</div>
+                    <div className={styles.svcOptMeta}>
+                      <span className={styles.svcOptBadge}>⏱ {s.transit}</span>
+                      <span className={cx(styles.svcOptBadge, styles.svcOptBadgeSla)}>{s.sla}</span>
+                    </div>
                   </div>
-                  <div className={styles.svcOptCheck}>✓</div>
                 </label>
               ))}
             </div>

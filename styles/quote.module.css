@@ -402,11 +402,9 @@
 .svcOpt {
   /* bg image applied inline; positioned to the right */
   background-color: #0f172a;
-  background-size: auto 140%;
+  background-size: auto 130%;
   background-position: right center;
   background-repeat: no-repeat;
-  /* blend image colours into the dark base — no harsh colour mismatch */
-  background-blend-mode: luminosity;
   border: 1.5px solid rgba(255,255,255,0.08);
   border-radius: 16px;
   min-height: 110px;
@@ -441,21 +439,19 @@
   position: absolute;
   inset: 0;
   background: linear-gradient(
-    105deg,
-    rgba(10,20,40,0.92) 0%,
-    rgba(10,20,40,0.72) 45%,
-    rgba(10,20,40,0.30) 75%,
-    rgba(10,20,40,0.50) 100%
+    100deg,
+    rgba(10,20,40,0.88) 0%,
+    rgba(10,20,40,0.70) 50%,
+    rgba(10,20,40,0.15) 100%
   );
   transition: background 0.3s;
 }
 .svcOpt.selected .svcOptScrim {
   background: linear-gradient(
-    105deg,
-    rgba(5,35,75,0.95) 0%,
-    rgba(5,35,75,0.68) 50%,
-    rgba(5,35,75,0.25) 78%,
-    rgba(5,35,75,0.55) 100%
+    100deg,
+    rgba(5, 40, 80, 0.92) 0%,
+    rgba(5, 40, 80, 0.65) 55%,
+    rgba(5, 40, 80, 0.10) 100%
   );
 }
 
@@ -464,6 +460,7 @@
   position: relative;
   z-index: 1;
   display: flex;
+  justify-content: center;
   flex-direction: column;
   gap: 0.3rem;
   padding: 0.9rem 1rem;

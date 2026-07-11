@@ -547,7 +547,7 @@ export default function QuoteWrapper() {
                       <span className={styles.svcOptName}>{s.name}</span>
                       <span className={styles.svcOptCheck}>✓</span>
                     </div>
-                    <div className={styles.svcOptDesc}>{s.desc}</div>
+                    {/* <div className={styles.svcOptDesc}>{s.desc}</div> */}
                     <div className={styles.svcOptMeta}>
                       <span className={styles.svcOptBadge}>⏱ {s.transit}</span>
                       <span className={cx(styles.svcOptBadge, styles.svcOptBadgeSla)}>{s.sla}</span>

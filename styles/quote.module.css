@@ -323,7 +323,7 @@
   border: 1.5px solid var(--border2);
 }
 .stepLabel {
-  font-size: 0.72rem;
+  font-size: 0.82rem;
   font-weight: 600;
   color: var(--muted);
   white-space: nowrap;
@@ -368,7 +368,7 @@
 }
 .stepH {
   font-family: var(--font-d);
-  font-size: 1.5rem;
+  font-size: 1.65rem;
   font-weight: 800;
   color: var(--ink);
   letter-spacing: -0.02em;
@@ -376,7 +376,7 @@
 }
 .stepSub {
   color: var(--muted);
-  font-size: 0.88rem;
+  font-size: 0.97rem;
   line-height: 1.6;
   margin-bottom: 1.75rem;
 }
@@ -422,13 +422,13 @@
 }
 .svcOptName {
   font-family: var(--font-d);
-  font-size: 0.88rem;
+  font-size: 0.97rem;
   font-weight: 700;
   color: var(--ink);
   margin-bottom: 0.2rem;
 }
 .svcOptDesc {
-  font-size: 0.72rem;
+  font-size: 0.82rem;
   color: var(--muted);
   line-height: 1.4;
 }
@@ -470,10 +470,10 @@
   gap: 0.4rem;
 }
 .fieldLabel {
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   font-weight: 600;
   color: var(--ink3);
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
 }
 .req {
   color: var(--red);
@@ -485,9 +485,9 @@
   background: var(--bg2);
   border: 1.5px solid var(--border);
   border-radius: 10px;
-  padding: 0.72rem 1rem;
+  padding: 0.78rem 1rem;
   font-family: var(--font-b);
-  font-size: 0.88rem;
+  font-size: 0.97rem;
   color: var(--ink);
   outline: none;
   transition: all 0.22s;
@@ -518,7 +518,7 @@
   line-height: 1.6;
 }
 .fieldHint {
-  font-size: 0.7rem;
+  font-size: 0.78rem;
   color: var(--muted2);
   margin-top: 0.15rem;
 }
@@ -549,11 +549,11 @@
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.38rem 0.85rem 0.38rem 0.65rem;
+  padding: 0.42rem 0.9rem 0.42rem 0.7rem;
   border-radius: 100px;
   border: 1.5px solid var(--border2);
   background: var(--bg2);
-  font-size: 0.78rem;
+  font-size: 0.85rem;
   font-weight: 500;
   color: var(--muted);
   cursor: pointer;
@@ -616,11 +616,11 @@
   background: var(--bg2);
   border: 1.5px solid var(--border);
   border-radius: 8px;
-  padding: 0.55rem 0.4rem;
+  padding: 0.6rem 0.4rem;
   text-align: center;
   cursor: pointer;
   transition: all 0.2s;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   font-weight: 600;
   color: var(--muted);
 }
@@ -659,13 +659,13 @@
 }
 .dateChipD {
   font-family: var(--font-d);
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 800;
   color: var(--ink);
   transition: color 0.2s;
 }
 .dateChipM {
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   color: var(--muted);
   transition: color 0.2s;
 }
@@ -674,7 +674,7 @@
   color: #fff;
 }
 .dateChipCustom {
-  font-size: 0.72rem;
+  font-size: 0.82rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -715,18 +715,18 @@
   font-size: 1.1rem;
 }
 .addonName {
-  font-size: 0.88rem;
+  font-size: 0.97rem;
   font-weight: 600;
   color: var(--ink);
 }
 .addonDesc {
-  font-size: 0.72rem;
+  font-size: 0.82rem;
   color: var(--muted);
   margin-top: 0.1rem;
 }
 .addonPrice {
   font-family: var(--font-d);
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: var(--accent);
 }
@@ -785,7 +785,7 @@
   align-items: center;
   padding: 0.45rem 0;
   border-bottom: 1px solid var(--border);
-  font-size: 0.83rem;
+  font-size: 0.92rem;
 }
 .sumRow:last-child {
   border-bottom: none;
@@ -843,7 +843,7 @@
   flex-shrink: 0;
 }
 .contactCardText {
-  font-size: 0.82rem;
+  font-size: 0.92rem;
   color: var(--ink3);
   line-height: 1.6;
 }
@@ -1203,9 +1203,9 @@
   background: var(--bg2);
   border: 1.5px solid var(--border);
   border-radius: 10px;
-  padding: 0.72rem 1rem;
+  padding: 0.78rem 1rem;
   font-family: var(--font-b);
-  font-size: 0.88rem;
+  font-size: 0.97rem;
   color: var(--ink);
   cursor: pointer;
   transition: border-color 0.22s, background 0.22s, box-shadow 0.22s;
@@ -1290,7 +1290,7 @@
   outline: none;
   background: transparent;
   font-family: var(--font-b);
-  font-size: 0.83rem;
+  font-size: 0.9rem;
   color: var(--ink);
 }
 .ssSearch::placeholder {

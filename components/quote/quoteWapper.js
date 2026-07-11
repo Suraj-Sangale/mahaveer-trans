@@ -38,6 +38,190 @@ function Tooltip({ text }) {
   );
 }
 
+// ── SearchableSelect component ──
+function SearchableSelect({
+  options,
+  value,
+  onChange,
+  placeholder = "Select…",
+}) {
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const wrapRef = useRef(null);
+  const inputRef = useRef(null);
+
+  const filtered = useMemo(() => {
+    if (!query.trim()) return options;
+    const q = query.toLowerCase();
+    return options.filter((o) => o.toLowerCase().includes(q));
+  }, [query, options]);
+
+  // Close on outside click
+  useEffect(() => {
+    function handleClick(e) {
+      if (wrapRef.current && !wrapRef.current.contains(e.target)) {
+        setOpen(false);
+        setQuery("");
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  // Focus search input when opened
+  useEffect(() => {
+    if (open && inputRef.current) inputRef.current.focus();
+  }, [open]);
+
+  function select(opt) {
+    onChange(opt);
+    setOpen(false);
+    setQuery("");
+  }
+
+  return (
+    <div ref={wrapRef} className={cx(styles.ssWrap, open && styles.ssOpen)}>
+      {/* Trigger button */}
+      <button
+        type="button"
+        className={styles.ssTrigger}
+        onClick={() => setOpen((p) => !p)}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+      >
+        <span
+          className={cx(
+            styles.ssTriggerText,
+            !value && styles.ssTriggerPlaceholder,
+          )}
+        >
+          {value || placeholder}
+        </span>
+        <svg
+          className={cx(styles.ssChevron, open && styles.ssChevronUp)}
+          width="14"
+          height="14"
+          viewBox="0 0 14 14"
+          fill="none"
+        >
+          <path
+            d="M2.5 5L7 9.5L11.5 5"
+            stroke="currentColor"
+            strokeWidth="1.7"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </button>
+
+      {/* Dropdown panel */}
+      {open && (
+        <div className={styles.ssDropdown} role="listbox">
+          {/* Search input */}
+          <div className={styles.ssSearchWrap}>
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 14 14"
+              fill="none"
+              className={styles.ssSearchIcon}
+            >
+              <circle
+                cx="6"
+                cy="6"
+                r="4.5"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              />
+              <path
+                d="M9.5 9.5L13 13"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+            </svg>
+            <input
+              ref={inputRef}
+              type="text"
+              className={styles.ssSearch}
+              placeholder="Type to filter…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            {query && (
+              <button
+                type="button"
+                className={styles.ssClear}
+                onClick={() => setQuery("")}
+              >
+                ✕
+              </button>
+            )}
+          </div>
+
+          {/* Options list */}
+          <ul className={styles.ssOptionList}>
+            {filtered.length > 0 ? (
+              filtered.map((opt) => (
+                <li
+                  key={opt}
+                  role="option"
+                  aria-selected={value === opt}
+                  className={cx(
+                    styles.ssOption,
+                    value === opt && styles.ssOptionSelected,
+                  )}
+                  onClick={() => select(opt)}
+                >
+                  {value === opt && (
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      className={styles.ssOptionCheck}
+                    >
+                      <path
+                        d="M2 6l3 3 5-5"
+                        stroke="currentColor"
+                        strokeWidth="1.7"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  )}
+                  <span>
+                    {query.trim()
+                      ? opt
+                          .split(
+                            new RegExp(
+                              `(${query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`,
+                              "gi",
+                            ),
+                          )
+                          .map((part, i) =>
+                            part.toLowerCase() === query.toLowerCase() ? (
+                              <mark key={i} className={styles.ssHighlight}>
+                                {part}
+                              </mark>
+                            ) : (
+                              <React.Fragment key={i}>{part}</React.Fragment>
+                            ),
+                          )
+                      : opt}
+                  </span>
+                </li>
+              ))
+            ) : (
+              <li className={styles.ssNoResult}>No matches for "{query}"</li>
+            )}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
+
 const TOTAL_STEPS = 4;
 
 export default function QuoteWrapper() {
@@ -172,18 +356,6 @@ export default function QuoteWrapper() {
 
   return (
     <div className={styles.root}>
-      {/* TICKER */}
-      <div className={styles.tickerWrap}>
-        <div className={styles.ticker}>
-          {tickerRow.map((t, i) => (
-            <span className={styles.tItem} key={`${t}-${i}`}>
-              <span className={styles.tDot} />
-              {t}
-            </span>
-          ))}
-        </div>
-      </div>
-
       <div className={styles.pageWrap}>
         {/* ═══ LEFT PANEL ═══ */}
         <div className={styles.leftPanel}>
@@ -399,16 +571,12 @@ export default function QuoteWrapper() {
                   Commodity type<span className={styles.req}>*</span>
                   <Tooltip text="Select the category that best describes your goods — affects regulatory routing and tariff classification." />
                 </label>
-                <select
-                  className={styles.fieldSelect}
+                <SearchableSelect
+                  options={COMMODITY_OPTIONS}
                   value={commodity}
-                  onChange={(e) => setCommodity(e.target.value)}
-                >
-                  <option value="">Select category</option>
-                  {COMMODITY_OPTIONS.map((o) => (
-                    <option key={o}>{o}</option>
-                  ))}
-                </select>
+                  onChange={setCommodity}
+                  placeholder="Select category"
+                />
               </div>
               <div className={styles.fieldGroup}>
                 <label className={styles.fieldLabel}>
@@ -483,16 +651,12 @@ export default function QuoteWrapper() {
                   Packaging type<span className={styles.req}>*</span>
                   <Tooltip text="How your cargo is packed — determines handling equipment, stacking rules, and container compatibility." />
                 </label>
-                <select
-                  className={styles.fieldSelect}
+                <SearchableSelect
+                  options={PACKAGING_OPTIONS}
                   value={packaging}
-                  onChange={(e) => setPackaging(e.target.value)}
-                >
-                  <option value="">Select type</option>
-                  {PACKAGING_OPTIONS.map((o) => (
-                    <option key={o}>{o}</option>
-                  ))}
-                </select>
+                  onChange={setPackaging}
+                  placeholder="Select type"
+                />
               </div>
               <div className={styles.fieldGroup}>
                 <label className={styles.fieldLabel}>
@@ -519,16 +683,45 @@ export default function QuoteWrapper() {
                   <Tooltip text="Select any requirements that apply — these may affect routing, carrier selection, and regulatory compliance." />
                 </label>
                 <div className={styles.specialRow}>
-                  {SPECIAL_HANDLING_OPTIONS.map((label) => (
-                    <label className={styles.specialLabel} key={label}>
-                      <input
-                        type="checkbox"
-                        checked={specialHandling.includes(label)}
-                        onChange={() => toggleSpecial(label)}
-                      />
-                      {label}
-                    </label>
-                  ))}
+                  {SPECIAL_HANDLING_OPTIONS.map((label) => {
+                    const checked = specialHandling.includes(label);
+                    return (
+                      <label
+                        key={label}
+                        className={cx(
+                          styles.specialPill,
+                          checked && styles.specialPillOn,
+                        )}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={() => toggleSpecial(label)}
+                          className={styles.specialHiddenInput}
+                        />
+                        <span className={styles.specialPillCheck}>
+                          {checked &&
+                           (
+                            <svg
+                              width="10"
+                              height="10"
+                              viewBox="0 0 10 10"
+                              fill="none"
+                            >
+                              <path
+                                d="M1.5 5l2.5 2.5 4.5-4.5"
+                                stroke="currentColor"
+                                strokeWidth="1.8"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          )}
+                        </span>
+                        {label}
+                      </label>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -586,32 +779,24 @@ export default function QuoteWrapper() {
                   Pickup type<span className={styles.req}>*</span>
                   <Tooltip text="Door pickup means we collect from your premises; port drop-off means you deliver to our terminal." />
                 </label>
-                <select
-                  className={styles.fieldSelect}
+                <SearchableSelect
+                  options={PICKUP_OPTIONS}
                   value={pickupType}
-                  onChange={(e) => setPickupType(e.target.value)}
-                >
-                  <option value="">Select</option>
-                  {PICKUP_OPTIONS.map((o) => (
-                    <option key={o}>{o}</option>
-                  ))}
-                </select>
+                  onChange={setPickupType}
+                  placeholder="Select pickup type"
+                />
               </div>
               <div className={styles.fieldGroup}>
                 <label className={styles.fieldLabel}>
                   Delivery type<span className={styles.req}>*</span>
                   <Tooltip text="Door delivery means we bring cargo to the consignee; port collection means the receiver picks it up at the port." />
                 </label>
-                <select
-                  className={styles.fieldSelect}
+                <SearchableSelect
+                  options={DELIVERY_OPTIONS}
                   value={deliveryType}
-                  onChange={(e) => setDeliveryType(e.target.value)}
-                >
-                  <option value="">Select</option>
-                  {DELIVERY_OPTIONS.map((o) => (
-                    <option key={o}>{o}</option>
-                  ))}
-                </select>
+                  onChange={setDeliveryType}
+                  placeholder="Select delivery type"
+                />
               </div>
             </div>
 
@@ -685,16 +870,12 @@ export default function QuoteWrapper() {
                   Shipment frequency
                   <Tooltip text="How often you ship similar cargo — regular shippers qualify for preferential rates and a dedicated lane manager." />
                 </label>
-                <select
-                  className={styles.fieldSelect}
+                <SearchableSelect
+                  options={FREQUENCY_OPTIONS}
                   value={frequency}
-                  onChange={(e) => setFrequency(e.target.value)}
-                >
-                  <option value="">One-time shipment</option>
-                  {FREQUENCY_OPTIONS.map((o) => (
-                    <option key={o}>{o}</option>
-                  ))}
-                </select>
+                  onChange={setFrequency}
+                  placeholder="One-time shipment"
+                />
                 <span className={styles.fieldHint}>
                   Regular shippers get preferential rates and a dedicated lane
                   manager.
@@ -925,6 +1106,16 @@ export default function QuoteWrapper() {
               <button className={styles.phBtn}>📞 +91 22 4001 8000</button>
             </div>
           )}
+        </div>
+      </div>
+      <div className={styles.tickerWrap}>
+        <div className={styles.ticker}>
+          {tickerRow.map((t, i) => (
+            <span className={styles.tItem} key={`${t}-${i}`}>
+              <span className={styles.tDot} />
+              {t}
+            </span>
+          ))}
         </div>
       </div>
     </div>

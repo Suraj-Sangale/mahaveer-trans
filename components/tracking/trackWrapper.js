@@ -543,6 +543,7 @@ const DATA = {
         title: "Call Us",
         desc: "Speak directly to our tracking operations team, day or night, for any urgent shipment query.",
         detail: "+91 22 4001 8000",
+        link: "tel:+912240018000",
         cta: "Call Now",
       },
       {
@@ -551,12 +552,14 @@ const DATA = {
         desc: "Start an instant chat with our support team on the website or WhatsApp Business account.",
         detail: "Avg. response: 2 min",
         cta: "Start Chat",
+        link: "https://wa.me/+917039529129",
       },
       {
         icon: "✉️",
         title: "Email Support",
         desc: "For detailed queries, documentation requests, or formal escalations — our team responds within 2 hours.",
-        detail: "email",
+        detail: "info@mahaveertrans.com",
+        link: "mailto:info@mahaveertrans.com",
         cta: "Send Email",
       },
     ],
@@ -1424,7 +1427,12 @@ export default function TrackWrapper() {
               <div className={styles.supTitle}>{c.title}</div>
               <div className={styles.supDesc}>{c.desc}</div>
               <div className={styles.supDetail}>{c.detail}</div>
-              <button className={styles.btnPrimary}>{c.cta}</button>
+              <a href={`${c.link}`} className={styles.btnPrimary}
+              >
+                {c.cta}
+              </a>
+
+              {/* <button className={styles.btnPrimary}>{c.cta}</button> */}
             </div>
           ))}
         </div>

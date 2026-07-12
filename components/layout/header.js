@@ -280,9 +280,9 @@ export default function Header() {
         <div className={css("drawer-actions")}>
           {/* Theme toggle */}
           <div className={css("drawer-settings")}>
-            {/* <span className={css("drawer-settings-lbl")}>
+            <span className={css("drawer-settings-lbl")}>
               {theme === "dark" ? "🌙 Dark mode" : "☀️ Light mode"}
-            </span> */}
+            </span>
             {/* <ThemeToggle
               key={theme}
               checked={theme === "dark"}
@@ -328,13 +328,6 @@ export default function Header() {
           <div className={css("dot")} />
         </a>
 
-        <div className={"mt-3"}>
-          <ThemeToggle
-            key={theme}
-            checked={theme === "dark"}
-            onChange={toggleTheme}
-          />
-        </div>
         {/* Desktop links */}
         <div className={css("nav-links")}>
           {d.nav.links.map((l, i) => (
@@ -381,6 +374,10 @@ export default function Header() {
               {d.nav.getQuoteBtn.text}
             </a>
           )}
+
+          <div className={`${css("mobileThemeWrap")} mt-3`}>
+            <ThemeToggle checked={theme === "dark"} onChange={toggleTheme} />
+          </div>
 
           {/* Hamburger — tablet + mobile */}
           <button

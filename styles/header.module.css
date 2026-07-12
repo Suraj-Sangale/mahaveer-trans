@@ -444,6 +444,9 @@
 }
 
 /* Hamburger — hidden on desktop */
+.mobileThemeWrap {
+  display: none;
+}
 .hamburger {
   display: none;
   flex-direction: column;
@@ -513,7 +516,9 @@
   .hamburger {
     display: flex;
   }
-
+  .mobileThemeWrap {
+    display: flex;
+  }
   .navbar.scrolled {
     margin: 0.6rem 1.25rem 0;
   }

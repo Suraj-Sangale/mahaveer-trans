@@ -574,59 +574,6 @@ const DATA = {
     btn2: "📞 +91 22 4001 8000",
   },
 
-  footer: {
-    logo: getConstant("company_name_short"),
-    tagline:
-      "Delivering the world's goods with precision and care. Your trusted logistics partner since 1999.",
-    socials: [
-      { label: "in", url: "#" },
-      { label: "tw", url: "#" },
-      { label: "yt", url: "#" },
-      { label: "ig", url: "#" },
-    ],
-    columns: [
-      {
-        heading: "Services",
-        links: [
-          ["Air Freight", "#"],
-          ["Sea Freight", "#"],
-          ["Road Transport", "#"],
-          ["Cold Chain", "#"],
-          ["Warehousing", "#"],
-          ["Last Mile", "#"],
-        ],
-      },
-      {
-        heading: "Company",
-        links: [
-          ["About Us", "#"],
-          ["Careers", "#"],
-          ["Sustainability", "#"],
-          ["Press", "#"],
-          ["Contact", "#"],
-        ],
-      },
-      {
-        heading: "Contact",
-        links: [
-          [`📍 ${getConstant("company_address")}`, "#"],
-          [
-            `📞 ${getConstant("contact_no_display")}`,
-            `tel:${getConstant("contact_no")}`,
-          ],
-          [
-            `✉️ ${getConstant("company_email")}`,
-            `mailto:${getConstant("company_email")}`,
-          ],
-          [`🌐 ${getConstant("company_website")}`, "#"],
-        ],
-      },
-    ],
-    copyright: getConstant("company_copyright"),
-    footerLinks: "Privacy · Terms · Sitemap",
-  },
-
-  fab: "💬",
 };
 
 const cx = (...classes) => classes.filter(Boolean).join(" ");

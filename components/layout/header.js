@@ -115,17 +115,15 @@ export default function Header() {
   }, [activeAccent]);
 
   useEffect(() => {
-    document.documentElement.style.setProperty(
-      "--font-display",
-      `'${DISPLAY_FONTS[activeDisplayFont].font}', sans-serif`,
-    );
+    const fontValue = `'${DISPLAY_FONTS[activeDisplayFont].font}', sans-serif`;
+    document.documentElement.style.setProperty("--font-display", fontValue);
+    document.documentElement.style.setProperty("--font-d", fontValue);
   }, [activeDisplayFont]);
 
   useEffect(() => {
-    document.documentElement.style.setProperty(
-      "--font-body",
-      `'${BODY_FONTS[activeBodyFont].font}', sans-serif`,
-    );
+    const fontValue = `'${BODY_FONTS[activeBodyFont].font}', sans-serif`;
+    document.documentElement.style.setProperty("--font-body", fontValue);
+    document.documentElement.style.setProperty("--font-b", fontValue);
   }, [activeBodyFont]);
 
   // ── scroll listener — drives React state, not DOM class ─────────────────

@@ -4,7 +4,7 @@ export const constantsList = {
   WHATSAPP_LINK: "https://wa.me/+917039529129",
   COMPANY_NAME: "Mahaveer Trans",
   COMPANY_NAME_SHORT: "MahaveerTrans",
-  COMPANY_TITLE_FULL: "Mahaveer Trans Solutionsaaa",
+  COMPANY_TITLE_FULL: "Mahaveer Trans Solutions",
   COMPANY_EMAIL: "hello@mahaveertrans.com",
   COMPANY_WEBSITE: "mahaveertrans.com",
   COMPANY_ADDRESS: "Mumbai, India",

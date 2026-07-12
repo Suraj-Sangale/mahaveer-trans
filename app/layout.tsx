@@ -3,9 +3,12 @@ import "./globals.css";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import { ThemeProvider } from "@/components/common/ThemeProvider";
+import { constantsList } from "@/constant";
 
+// Note: Next.js metadata must be a static object (build-time), so we read
+// constantsList directly here. All runtime component code uses getConstant().
 export const metadata: Metadata = {
-  title: "MahaveerTrans — Modern Logistics",
+  title: `${constantsList.COMPANY_NAME_SHORT} — Modern Logistics`,
   description: "Fast, reliable, global logistics solutions for every business.",
 };
 

@@ -5,6 +5,7 @@ import CtaSection from "./home/ctaSection";
 import Header from "./layout/header";
 import styles from '@/styles/homeWrapper.module.css';
 import Footer from "./layout/footer";
+import { getConstant } from "@/utilities/utils";
 
 const cx = (...args) => {
   return args.flat().filter(Boolean).map(str => String(str).trim().split(/\s+/).map(c => styles[c] || c).join(' ')).join(' ');
@@ -14,7 +15,7 @@ const cx = (...args) => {
 /* ─── SITE DATA ─── */
 const SITE_DATA = {
   meta: {
-    pageTitle: "MahaveerTrans — Modern Logistics",
+    pageTitle: `${getConstant("company_name_short")} — Modern Logistics`,
     fpTitle: "🎨 Design Settings",
     fpColorLabel: "Accent Color",
     fpDisplayLabel: "Display / Heading Font",
@@ -25,8 +26,8 @@ const SITE_DATA = {
     fabIcon: "💬",
   },
   nav: {
-    brand: "MahaveerTrans Solutions",
-    brandShort: "MahaveerTrans",
+    brand: getConstant("company_title_full"),
+    brandShort: getConstant("company_name_short"),
     login: "Log in",
     cta: "Get Quote →",
     links: [
@@ -47,14 +48,14 @@ const SITE_DATA = {
     drawerCta: "Get Free Quote →",
   },
   company: {
-    name: "MahaveerTrans",
+    name: getConstant("company_name_short"),
     tagline:
       "Delivering the world's goods with precision, speed, and care — your trusted partner in global logistics since 1999.",
     founded: "2010",
-    phone: "+91 22 4001 8000",
-    email: "hello@MahaveerTrans.com",
-    website: "MahaveerTrans.com",
-    address: "Mumbai, India",
+    phone: getConstant("contact_no_display"),
+    email: getConstant("company_email"),
+    website: getConstant("company_website"),
+    address: getConstant("company_address"),
     rating: "4.9★",
     ratingLabel: "Average rating across 1,200+ reviews",
   },
@@ -348,7 +349,7 @@ const SITE_DATA = {
     cta2: "📞 Call us",
   },
   footer: {
-    logo: "MahaveerTrans",
+    logo: getConstant("company_name_short"),
     tagline:
       "Delivering the world's goods with precision and care. Your trusted logistics partner since 1999.",
     socials: [
@@ -382,14 +383,14 @@ const SITE_DATA = {
       {
         heading: "Contact",
         links: [
-          ["📍 Mumbai, India", "#"],
-          ["📞 +91 22 4001 8000", "#"],
-          ["✉️ hello@MahaveerTrans.com", "#"],
-          ["🌐 MahaveerTrans.com", "#"],
+          [`📍 ${getConstant("company_address")}`, "#"],
+          [`📞 ${getConstant("contact_no_display")}`, `tel:${getConstant("contact_no")}`],
+          [`✉️ ${getConstant("company_email")}`, `mailto:${getConstant("company_email")}`],
+          [`🌐 ${getConstant("company_website")}`, "#"],
         ],
       },
     ],
-    copyright: "© 2025 MahaveerTrans Logistics Pvt. Ltd. All rights reserved.",
+    copyright: getConstant("company_copyright"),
     legal: "Privacy · Terms · Sitemap",
   },
 };

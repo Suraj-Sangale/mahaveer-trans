@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "@/styles/homeWrapper.module.css";
 import Link from "next/link";
+import { getConstant } from "../../utilities/utils";
 
 export default function Footer() {
   const cx = (...args) => {
@@ -17,7 +18,7 @@ export default function Footer() {
       .join(" ");
   };
   const footer = {
-    logo: "MahaveerTrans",
+    logo: getConstant("company_name_short"),
     tagline:
       "Delivering the world's goods with precision and care. Your trusted logistics partner since 1999.",
     socials: [
@@ -51,14 +52,14 @@ export default function Footer() {
       {
         heading: "Contact",
         links: [
-          { label:"📍 Mumbai, India", href:"#"},
-          { label:"📞 +91 22 4001 8000", href:"#"},
-          { label:"✉️ hello@MahaveerTrans.com", href:"#"},
-          { label:"🌐 MahaveerTrans.com", href:"#"},
+          { label: `📍 ${getConstant("company_address")}`, href: "#"},
+          { label: `📞 ${getConstant("contact_no_display")}`, href: `tel:${getConstant("contact_no")}`},
+          { label: `✉️ ${getConstant("company_email")}`, href: `mailto:${getConstant("company_email")}`},
+          { label: `🌐 ${getConstant("company_website")}`, href: "#"},
         ],
       },
     ],
-    copyright: "© 2025 MahaveerTrans Logistics Pvt. Ltd. All rights reserved.",
+    copyright: getConstant("company_copyright"),
     legal: "Privacy · Terms · Sitemap",
   };
   return (

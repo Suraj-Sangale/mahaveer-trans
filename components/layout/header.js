@@ -2,13 +2,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTheme } from "next-themes";
 import styles from "@/styles/header.module.css";
-import { applyCSS } from "../../utilities/utils";
+import { applyCSS, getConstant } from "../../utilities/utils";
 import ThemeToggle from "../common/themeToggle";
 import Link from "next/link";
 
 const d = {
   meta: {
-    pageTitle: "MahaveerTrans — Modern Logistics",
+    pageTitle: `${getConstant("company_name_short")} — Modern Logistics`,
     fpTitle: "🎨 Design Settings",
     fpColorLabel: "Accent Color",
     fpDisplayLabel: "Display / Heading Font",
@@ -19,8 +19,8 @@ const d = {
     fabIcon: "💬",
   },
   nav: {
-    brand: "MahaveerTrans Solutions",
-    brandShort: "MahaveerTrans",
+    brand: getConstant("company_title_full"),
+    brandShort: getConstant("company_name_short"),
     login: "Log in",
     getQuoteBtn: { text: "Get a Quote →", isDisabled: true, url: "/quote" },
     links: [

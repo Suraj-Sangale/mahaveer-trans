@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { useTheme } from 'next-themes';
 import styles from '@/styles/service.module.css';
 
 /* ════════════════════════════════
@@ -283,7 +284,11 @@ export default function ServicesWrapper() {
   const D = PAGE;
 
   /* ── UI STATE ── */
-  const [theme, setTheme] = useState('light');
+  // ── next-themes: global theme from ThemeProvider context ───────────────
+  const { resolvedTheme, setTheme } = useTheme();
+  const theme = resolvedTheme ?? 'light';
+  const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark');
+
   const [scrolled, setScrolled] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [activeFilter, setActiveFilter] = useState('all');
@@ -291,7 +296,7 @@ export default function ServicesWrapper() {
   const [trackValue, setTrackValue] = useState('');
   const [trackState, setTrackState] = useState('idle'); // idle | success | error
 
-  /* ── REFS for imperative (non-React-state) DOM animation, mirrors original vanilla JS ── */
+  /* ── REFS for imperative DOM animation ── */
   const revealRefs = useRef([]);
   const counterRefs = useRef([]); // { el, target }
 
@@ -304,19 +309,6 @@ export default function ServicesWrapper() {
       counterRefs.current.push({ el, target });
     }
   }, []);
-
-  /* ── THEME: load saved preference on mount ── */
-  useEffect(() => {
-    const saved = typeof window !== 'undefined' ? localStorage.getItem('mt-theme') : null;
-    if (saved) setTheme(saved);
-  }, []);
-
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    localStorage.setItem('mt-theme', theme);
-  }, [theme]);
-
-  const toggleTheme = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
 
   /* ── NAV SCROLL SHADOW ── */
   useEffect(() => {

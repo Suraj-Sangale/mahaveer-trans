@@ -1,8 +1,10 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
+import { useTheme } from "next-themes";
 import styles from "@/styles/header.module.css";
 import { applyCSS } from "../../utilities/utils";
 import ThemeToggle from "../common/themeToggle";
+import Link from "next/link";
 
 const d = {
   meta: {
@@ -95,18 +97,16 @@ const ACCENT_COLORS = [
 ];
 
 export default function Header() {
-  const [theme, setTheme] = useState("light");
+  // ── next-themes: reads/writes data-theme on <html> globally ─────────────
+  const { resolvedTheme, setTheme } = useTheme();
+  const theme = resolvedTheme ?? "light";
+
   const [fontPanelOpen, setFontPanelOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [activeAccent, setActiveAccent] = useState(0);
   const [activeDisplayFont, setActiveDisplayFont] = useState(0);
   const [activeBodyFont, setActiveBodyFont] = useState(0);
   const [scrolled, setScrolled] = useState(false); // ← React state, not DOM class
-
-  // ── sync theme + accent + fonts to <html> CSS vars ──────────────────────
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-  }, [theme]);
 
   useEffect(() => {
     const ac = ACCENT_COLORS[activeAccent];
@@ -148,7 +148,7 @@ export default function Header() {
   };
 
   const toggleTheme = () => {
-    setTheme((t) => (t === "dark" ? "light" : "dark"));
+    setTheme(theme === "dark" ? "light" : "dark");
   };
 
   return (
@@ -269,9 +269,9 @@ export default function Header() {
           {d.nav.links.map((l, i) => (
             <React.Fragment key={i}>
               {l.sidebar && (
-                <a href={l.href} onClick={() => setDrawerOpen(false)}>
+                <Link href={l.href} onClick={() => setDrawerOpen(false)}>
                   {l.label}
-                </a>
+                </Link>
               )}
             </React.Fragment>
           ))}
@@ -305,7 +305,7 @@ export default function Header() {
             <span>Aa</span> <span>{d.meta.drawerFontBtnText}</span>
           </button>
           {/* CTA */}
-          <a
+          <Link
             href="#cta"
             className={css("btn-cta")}
             style={{
@@ -316,23 +316,23 @@ export default function Header() {
             onClick={() => setDrawerOpen(false)}
           >
             {d.nav.drawerCta}
-          </a>
+          </Link>
         </div>
       </div>
 
       {/* ── NAVBAR ──────────────────────────────────────────── */}
       <nav className={`${css("navbar")} ${scrolled ? css("scrolled") : ""}`}>
         {/* Logo */}
-        <a href="/" className={css("nav-logo")}>
+        <Link href="/" className={css("nav-logo")}>
           <span>{d.nav.brand}</span>
           <div className={css("dot")} />
-        </a>
+        </Link>
 
         {/* Desktop links */}
         <div className={css("nav-links")}>
           {d.nav.links.map((l, i) => (
             <React.Fragment key={i}>
-              {l.herader && <a href={l.href}>{l.label}</a>}
+              {l.herader && <Link href={l.href} className={css("nav-link")}>{l.label}</Link>}
             </React.Fragment>
           ))}
         </div>
@@ -367,12 +367,12 @@ export default function Header() {
 
           {/* Get Quote — desktop only */}
           {!d.nav.getQuoteBtn.isDisabled && (
-            <a
+            <Link
               href={d.nav.getQuoteBtn.url}
               className={css("btn-cta,desktop-only")}
             >
               {d.nav.getQuoteBtn.text}
-            </a>
+            </Link>
           )}
 
           <div className={`${css("mobileThemeWrap")} mt-3`}>

@@ -1,12 +1,36 @@
+"use client";
 import React, { useId } from "react";
+import { useTheme } from "next-themes";
 import styled from "styled-components";
 
+/**
+ * ThemeToggle — can be dropped anywhere in the app.
+ *
+ * Usage (standalone — reads/sets theme from next-themes context):
+ *   <ThemeToggle />
+ *
+ * Usage (controlled — keeps backward-compat with header.js):
+ *   <ThemeToggle checked={isDark} onChange={toggleFn} />
+ */
 export default function ThemeToggle({ checked, onChange }) {
+  const { resolvedTheme, setTheme } = useTheme();
   const id = useId();
+
+  // If props are provided (controlled), use them; otherwise drive from context
+  const isChecked = checked !== undefined ? checked : resolvedTheme === "dark";
+  const handleChange =
+    onChange !== undefined
+      ? onChange
+      : () => setTheme(resolvedTheme === "dark" ? "light" : "dark");
 
   return (
     <Wrapper>
-      <input id={id} type="checkbox" checked={checked} onChange={onChange} />
+      <input
+        id={id}
+        type="checkbox"
+        checked={isChecked}
+        onChange={handleChange}
+      />
 
       <label htmlFor={id} className="toggle">
         <div className="sky">

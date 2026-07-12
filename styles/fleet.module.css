@@ -609,7 +609,7 @@
     font-weight: 800;
     line-height: 0.98;
     letter-spacing: -0.03em;
-    /* color: #f1f5f9; */
+    color: #f1f5f9;
     margin-bottom: 1.5rem;
     animation: fadeUp 0.7s 0.25s ease-out both;
   }
@@ -718,7 +718,7 @@
     font-family: var(--font-d);
     font-size: 2rem;
     font-weight: 800;
-    /* color: #f1f5f9; */
+    color: #f1f5f9;
     line-height: 1;
   }
 

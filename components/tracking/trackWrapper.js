@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { useTheme } from 'next-themes';
 import styles from '@/styles/track.module.css';
 
 /* ════════════════════════════════
@@ -283,7 +284,11 @@ export default function TrackWrapper() {
   const labels = TP.resultLabels;
 
   /* ── UI STATE ── */
-  const [theme, setTheme] = useState('light');
+  // ── next-themes: global theme from ThemeProvider context ───────────────
+  const { resolvedTheme, setTheme } = useTheme();
+  const theme = resolvedTheme ?? 'light';
+  const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark');
+
   const [scrolled, setScrolled] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
@@ -311,17 +316,6 @@ export default function TrackWrapper() {
   const addBar = useCallback((el, pct) => {
     if (el && !barRefs.current.some((b) => b.el === el)) barRefs.current.push({ el, pct });
   }, []);
-
-  /* ── THEME ── */
-  useEffect(() => {
-    const saved = typeof window !== 'undefined' ? localStorage.getItem('mt-theme') : null;
-    if (saved) setTheme(saved);
-  }, []);
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    localStorage.setItem('mt-theme', theme);
-  }, [theme]);
-  const toggleTheme = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
 
   /* ── NAV SCROLL SHADOW ── */
   useEffect(() => {

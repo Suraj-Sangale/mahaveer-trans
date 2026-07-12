@@ -22,8 +22,8 @@ export default function FleetWrapper() {
 
   return (
     <>
-      <ThemeInit />
-      <Header />
+      {/* <ThemeInit /> */}
+      {/* <Header /> */}
 
       {/* HERO */}
       <section className={css("hero-section")}>

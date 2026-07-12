@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useTheme } from "next-themes";
 import CtaSection from "./home/ctaSection";
 import Header from "./layout/header";
 import styles from '@/styles/homeWrapper.module.css';
@@ -544,7 +545,11 @@ function AnimCard({ children, delay = 0, className = "" }) {
 /* ─── MAIN COMPONENT ─── */
 export default function HomeWrapper() {
   const d = SITE_DATA;
-  const [theme, setTheme] = useState("light");
+  // ── next-themes: global theme from ThemeProvider context ───────────────
+  const { resolvedTheme, setTheme } = useTheme();
+  const theme = resolvedTheme ?? "light";
+  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
+
   const [fontPanelOpen, setFontPanelOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -553,21 +558,6 @@ export default function HomeWrapper() {
   const [activeBodyFont, setActiveBodyFont] = useState(0);
   const [trackVal, setTrackVal] = useState("");
   const [trackState, setTrackState] = useState("idle");
-
-  /* Theme & font CSS variables */
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const savedTheme = localStorage?.getItem("vf-theme");
-      if (savedTheme) {
-        setTheme(savedTheme);
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    localStorage.setItem("vf-theme", theme);
-  }, [theme]);
 
   useEffect(() => {
     const a = ACCENT_COLORS[activeAccent];
@@ -807,7 +797,7 @@ export default function HomeWrapper() {
           </button>
         </div>
       </nav> */}
-      <Header />
+      {/* <Header /> */}
 
       {/* HERO */}
       <section className={cx("hero")} id="hero-section">

@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
 import { DATA } from "@/constants/data";
 import useIsMobile from "@/hooks/useIsMobile";
 
@@ -14,11 +15,12 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // ── next-themes: reads/writes global theme context ──────────────────
+  const { resolvedTheme, setTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
+
   function toggleTheme() {
-    const current = document.documentElement.dataset.theme;
-    const next = current === "dark" ? "light" : "dark";
-    document.documentElement.dataset.theme = next;
-    localStorage.setItem("mt-theme", next);
+    setTheme(isDark ? "light" : "dark");
   }
 
   function openDrawer() {

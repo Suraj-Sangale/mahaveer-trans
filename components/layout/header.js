@@ -149,6 +149,16 @@ export default function Header() {
     setTheme(theme === "dark" ? "light" : "dark");
   };
 
+
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null; // or a skeleton/placeholder
+  }
   return (
     <>
       <style>{CSS}</style>

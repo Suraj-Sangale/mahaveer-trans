@@ -25,28 +25,6 @@ const SITE_DATA = {
     drawerFontBtnText: "Fonts & Accent Color",
     fabIcon: "💬",
   },
-  nav: {
-    brand: getConstant("company_title_full"),
-    brandShort: getConstant("company_name_short"),
-    login: "Log in",
-    cta: "Get Quote →",
-    links: [
-      { label: "Services", href: "#services" },
-      { label: "About", href: "#about" },
-      { label: "Fleet", href: "#fleet" },
-      { label: "Track", href: "#tracking" },
-      { label: "Reviews", href: "#testimonials" },
-    ],
-    drawerLinks: [
-      { label: "Services", href: "#services" },
-      { label: "About", href: "#about" },
-      { label: "Fleet", href: "#fleet" },
-      { label: "Track Shipment", href: "#tracking" },
-      { label: "Client Reviews", href: "#testimonials" },
-      { label: "Get a Quote", href: "#cta" },
-    ],
-    drawerCta: "Get Free Quote →",
-  },
   company: {
     name: getConstant("company_name_short"),
     tagline:
@@ -61,10 +39,10 @@ const SITE_DATA = {
   },
   hero: {
     pill: "Live tracking across 180+ countries",
-    titleLine1: "Logistics",
-    titleLine2Hl: "Redefined",
-    titleLine3: "For Modern",
-    chip: "2025",
+    titleLine1: "Welcome To",
+    titleLine2Hl: "MAHAVEER",
+    titleLine3: "Trans Solution",
+    chip: "Since 1999",
     description:
       "End-to-end freight solutions powered by real-time AI routing, live shipment tracking, and a global carrier network built for speed and reliability.",
     cta1: "Start Shipping →",
@@ -628,178 +606,6 @@ export default function HomeWrapper() {
 
   return (
     <>
-      
-
-      {/* FONT PANEL */}
-      {/* <div className={cx(`font-panel ${fontPanelOpen ? "open" : "")}`}>
-        <div className={cx("fp-header")}>
-          <div className={cx("fp-title")}>{d.meta.fpTitle}</div>
-          <button className={cx("fp-close")} onClick={() => setFontPanelOpen(false)}>
-            ✕
-          </button>
-        </div>
-        <div className={cx("fp-body")}>
-          <div>
-            <div className={cx("fp-section-label")}>{d.meta.fpColorLabel}</div>
-            <div className={cx("fp-colors")}>
-              {ACCENT_COLORS.map((ac, i) => (
-                <div
-                  key={i}
-                  className={cx(`fp-color ${activeAccent === i ? "active" : "")}`}
-                  style={{ background: ac.color }}
-                  title={ac.title}
-                  onClick={() => setActiveAccent(i)}
-                />
-              ))}
-            </div>
-          </div>
-          <div>
-            <div className={cx("fp-section-label")}>{d.meta.fpDisplayLabel}</div>
-            {DISPLAY_FONTS.map((f, i) => (
-              <div
-                key={i}
-                className={cx(`fp-font-opt ${activeDisplayFont === i ? "active" : "")}`}
-                onClick={() => setActiveDisplayFont(i)}
-              >
-                <div className={cx("fopt-name")}>{f.font}</div>
-                <div
-                  className={cx("fopt-preview")}
-                  style={{
-                    fontFamily: `'${f.font}', sans-serif`,
-                    fontWeight: 800,
-                  }}
-                >
-                  Global Logistics
-                </div>
-                <div className={cx("fopt-hint")}>{f.hint}</div>
-              </div>
-            ))}
-          </div>
-          <div>
-            <div className={cx("fp-section-label")}>{d.meta.fpBodyLabel}</div>
-            {BODY_FONTS.map((f, i) => (
-              <div
-                key={i}
-                className={cx(`fp-font-opt ${activeBodyFont === i ? "active" : "")}`}
-                onClick={() => setActiveBodyFont(i)}
-              >
-                <div className={cx("fopt-name")}>{f.font}</div>
-                <div
-                  className={cx("fopt-preview")}
-                  style={{
-                    fontFamily: `'${f.font}', sans-serif`,
-                    fontSize: ".9rem",
-                    fontWeight: 400,
-                  }}
-                >
-                  Fast, reliable, global delivery solutions for every business.
-                </div>
-                <div className={cx("fopt-hint")}>{f.hint}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div> */}
-
-      {/* MOBILE OVERLAY */}
-      {/* <div
-        className={cx(`mobile-overlay ${drawerOpen ? "open" : "")}`}
-        onClick={() => setDrawerOpen(false)}
-      /> */}
-
-      {/* MOBILE DRAWER */}
-      {/* <div className={cx(`mobile-drawer ${drawerOpen ? "open" : "")}`}>
-        <div className={cx("drawer-header")}>
-          <div className={cx("drawer-logo")}>
-            {d.nav.brandShort}
-            <span style={{ opacity: 0.45 }}> Solutions</span>
-          </div>
-          <button className={cx("drawer-close")} onClick={() => setDrawerOpen(false)}>
-            ✕
-          </button>
-        </div>
-        <div className={cx("drawer-links")}>
-          {d.nav.drawerLinks.map((l, i) => (
-            <a key={i} href={l.href} onClick={() => setDrawerOpen(false)}>
-              {l.label}
-            </a>
-          ))}
-        </div>
-        <div className={cx("drawer-actions")}>
-          <div className={cx("drawer-settings")}>
-            <span className={cx("drawer-settings-lbl")}>{d.meta.themeLabel}</span>
-            <button
-              className={cx("theme-toggle")}
-              onClick={() => setTheme((t) => (t === "dark" ? "light" : "dark"))}
-            />
-          </div>
-          <button
-            className={cx("drawer-font-btn")}
-            onClick={() => {
-              setFontPanelOpen(true);
-              setDrawerOpen(false);
-            }}
-          >
-            <span>Aa</span> <span>{d.meta.drawerFontBtnText}</span>
-          </button>
-          <button
-            className={cx("btn-cta")}
-            style={{
-              width: "100%",
-              padding: ".75rem",
-              justifyContent: "center",
-              display: "flex",
-            }}
-          >
-            {d.nav.drawerCta}
-          </button>
-        </div>
-      </div> */}
-
-      {/* NAV */}
-      {/* <nav className={cx(`navbar ${scrolled ? "scrolled" : "")}`}>
-        <a href="#" className={cx("nav-logo")}>
-          <span>{d.nav.brand}</span>
-          <div className={cx("dot")}></div>
-        </a>
-        <div className={cx("nav-links")}>
-          {d.nav.links.map((l, i) => (
-            <a key={i} href={l.href}>
-              {l.label}
-            </a>
-          ))}
-        </div>
-        <div className={cx("nav-right")}>
-          <button
-            className={cx("font-btn")}
-            onClick={() => setFontPanelOpen((p) => !p)}
-          >
-            <span>Aa</span> <span>{d.meta.fontBtnText}</span>
-          </button>
-          <div style={{ display: "flex", alignItems: "center", gap: ".55rem" }}>
-            <span className={cx("theme-icon")}>☀️</span>
-            <button
-              className={cx("theme-toggle")}
-              onClick={() => setTheme((t) => (t === "dark" ? "light" : "dark"))}
-            />
-            <span className={cx("theme-icon")}>🌙</span>
-          </div>
-          <button className={cx("btn-ghost")}>{d.nav.login}</button>
-          <a href="#cta" className={cx("btn-cta")}>
-            {d.nav.cta}
-          </a>
-          <button
-            className={cx(`hamburger ${drawerOpen ? "open" : "")}`}
-            onClick={() => setDrawerOpen(true)}
-          >
-            <span className={cx("ham-line")} />
-            <span className={cx("ham-line")} />
-            <span className={cx("ham-line")} />
-          </button>
-        </div>
-      </nav> */}
-      {/* <Header /> */}
-
       {/* HERO */}
       <section className={cx("hero")} id="hero-section">
         <div className={cx("hero-grid-bg")} />
@@ -816,7 +622,7 @@ export default function HomeWrapper() {
               <span className={cx("hl")}>{d.hero.titleLine2Hl}</span>
               <br />
               {d.hero.titleLine3}
-              <span className={cx("hero-chip")}>{d.hero.chip}</span>
+              {/* <span className={cx("hero-chip")}>{d.hero.chip}</span> */}
             </h1>
             <p className={cx("hero-desc")}>{d.hero.description}</p>
             <div className={cx("hero-actions")}>

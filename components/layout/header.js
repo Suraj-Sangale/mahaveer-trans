@@ -37,28 +37,34 @@ const d = {
 
 const DISPLAY_FONTS = [
   {
+    font: "Josefin Sans",
+    hint: "💡 Narrow, art-deco inspired — very distinctive and stylish.",
+    disableHint: true,
+  },
+  {
     font: "Cormorant Garamond",
     hint: "💡 Classic Roman serif — ultra-refined, almost fashion-magazine feel.",
+    disableHint: true,
   },
   {
     font: "Syne",
     hint: "💡 Great for tech brands — geometric, bold, very modern.",
+    disableHint: true,
   },
   {
     font: "Playfair Display",
     hint: "💡 Elegant serif — ideal for premium or luxury positioning.",
+    disableHint: true,
   },
   {
     font: "Outfit",
     hint: "💡 Clean, rounded, approachable. Perfect for SaaS or startup feel.",
-  },
-  {
-    font: "Josefin Sans",
-    hint: "💡 Narrow, art-deco inspired — very distinctive and stylish.",
+    disableHint: true,
   },
   {
     font: "Space Grotesk",
     hint: "💡 Techy, slightly quirky grotesque — loved in fintech and logistics apps.",
+    disableHint: true,
   },
 ];
 
@@ -66,22 +72,27 @@ const BODY_FONTS = [
   {
     font: "Instrument Sans",
     hint: "💡 Humanist, warm, readable — excellent for body copy.",
+    disableHint: true,
   },
   {
     font: "Plus Jakarta Sans",
     hint: "💡 Balanced, modern, slightly formal — a very safe UI font.",
+    disableHint: true,
   },
   {
     font: "Outfit",
     hint: "💡 Very smooth, even rhythm. Good for younger/consumer brands.",
+    disableHint: true,
   },
   {
     font: "Nunito",
     hint: "💡 Rounded, friendly — best for consumer-facing products.",
+    disableHint: true,
   },
   {
     font: "Space Grotesk",
     hint: "💡 Pairs beautifully with itself for a monofont site.",
+    disableHint: true,
   },
 ];
 
@@ -217,9 +228,9 @@ export default function Header() {
                     fontWeight: 800,
                   }}
                 >
-                  Global Logistics
+                  MahaveerTrans Solution
                 </div>
-                <div className={css("fopt-hint")}>{f.hint}</div>
+                {!f.disableHint &&<div className={css("fopt-hint")}>{f.hint}</div>}
               </div>
             ))}
           </div>
@@ -243,7 +254,7 @@ export default function Header() {
                 >
                   Fast, reliable, global delivery solutions for every business.
                 </div>
-                <div className={css("fopt-hint")}>{f.hint}</div>
+                {!f.disableHint &&<div className={css("fopt-hint")}>{f.hint}</div>}
               </div>
             ))}
           </div>

@@ -1,10 +1,9 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { DATA } from "@/constants/data";
 import styles from "@/styles/fleet.module.css";
 import { applyCSS } from "../../utilities/utils";
 
-export default function Clients() {
+export default function Clients({DATA}) {
   const headRef = useRef(null);
   const cardRefs = useRef(null);
 

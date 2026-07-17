@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
-import { DATA } from "@/constants/data";
 import useIsMobile from "@/hooks/useIsMobile";
 
 export default function Navbar() {

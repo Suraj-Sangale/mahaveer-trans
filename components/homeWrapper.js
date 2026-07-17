@@ -5,6 +5,7 @@ import Header from "./layout/header";
 import styles from '@/styles/homeWrapper.module.css';
 import Footer from "./layout/footer";
 import { getConstant } from "@/utilities/utils";
+import Link from "next/link";
 
 const cx = (...args) => {
   return args.flat().filter(Boolean).map(str => String(str).trim().split(/\s+/).map(c => styles[c] || c).join(' ')).join(' ');
@@ -200,6 +201,7 @@ const SITE_DATA = {
     sectionTag: "Our Fleet",
     heading: "Built to",
     headingHl: "Deliver",
+    href: "/fleet",
     cta: "View All Fleet →",
     items: [
       {
@@ -691,7 +693,7 @@ export default function HomeWrapper() {
                 <span className={cx("hl")}>{d.fleet.headingHl}</span>
               </h2>
             </div>
-            <button className={cx("btn-outline")}>{d.fleet.cta}</button>
+            <Link href={d.fleet.href} className={cx("btn-outline")}>{d.fleet.cta}</Link>
           </div>
           <div className={cx("gal-grid")}>
             {d.fleet.items.map((f, i) => (

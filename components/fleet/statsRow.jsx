@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { DATA } from "@/constants/data";
 import styles from "@/styles/fleet.module.css";
 import { applyCSS } from "@/utilities/utils";
 
@@ -45,7 +44,7 @@ function Counter({ value, suffix }) {
   );
 }
 
-export default function StatsRow() {
+export default function StatsRow({DATA}) {
   const css = (className, mainStyles = styles, style2 = {}) => {
     return applyCSS(className, mainStyles, style2);
   };

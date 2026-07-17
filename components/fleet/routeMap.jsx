@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { DATA } from "@/constants/data";
 import CanvasRoute from "./canvasRoute";
 import styles from "@/styles/fleet.module.css";
 import { applyCSS } from "../../utilities/utils";

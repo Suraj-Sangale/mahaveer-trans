@@ -76,3 +76,7 @@
       color var(--tr);
     line-height: 1.6;
   }
+
+a {
+  text-decoration: none;
+}

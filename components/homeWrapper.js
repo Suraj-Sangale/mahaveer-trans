@@ -1,6 +1,5 @@
 "use client";
-import { useState, useEffect, useRef, useCallback } from "react";
-import { useTheme } from "next-themes";
+import { useState, useEffect, useRef } from "react";
 import CtaSection from "./home/ctaSection";
 import Header from "./layout/header";
 import styles from '@/styles/homeWrapper.module.css';
@@ -326,114 +325,9 @@ const SITE_DATA = {
     cta1: "Get Free Quote →",
     cta2: "📞 Call us",
   },
-  footer: {
-    logo: getConstant("company_name_short"),
-    tagline:
-      "Delivering the world's goods with precision and care. Your trusted logistics partner since 1999.",
-    socials: [
-      { label: "in", url: "#" },
-      { label: "tw", url: "#" },
-      { label: "yt", url: "#" },
-      { label: "ig", url: "#" },
-    ],
-    columns: [
-      {
-        heading: "Services",
-        links: [
-          ["Air Freight", "#"],
-          ["Sea Freight", "#"],
-          ["Road Transport", "#"],
-          ["Warehousing", "#"],
-          ["Cold Chain", "#"],
-          ["Customs", "#"],
-        ],
-      },
-      {
-        heading: "Company",
-        links: [
-          ["About Us", "#"],
-          ["Careers", "#"],
-          ["Sustainability", "#"],
-          ["Press", "#"],
-          ["Contact", "#"],
-        ],
-      },
-      {
-        heading: "Contact",
-        links: [
-          [`📍 ${getConstant("company_address")}`, "#"],
-          [`📞 ${getConstant("contact_no_display")}`, `tel:${getConstant("contact_no")}`],
-          [`✉️ ${getConstant("company_email")}`, `mailto:${getConstant("company_email")}`],
-          [`🌐 ${getConstant("company_website")}`, "#"],
-        ],
-      },
-    ],
-    copyright: getConstant("company_copyright"),
-    legal: "Privacy · Terms · Sitemap",
-  },
 };
 
-/* ─── ACCENT COLORS ─── */
-const ACCENT_COLORS = [
-  { color: "#0ea5e9", shadow: "rgba(14,165,233,0.25)", title: "Sky Blue" },
-  { color: "#6366f1", shadow: "rgba(99,102,241,0.25)", title: "Indigo" },
-  { color: "#f97316", shadow: "rgba(249,115,22,0.25)", title: "Orange" },
-  { color: "#10b981", shadow: "rgba(16,185,129,0.25)", title: "Emerald" },
-  { color: "#ec4899", shadow: "rgba(236,72,153,0.25)", title: "Pink" },
-  { color: "#8b5cf6", shadow: "rgba(139,92,246,0.25)", title: "Violet" },
-  { color: "#ef4444", shadow: "rgba(239,68,68,0.25)", title: "Red" },
-  { color: "#14b8a6", shadow: "rgba(20,184,166,0.25)", title: "Teal" },
-];
 
-const DISPLAY_FONTS = [
-  {
-    font: "Cormorant Garamond",
-    hint: "💡 Classic Roman serif — ultra-refined, almost fashion-magazine feel.",
-  },
-  {
-    font: "Syne",
-    hint: "💡 Great for tech brands — geometric, bold, very modern.",
-  },
-  {
-    font: "Playfair Display",
-    hint: "💡 Elegant serif — ideal for premium or luxury positioning.",
-  },
-  {
-    font: "Outfit",
-    hint: "💡 Clean, rounded, approachable. Perfect for SaaS or startup feel.",
-  },
-  {
-    font: "Josefin Sans",
-    hint: "💡 Narrow, art-deco inspired — very distinctive and stylish.",
-  },
-  {
-    font: "Space Grotesk",
-    hint: "💡 Techy, slightly quirky grotesque — loved in fintech and logistics apps.",
-  },
-];
-
-const BODY_FONTS = [
-  {
-    font: "Instrument Sans",
-    hint: "💡 Humanist, warm, readable — excellent for body copy.",
-  },
-  {
-    font: "Plus Jakarta Sans",
-    hint: "💡 Balanced, modern, slightly formal — a very safe UI font.",
-  },
-  {
-    font: "Outfit",
-    hint: "💡 Very smooth, even rhythm. Good for younger/consumer brands.",
-  },
-  {
-    font: "Nunito",
-    hint: "💡 Rounded, friendly — best for consumer-facing products.",
-  },
-  {
-    font: "Space Grotesk",
-    hint: "💡 Pairs beautifully with itself for a monofont site.",
-  },
-];
 
 /* ─── HELPERS ─── */
 function shadeColor(hex, pct) {
@@ -524,49 +418,8 @@ function AnimCard({ children, delay = 0, className = "" }) {
 /* ─── MAIN COMPONENT ─── */
 export default function HomeWrapper() {
   const d = SITE_DATA;
-  // ── next-themes: global theme from ThemeProvider context ───────────────
-  const { resolvedTheme, setTheme } = useTheme();
-  const theme = resolvedTheme ?? "light";
-  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
-
-  const [fontPanelOpen, setFontPanelOpen] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [activeAccent, setActiveAccent] = useState(0);
-  const [activeDisplayFont, setActiveDisplayFont] = useState(0);
-  const [activeBodyFont, setActiveBodyFont] = useState(0);
   const [trackVal, setTrackVal] = useState("");
   const [trackState, setTrackState] = useState("idle");
-
-  useEffect(() => {
-    const a = ACCENT_COLORS[activeAccent];
-    const r = document.documentElement;
-    r.style.setProperty("--accent", a.color);
-    r.style.setProperty("--accent-dk", shadeColor(a.color, -15));
-    r.style.setProperty("--accent-lt", shadeColor(a.color, 90) + "22");
-    r.style.setProperty("--shadow-bl", `0 8px 32px ${a.shadow}`);
-    r.style.setProperty("--blue", a.color);
-  }, [activeAccent]);
-
-  useEffect(() => {
-    document.documentElement.style.setProperty(
-      "--font-display",
-      `'${DISPLAY_FONTS[activeDisplayFont].font}', sans-serif`,
-    );
-  }, [activeDisplayFont]);
-
-  useEffect(() => {
-    document.documentElement.style.setProperty(
-      "--font-body",
-      `'${BODY_FONTS[activeBodyFont].font}', sans-serif`,
-    );
-  }, [activeBodyFont]);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   const handleTrack = () => {
     if (!trackVal.trim()) {

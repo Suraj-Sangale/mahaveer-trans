@@ -281,7 +281,7 @@
     0 8px 32px #0003;
   -webkit-backdrop-filter: blur(10px) saturate(1.2) brightness(1.15)
     contrast(1.05) !important;
-  backdrop-filter: blur(3px) saturate(1) brightness(1.15) contrast(0.9) !important;
+    backdrop-filter: blur(10px) saturate(1.8) brightness(1.15) contrast(1.05) !important;
   background: #ffffff00 !important;
   color: var(--fg2);
 }

@@ -2,15 +2,25 @@
 import { useState, useEffect, useRef } from "react";
 import CtaSection from "./home/ctaSection";
 import Header from "./layout/header";
-import styles from '@/styles/homeWrapper.module.css';
+import styles from "@/styles/homeWrapper.module.css";
 import Footer from "./layout/footer";
 import { getConstant } from "@/utilities/utils";
 import Link from "next/link";
+import TawkTo from "./TawkTo";
 
 const cx = (...args) => {
-  return args.flat().filter(Boolean).map(str => String(str).trim().split(/\s+/).map(c => styles[c] || c).join(' ')).join(' ');
+  return args
+    .flat()
+    .filter(Boolean)
+    .map((str) =>
+      String(str)
+        .trim()
+        .split(/\s+/)
+        .map((c) => styles[c] || c)
+        .join(" "),
+    )
+    .join(" ");
 };
-
 
 /* ─── SITE DATA ─── */
 const SITE_DATA = {
@@ -329,8 +339,6 @@ const SITE_DATA = {
   },
 };
 
-
-
 /* ─── HELPERS ─── */
 function shadeColor(hex, pct) {
   const n = parseInt(hex.slice(1), 16);
@@ -520,7 +528,9 @@ export default function HomeWrapper() {
               </div>
               <div className={cx("hfloat hf2")}>
                 <div className={cx("hf-tag")}>{d.hero.statCard2.label}</div>
-                <div className={cx("hf-val")}>{heroActive ? pctVal + "%" : "0%"}</div>
+                <div className={cx("hf-val")}>
+                  {heroActive ? pctVal + "%" : "0%"}
+                </div>
                 <div className={cx("hf-sub")}>{d.hero.statCard2.sub}</div>
               </div>
             </div>
@@ -614,7 +624,11 @@ export default function HomeWrapper() {
           <div className={cx("about-grid")}>
             <div className={cx("about-img-col")}>
               <div className={cx("about-tag-strip")}>{d.about.tagStrip}</div>
-              <img className={cx("about-main-img")} src={d.about.image} alt="About" />
+              <img
+                className={cx("about-main-img")}
+                src={d.about.image}
+                alt="About"
+              />
               <div className={cx("about-badge")}>
                 <div className={cx("ab-num")}>{d.company.rating}</div>
                 <div className={cx("ab-txt")}>{d.company.ratingLabel}</div>
@@ -693,7 +707,9 @@ export default function HomeWrapper() {
                 <span className={cx("hl")}>{d.fleet.headingHl}</span>
               </h2>
             </div>
-            <Link href={d.fleet.href} className={cx("btn-outline")}>{d.fleet.cta}</Link>
+            <Link href={d.fleet.href} className={cx("btn-outline")}>
+              {d.fleet.cta}
+            </Link>
           </div>
           <div className={cx("gal-grid")}>
             {d.fleet.items.map((f, i) => (
@@ -759,19 +775,27 @@ export default function HomeWrapper() {
               <div className={cx("track-card")}>
                 <div className={cx("tc-hdr")}>
                   <div className={cx("tc-id")}>{d.tracking.demo.id}</div>
-                  <div className={cx("tc-status")}>{d.tracking.demo.status}</div>
+                  <div className={cx("tc-status")}>
+                    {d.tracking.demo.status}
+                  </div>
                 </div>
                 <div className={cx("tc-route")}>
                   <div className={cx("tc-city")}>
-                    <div className={cx("tc-city-name")}>{d.tracking.demo.from}</div>
+                    <div className={cx("tc-city-name")}>
+                      {d.tracking.demo.from}
+                    </div>
                     <div className={cx("tc-city-code")}>
                       {d.tracking.demo.fromCode}
                     </div>
                   </div>
                   <div className={cx("tc-arrow")}>→</div>
                   <div className={cx("tc-city")} style={{ textAlign: "right" }}>
-                    <div className={cx("tc-city-name")}>{d.tracking.demo.to}</div>
-                    <div className={cx("tc-city-code")}>{d.tracking.demo.toCode}</div>
+                    <div className={cx("tc-city-name")}>
+                      {d.tracking.demo.to}
+                    </div>
+                    <div className={cx("tc-city-code")}>
+                      {d.tracking.demo.toCode}
+                    </div>
                   </div>
                 </div>
                 <div>
@@ -867,8 +891,8 @@ export default function HomeWrapper() {
         </div>
       </footer> */}
 
-      {/* FAB */}
-      <button className={cx("fab")}>{d.meta.fabIcon}</button>
+      {/* Tawk.to live chat */}
+      <TawkTo />
     </>
   );
 }

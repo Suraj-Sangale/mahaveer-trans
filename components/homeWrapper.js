@@ -6,7 +6,6 @@ import styles from "@/styles/homeWrapper.module.css";
 import Footer from "./layout/footer";
 import { getConstant } from "@/utilities/utils";
 import Link from "next/link";
-import TawkTo from "./TawkTo";
 
 const cx = (...args) => {
   return args
@@ -891,8 +890,6 @@ export default function HomeWrapper() {
         </div>
       </footer> */}
 
-      {/* Tawk.to live chat */}
-      <TawkTo />
     </>
   );
 }

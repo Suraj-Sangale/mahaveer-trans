@@ -4,7 +4,7 @@ import CanvasRoute from "./canvasRoute";
 import styles from "@/styles/fleet.module.css";
 import { applyCSS } from "../../utilities/utils";
 
-export default function RouteMap() {
+export default function RouteMap({ DATA }) {
   const fillRefs = useRef([]);
   const leftRef = useRef(null);
   const rightRef = useRef(null);
@@ -65,7 +65,10 @@ export default function RouteMap() {
           <div className={css("route-points")}>
             {DATA.routeMap.routes.map((r) => (
               <div className={css("rp")} key={r.city}>
-                <span className={css("rp-dot")} style={{ background: r.color }} />
+                <span
+                  className={css("rp-dot")}
+                  style={{ background: r.color }}
+                />
                 <span className={css("rp-city")}>{r.city}</span>
                 <span className={css("rp-dist")}>{r.dist}</span>
               </div>
@@ -78,7 +81,9 @@ export default function RouteMap() {
             <div className={css("route-stat-card")} key={c.label}>
               <div className={css("rsc-top")}>
                 <span className={css("rsc-label")}>{c.label}</span>
-                <span className={`${css("rsc-badge")} ${c.badgeCls}`}>{c.badge}</span>
+                <span className={`${css("rsc-badge")} ${c.badgeCls}`}>
+                  {c.badge}
+                </span>
               </div>
               <div className={css("rsc-val")}>{c.val}</div>
               <div className={css("rsc-sub")}>{c.sub}</div>

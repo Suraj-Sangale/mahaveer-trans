@@ -3,7 +3,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import styles from "@/styles/fleet.module.css";
 import { applyCSS } from "../../utilities/utils";
 
-export default function Gallery({DATA}) {
+export default function Gallery({ DATA }) {
   const [activeFilter, setActiveFilter] = useState("all");
   const [lightbox, setLightbox] = useState(null);
   const [lbIdx, setLbIdx] = useState(0);

@@ -28,7 +28,7 @@ export default function RootLayout({
           <Header />
           {children}
           <Footer />
-          <TawkTo />
+          {process.env.NEXT_PUBLIC_TAWKTO_ENABLED === "1" && <TawkTo />}
         </ThemeProvider>
       </body>
     </html>

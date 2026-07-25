@@ -104,6 +104,8 @@ const SITE_DATA = {
     sectionTag: "What We Do",
     heading: "Complete Logistics Under One Roof",
     headingHl: "Logistics",
+    link: "/services",
+    linkText:"All Services →",
     description:
       "From a single parcel to a full container — we handle every mode, every route, with zero compromise on visibility.",
     learnMoreText: "Learn more →",
@@ -587,9 +589,11 @@ export default function HomeWrapper() {
             </h2>
             <p className={cx("svc-top-desc")}>{d.services.description}</p>
           </div>
-          <a href="#" className={cx("btn-outline")}>
-            All Services →
-          </a>
+          {d.services.link && (
+            <Link href={d.services.link} className={cx("btn-outline")}>
+              {d.services.linkText}
+            </Link>
+          )}
         </div>
         <div className={cx("svc-grid")}>
           {d.services.items.map((s, i) => (

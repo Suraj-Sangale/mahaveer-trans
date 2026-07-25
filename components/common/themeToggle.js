@@ -60,8 +60,8 @@ const Wrapper = styled.div`
   }
 
   .toggle {
-    width: 82px;
-    height: 42px;
+    width: 72px;
+    height: 35px;
     display: block;
     cursor: pointer;
   }
@@ -87,8 +87,8 @@ const Wrapper = styled.div`
     position: absolute;
     left: 3.5px;
     top: 4px;
-    width: 33px;
-    height: 33px;
+    width: 25px;
+    height: 25px;
     border-radius: 50%;
     transform: translateX(var(--x)) scale(var(--scale));
     transition: transform 0.65s cubic-bezier(0.45, 0, 0.2, 1);

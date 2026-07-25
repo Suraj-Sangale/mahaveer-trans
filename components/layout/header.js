@@ -160,7 +160,6 @@ export default function Header() {
     setTheme(theme === "dark" ? "light" : "dark");
   };
 
-
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -185,7 +184,8 @@ export default function Header() {
         className={`${css("font-panel")} ${fontPanelOpen ? css("open") : ""}`}
       >
         <div className={css("fp-header")}>
-          <div className={css("fp-title")}>{d.meta.fpTitle}</div>
+          {/* <div className={css("fp-title")}>{d.meta.fpTitle}</div> */}
+          <img src="/logo.png" alt="MahaveerTrans" className={css("logo")} />
           <button
             className={css("fp-close")}
             onClick={() => setFontPanelOpen(false)}
@@ -230,7 +230,9 @@ export default function Header() {
                 >
                   MahaveerTrans Solution
                 </div>
-                {!f.disableHint &&<div className={css("fopt-hint")}>{f.hint}</div>}
+                {!f.disableHint && (
+                  <div className={css("fopt-hint")}>{f.hint}</div>
+                )}
               </div>
             ))}
           </div>
@@ -254,7 +256,9 @@ export default function Header() {
                 >
                   Fast, reliable, global delivery solutions for every business.
                 </div>
-                {!f.disableHint &&<div className={css("fopt-hint")}>{f.hint}</div>}
+                {!f.disableHint && (
+                  <div className={css("fopt-hint")}>{f.hint}</div>
+                )}
               </div>
             ))}
           </div>
@@ -273,8 +277,9 @@ export default function Header() {
       >
         <div className={css("drawer-header")}>
           <div className={css("drawer-logo")}>
-            {d.nav.brandShort}
-            <span style={{ opacity: 0.45 }}> Solutions</span>
+            {/* {d.nav.brandShort}
+            <span style={{ opacity: 0.45 }}> Solutions</span> */}
+            <img src="/logo.png" alt="MahaveerTrans" className={css("logo")} />
           </div>
           <button
             className={css("drawer-close")}
@@ -343,15 +348,19 @@ export default function Header() {
       <nav className={`${css("navbar")} ${scrolled ? css("scrolled") : ""}`}>
         {/* Logo */}
         <Link href="/" className={css("nav-logo")}>
-          <span>{d.nav.brand}</span>
-          <div className={css("dot")} />
+          {/* <span>{d.nav.brand}</span> */}
+          <img src="/logo.png" alt="MahaveerTrans" className={css("logo")} />
         </Link>
 
         {/* Desktop links */}
         <div className={css("nav-links")}>
           {d.nav.links.map((l, i) => (
             <React.Fragment key={i}>
-              {l.herader && <Link href={l.href} className={css("nav-link")}>{l.label}</Link>}
+              {l.herader && (
+                <Link href={l.href} className={css("nav-link")}>
+                  {l.label}
+                </Link>
+              )}
             </React.Fragment>
           ))}
         </div>

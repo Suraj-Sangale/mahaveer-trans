@@ -4,18 +4,18 @@ import styles from "@/styles/about.module.css";
 
 /* ═══════════ DATA ═══════════ */
 const TICKER_ITEMS = [
-  "Air Freight",
-  "Ocean Shipping",
+  "Air Cargo",
   "Road Transport",
   "Cold Chain",
-  "Customs Clearance",
   "Warehousing & 3PL",
   "Last Mile Delivery",
+  "Rail Freight",
   "Express Courier",
   "GDP Certified",
   "25 Years of Trust",
-  "180+ Countries",
-  "4,200+ Team Members",
+  "28+ States Covered",
+  "2,800+ Team Members",
+  "Pan-India Network",
 ];
 
 const TIMELINE = [
@@ -29,23 +29,23 @@ const TIMELINE = [
   {
     year: "2003",
     icon: "",
-    title: "Ocean Freight Division",
-    tag: "Global Reach",
-    desc: "Strategic partnerships with Hapag-Lloyd and MSC unlock FCL & LCL lanes to the Middle East and Southeast Asia — our first international milestone.",
+    title: "National Highway Network",
+    tag: "Pan-India Expansion",
+    desc: "Strategic partnerships with North-South corridor transporters unlock dedicated FTL lanes between Mumbai, Delhi, Chennai, and Kolkata — our first interstate freight milestone.",
   },
   {
     year: "2006",
     icon: "",
     title: "Air Cargo Certified",
     tag: "IATA Accredited",
-    desc: "IATA certification obtained. Air freight desk opens at Mumbai CSIA, handling pharma and electronics for 40+ exporters within the first year.",
+    desc: "IATA certification obtained. Domestic air cargo desk opens at Mumbai CSIA, handling pharma and electronics for 40+ clients within the first year.",
   },
   {
     year: "2009",
     icon: "",
     title: "Cold Chain Hub Launched",
     tag: "GDP Certified",
-    desc: "India's first GDP-certified cold chain facility commissioned in Bhiwandi — 50,000 sq.ft of temperature-controlled storage for pharma clients.",
+    desc: "India’s first GDP-certified cold chain facility commissioned in Bhiwandi — 50,000 sq.ft of temperature-controlled storage for pharma clients.",
   },
   {
     year: "2012",
@@ -59,21 +59,21 @@ const TIMELINE = [
     icon: "",
     title: "MT Connect Platform",
     tag: "Tech Leap",
-    desc: "Proprietary TMS and WMS go live. Clients receive India's first real-time logistics dashboard with live GPS per consignment — a market first.",
+    desc: "Proprietary TMS and WMS go live. Clients receive India’s first real-time logistics dashboard with live GPS per consignment — a market first.",
   },
   {
     year: "2018",
     icon: "",
-    title: "Global Offices Open",
-    tag: "International",
-    desc: "Offices open in Dubai, Singapore, Frankfurt, and London. Agency network expands to 180+ countries, making us truly global.",
+    title: "Tier-2 & Tier-3 Expansion",
+    tag: "Deeper India",
+    desc: "Network expanded to 150+ tier-2 and tier-3 cities across all 28 states. Last-mile coverage extended to 500+ pin codes with EV delivery bikes.",
   },
   {
     year: "2019",
     icon: "",
     title: "BSE Stock Exchange Listing",
     tag: "IPO",
-    desc: "Listed on BSE at ₹240/share, raising ₹380 Cr. Funds deployed for fleet expansion, warehouse automation, and international growth.",
+    desc: "Listed on BSE at ₹240/share, raising ₹380 Cr. Funds deployed for fleet expansion, warehouse automation, and pan-India growth.",
   },
   {
     year: "2021",
@@ -87,7 +87,7 @@ const TIMELINE = [
     icon: "",
     title: "Net Zero Pledge & EV Fleet",
     tag: "Green Future",
-    desc: "2035 net-zero commitment announced. 120 EV delivery vehicles deployed. 12 MW solar capacity across all hubs. EcoVadis Gold rating achieved.",
+    desc: "2035 net-zero commitment announced. 120 EV delivery vehicles deployed across Indian cities. 12 MW solar capacity across all hubs.",
   },
 ];
 
@@ -177,9 +177,9 @@ const CERTS = [
     badge: "BSI Certified",
   },
   {
-    logo: "⚗️",
+    logo: "⚮️",
     name: "IMDG Certified",
-    body: "International Maritime Dangerous Goods code compliance for ocean freight, covering classification, packaging, and documentation.",
+    body: "International Maritime Dangerous Goods code compliance for hazardous cargo handling, covering classification, packaging, and documentation.",
     badge: "Active 2024",
   },
   {
@@ -202,9 +202,9 @@ const CERTS = [
   },
   {
     logo: "🌱",
-    name: "EcoVadis Gold",
-    body: "Sustainability rating in the top 5% of logistics companies globally for ESG practices, environmental impact, and fair labour.",
-    badge: "Gold 2024",
+    name: "CII GreenCo Gold",
+    body: "Green Company rating from the Confederation of Indian Industry for sustainable practices, energy efficiency, and reduced carbon footprint.",
+    badge: "CII Gold 2024",
   },
 ];
 
@@ -235,21 +235,21 @@ const PARTNERS = [
   "Air India Cargo",
   "IndiGo Freighter",
   "SpiceJet Cargo",
-  "Qatar Airways Cargo",
-  "Lufthansa Cargo",
-  "Emirates SkyCargo",
-  "Maersk Line",
-  "MSC",
-  "Hapag-Lloyd",
-  "CMA CGM",
-  "Evergreen",
-  "COSCO",
   "Blue Dart",
-  "FedEx India",
-  "DHL Express",
-  "DTDC",
   "Delhivery",
+  "DTDC",
   "XpressBees",
+  "Ecom Express",
+  "FedEx India",
+  "DHL Express India",
+  "Indian Railways (CONCOR)",
+  "Shadowfax",
+  "Gati-KWE",
+  "Transport Corporation of India",
+  "VRL Logistics",
+  "Rivigo",
+  "Porter",
+  "Shiprocket",
 ];
 
 const OFFICES = [
@@ -263,9 +263,9 @@ const OFFICES = [
   {
     flag: "HY",
     city: "Hyderabad",
-    type: "Operations Office",
+    type: "South India Operations Office",
     addr: "Hyderabad, Telangana, India",
-    tags: ["EU Distribution", "Pharma Lane", "Customs DE"],
+    tags: ["Road Network", "Cold Chain", "Last Mile"],
   },
 ];
 
@@ -332,9 +332,9 @@ const TESTS = [
 const NUM_STATS = [
   { target: 25, suffix: "+ yrs", label: "Industry experience\nsince 1999" },
   { target: 12400, suffix: "+", label: "Monthly shipments\nprocessed" },
-  { target: 180, suffix: "+", label: "Countries in\nactive network" },
+  { target: 28, suffix: "+", label: "States covered\nacross India" },
   { target: 99, suffix: "%", label: "On-time delivery\nrate (2024)" },
-  { target: 4200, suffix: "+", label: "Logistics professionals\nworldwide" },
+  { target: 2800, suffix: "+", label: "Logistics professionals\nacross India" },
 ];
 
 /* ═══════════ COMPONENT ═══════════ */
@@ -458,10 +458,10 @@ export default function AboutWrapper() {
             <p className={styles.heroDesc}>
               MahaveerTrans was built on a single conviction — that Indian
               businesses deserve world-class freight infrastructure without
-              world-class complexity. From a single truck depot in Mumbai in
-              1999, we have grown into a full-spectrum logistics powerhouse with
-              presence in 180+ countries, 3 million sq.ft of warehousing, and a
-              team of 4,200+ logistics professionals.
+              the complexity. From a single truck depot in Mumbai in 1999,
+              we have grown into a full-spectrum pan-India logistics powerhouse
+              with presence in all 28 states, 3 million sq.ft of warehousing,
+              and a dedicated team of 2,800+ logistics professionals.
             </p>
             <div className={styles.heroActions}>
               <button
@@ -499,7 +499,7 @@ export default function AboutWrapper() {
               />
               <div className={styles.hiBadge}>
                 <div className={styles.hiBadgeVal}>
-                  4,200
+                  2,800
                   <span style={{ color: "var(--accent)", fontSize: "1.2rem" }}>
                     +
                   </span>
@@ -507,7 +507,7 @@ export default function AboutWrapper() {
                 <div className={styles.hiBadgeLbl}>
                   Team members
                   <br />
-                  across 12 countries
+                  across 28 states
                 </div>
               </div>
             </div>
@@ -578,19 +578,19 @@ export default function AboutWrapper() {
             </h2>
             <p className={styles.reveal} style={{ transitionDelay: "0.12s" }}>
               MahaveerTrans Logistics Pvt. Ltd. was founded in Mumbai in 1999 by
-              Arvind Mahaveer with three trucks and a conviction that India's
-              exporters deserved more. Today we are one of India's top five
+              Arvind Mahaveer with three trucks and a conviction that India’s
+              businesses deserved more. Today we are one of India’s top five
               integrated logistics providers — publicly listed on BSE (2019),
-              ISO 9001:2015 certified, and operating across air, ocean, road,
+              ISO 9001:2015 certified, and operating across air, road, rail,
               cold-chain, warehousing, and last-mile verticals.
             </p>
             <p className={styles.reveal} style={{ transitionDelay: "0.16s" }}>
               Our technology backbone — the MT Connect platform — gives every
               client real-time visibility across their entire supply chain, from
               first-mile pickup to final proof of delivery. With 3 million sq.ft
-              of GDP-certified warehousing across 12 hub cities and partnerships
-              with 40+ airlines and 15 ocean carriers, we operate one of India's
-              most resilient logistics networks.
+              of GDP-certified warehousing across 12 hub cities in India and a
+              fleet of 500+ GPS-tracked vehicles, we operate one of India’s most
+              resilient domestic logistics networks.
             </p>
             <div
               className={`${styles.missionVision} ${styles.reveal}`}
@@ -600,18 +600,18 @@ export default function AboutWrapper() {
                 <div className={styles.mvIcon}>🎯</div>
                 <div className={styles.mvTitle}>Our Mission</div>
                 <div className={styles.mvText}>
-                  To simplify global trade for Indian businesses by delivering
-                  reliable, technology-powered logistics that reduces cost,
-                  eliminates uncertainty, and accelerates growth.
+                  To simplify domestic logistics for Indian businesses by delivering
+                  reliable, technology-powered freight solutions that reduce cost,
+                  eliminate uncertainty, and accelerate growth across every state.
                 </div>
               </div>
               <div className={`${styles.mvCard} ${styles.mvCardVision}`}>
                 <div className={styles.mvIcon}>🔭</div>
                 <div className={styles.mvTitle}>Our Vision</div>
                 <div className={styles.mvText}>
-                  To be Asia's most trusted logistics partner by 2030 —
-                  connecting manufacturers, exporters, and e-commerce brands to
-                  every market on earth.
+                  To be India’s most trusted end-to-end logistics partner by 2030 —
+                  connecting manufacturers, retailers, and e-commerce brands to every
+                  corner of the country.
                 </div>
               </div>
             </div>

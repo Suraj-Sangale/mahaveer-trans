@@ -1248,6 +1248,7 @@
 .partnerScroll {
   overflow: hidden;
   position: relative;
+  padding-top: 10px;
 }
 
 .partnerScroll::before,

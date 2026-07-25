@@ -24,7 +24,7 @@ const cx = (...args) => {
 /* ─── SITE DATA ─── */
 const SITE_DATA = {
   meta: {
-    pageTitle: `${getConstant("company_name_short")} — Modern Logistics`,
+    pageTitle: `${getConstant("company_name_short")} — Reliable Road Transport & Logistics`,
     fpTitle: "🎨 Design Settings",
     fpColorLabel: "Accent Color",
     fpDisplayLabel: "Display / Heading Font",
@@ -34,39 +34,48 @@ const SITE_DATA = {
     drawerFontBtnText: "Fonts & Accent Color",
     fabIcon: "💬",
   },
+
   company: {
     name: getConstant("company_name_short"),
     tagline:
-      "Delivering the world's goods with precision, speed, and care — your trusted partner in global logistics since 1999.",
+      "Reliable road transportation and logistics solutions across India — delivering goods safely, efficiently, and on time.",
     founded: "2010",
     phone: getConstant("contact_no_display"),
     email: getConstant("company_email"),
     website: getConstant("company_website"),
     address: getConstant("company_address"),
     rating: "4.9★",
-    ratingLabel: "Average rating across 1,200+ reviews",
+    ratingLabel: "Trusted by businesses across India",
   },
+
   hero: {
-    pill: "Live tracking across 180+ countries",
+    pill: "Nationwide Road Transport Across India",
     titleLine1: "Welcome To",
     titleLine2Hl: "MAHAVEER",
     titleLine3: "Trans Solution",
     chip: "Since 1999",
     description:
-      "End-to-end freight solutions powered by real-time AI routing, live shipment tracking, and a global carrier network built for speed and reliability.",
-    cta1: "Start Shipping →",
-    cta2: "▶ Watch Demo",
+      "End-to-end road transportation and logistics solutions designed for businesses across India. From local deliveries to long-distance movement, we ensure safe, reliable, and timely transportation.",
+    cta1: "Get a Transport Quote →",
+    cta2: "▶ Explore Services",
+
     image:
       "https://autobahntrucking.com/storage/app/vehicles/images/Bharatbenz-truck-5528TT.jpg",
+
     statCard1: {
-      label: "Monthly Deliveries",
-      sub: "shipments this month",
-      badge: "↑ 18% vs last month",
-      capacityLabel: "Capacity used",
+      label: "Deliveries",
+      sub: "Reliable shipments across India",
+      badge: "Safe & On-Time",
+      capacityLabel: "Fleet availability",
     },
-    statCard2: { label: "On-time Rate", sub: "last 200 days" },
+
+    statCard2: {
+      label: "On-time Rate",
+      sub: "Reliable delivery performance",
+    },
+
     trust: {
-      count: "4,800+",
+      count: "500+",
       label: "businesses trust MahaveerTrans",
       avatars: [
         "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&q=80&auto=format&fit=crop&crop=face",
@@ -74,268 +83,329 @@ const SITE_DATA = {
         "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&q=80&auto=format&fit=crop&crop=face",
       ],
     },
-    stats: { shipments: 12400, onTime: 99 },
+
+    stats: {
+      shipments: 5000,
+      onTime: 98,
+    },
   },
+
   ticker: [
-    "Air Freight",
-    "Ocean Shipping",
     "Road Transport",
-    "Cold Chain",
-    "Customs Clearance",
-    "Warehousing & 3PL",
+    "FTL Transportation",
+    "LTL Transportation",
+    "Part Load Transport",
+    "Full Truck Load",
+    "Express Delivery",
+    "Warehousing",
     "Last Mile Delivery",
-    "Project Cargo",
-    "Express Courier",
-    "Reverse Logistics",
+    "Cargo Transportation",
+    "Distribution Services",
   ],
+
   clients: {
-    label: "Trusted by",
+    label: "Trusted by Businesses",
     logos: [
       "MAHINDRA",
       "RELIANCE",
-      "INFOSYS",
-      "WIPRO",
-      "ADANI",
-      "GODREJ",
       "TATA",
+      "GODREJ",
+      "ADANI",
+      "L&T",
+      "HINDUSTAN",
     ],
   },
+
   services: {
     sectionTag: "What We Do",
-    heading: "Complete Logistics Under One Roof",
-    headingHl: "Logistics",
+    heading: "Complete Road Logistics",
+    headingHl: "Solutions",
     link: "/services",
-    linkText:"All Services →",
+    linkText: "All Services →",
+
     description:
-      "From a single parcel to a full container — we handle every mode, every route, with zero compromise on visibility.",
+      "From local transportation to long-distance freight movement, we provide reliable road logistics solutions across major cities, states, and industrial regions in India.",
+
     learnMoreText: "Learn more →",
     learnMoreLink: "/about",
+
     items: [
       {
-        tag: "Express",
-        tagClass: "tp-sky",
-        icon: "",
-        title: "Air Freight",
-        description:
-          "Priority air cargo with door-to-door tracking. Partnered with 40+ airlines for daily worldwide departures.",
-        image:
-          "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=80&auto=format&fit=crop",
-      },
-      {
-        tag: "FCL / LCL",
-        tagClass: "tp-blue",
-        icon: "",
-        title: "Sea Freight",
-        description:
-          "Cost-effective ocean freight across all major trade lanes. Full container or groupage — we handle it all.",
-        image:
-          "https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=600&q=80&auto=format&fit=crop",
-      },
-      {
-        tag: "FTL / LTL",
+        tag: "Primary Service",
         tagClass: "tp-amber",
         icon: "",
         title: "Road Transport",
         description:
-          "GPS-tracked trucks across the full road network. Temperature-controlled options available nationwide.",
+          "Reliable road transportation services across India for safe and timely movement of commercial goods and cargo.",
         image:
           "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=600&q=80&auto=format&fit=crop",
       },
+
       {
-        tag: "3PL",
+        tag: "FTL",
+        tagClass: "tp-blue",
+        icon: "",
+        title: "Full Truck Load",
+        description:
+          "Dedicated trucks for businesses requiring complete vehicle capacity for secure and efficient long-distance transportation.",
+        image:
+          "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80&auto=format&fit=crop",
+      },
+
+      {
+        tag: "LTL",
+        tagClass: "tp-sky",
+        icon: "",
+        title: "Part Load Transport",
+        description:
+          "Cost-effective transportation for smaller shipments by efficiently utilizing available truck capacity.",
+        image:
+          "https://images.unsplash.com/photo-1586191582119-6d54e8d6e6f4?w=600&q=80&auto=format&fit=crop",
+      },
+
+      {
+        tag: "Support Service",
         tagClass: "tp-green",
         icon: "",
-        title: "Warehousing & 3PL",
+        title: "Warehousing & Distribution",
         description:
-          "Smart fulfillment centers with WMS integration, pick & pack, kitting, and same-day dispatch capability.",
+          "Flexible warehousing, storage, distribution, and dispatch support to simplify your supply chain operations.",
         image:
           "https://images.unsplash.com/photo-1553413077-190dd305871c?w=600&q=80&auto=format&fit=crop",
       },
     ],
   },
+
   numbers: [
     {
-      value: 12400,
+      value: 5000,
       suffix: "+",
-      label: "Monthly shipments processed globally",
+      label: "Shipments handled across India",
     },
-    { value: 99, suffix: "%", label: "On-time delivery rate, 90-day avg" },
-    { value: 180, suffix: "+", label: "Countries in active network" },
-    { value: 25, suffix: " yrs", label: "Years of logistics experience" },
+    {
+      value: 98,
+      suffix: "%",
+      label: "On-time delivery performance",
+    },
+    {
+      value: 25,
+      suffix: "+",
+      label: "States & regions served",
+    },
+    {
+      value: 10,
+      suffix: "+",
+      label: "Years of logistics experience",
+    },
   ],
+
   about: {
     sectionTag: "Our Story",
-    tagStrip: "Since 1999",
-    title: "Built for Scale.",
-    titleHl: "Trusted by All.",
-    p1: "MahaveerTrans was founded in 1999 with a single idea: logistics should be transparent, fast, and accessible to every business. Today we operate in 40+ countries with 3,200 specialists and a proprietary TMS platform that gives clients full supply chain visibility.",
-    p2: "Our AI-powered routing engine selects the best combination of speed, cost, and carbon efficiency for every shipment — automatically optimised in real time.",
-    cta: "Meet The Team →",
+    tagStrip: "India-Focused Logistics",
+
+    title: "Built for Reliable",
+    titleHl: "Transportation.",
+
+    p1: "Mahaveer Trans Solution provides dependable road transportation and logistics services for businesses across India. Our focus is on safe cargo movement, timely deliveries, transparent communication, and dependable transportation support.",
+
+    p2: "From local movement to long-distance transportation between major cities and industrial hubs, our team works to provide efficient and practical logistics solutions based on each customer's requirements.",
+
+    cta: "Know More About Us →",
+
     image:
       "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=900&q=80&auto=format&fit=crop",
+
     features: [
-      "ISO 9001 Certified",
-      "IATA Accredited",
-      "24/7 Control Tower",
-      "AI-Powered Routing",
-      "Carbon Neutral 2030",
-      "Real-time Visibility",
+      "Pan-India Road Transportation",
+      "Reliable Fleet Network",
+      "Experienced Transport Team",
+      "Safe Cargo Handling",
+      "On-Time Delivery Focus",
+      "Customer-Focused Support",
     ],
   },
+
   process: {
     sectionTag: "Simple Process",
-    heading: "Ship in",
-    headingHl: "4 Steps",
+    heading: "Transport in",
+    headingHl: "4 Easy Steps",
+
     steps: [
       {
         num: "01",
-        title: "Get a Quote",
-        desc: "Fill our form in under 60 seconds. Our AI returns an instant, competitive quote for your route.",
+        title: "Share Your Requirement",
+        desc: "Tell us your pickup location, delivery destination, cargo details, and transportation requirements.",
       },
+
       {
         num: "02",
-        title: "We Plan the Route",
-        desc: "Our team designs the optimal path using AI routing, carrier rates, and customs intelligence.",
+        title: "Get a Quote",
+        desc: "Our team reviews your requirement and provides a suitable transportation solution with transparent pricing.",
       },
+
       {
         num: "03",
         title: "Pickup & Transit",
-        desc: "Your cargo is collected on schedule and moves through our vetted, insured carrier network.",
+        desc: "Your goods are picked up as scheduled and transported safely through our road transportation network.",
       },
+
       {
         num: "04",
-        title: "Delivered ✓",
-        desc: "Track in real time. Receive photo proof of delivery and full digital documentation.",
+        title: "Safe Delivery ✓",
+        desc: "Your shipment reaches the destination safely and on time, with regular communication throughout the journey.",
       },
     ],
   },
+
   fleet: {
     sectionTag: "Our Fleet",
-    heading: "Built to",
-    headingHl: "Deliver",
+    heading: "Reliable Vehicles",
+    headingHl: "For Every Requirement",
     href: "/fleet",
-    cta: "View All Fleet →",
+    cta: "View Our Fleet →",
+
     items: [
       {
-        title: "Heavy Haulage Fleet",
-        sub: "200+ trucks across India",
+        title: "Heavy Commercial Trucks",
+        sub: "For long-distance cargo movement",
         tag: "Road",
         tall: true,
         image:
           "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80&auto=format&fit=crop",
       },
+
       {
-        title: "Container Vessels",
-        sub: "40,000+ TEU capacity",
-        tag: "Ocean",
+        title: "Full Truck Load",
+        sub: "Dedicated transportation solutions",
+        tag: "FTL",
         tall: false,
         image:
-          "https://images.unsplash.com/photo-1562408590-e32931084e23?w=500&q=80&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=500&q=80&auto=format&fit=crop",
       },
+
       {
-        title: "Air Cargo Network",
-        sub: "40+ airline partners",
-        tag: "Air",
+        title: "Part Load Vehicles",
+        sub: "Flexible cargo transportation",
+        tag: "LTL",
         tall: false,
         image:
-          "https://images.unsplash.com/photo-1627579809897-38afb36a8b4c?w=500&q=80&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1586191582119-6d54e8d6e6f4?w=500&q=80&auto=format&fit=crop",
       },
+
       {
-        title: "Smart Warehouses",
-        sub: "3M sq.ft managed",
-        tag: "Storage",
+        title: "Goods Transportation",
+        sub: "Safe movement of commercial cargo",
+        tag: "Cargo",
         tall: false,
         image:
-          "https://images.unsplash.com/photo-1553413077-190dd305871c?w=500&q=80&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1509691363482-a0d9c9246f16?w=500&q=80&auto=format&fit=crop",
       },
+
       {
-        title: "Urban Delivery Tech",
-        sub: "EV fleet + drones",
-        tag: "Last Mile",
+        title: "Distribution Vehicles",
+        sub: "Reliable last-mile transportation",
+        tag: "Delivery",
         tall: false,
         image:
           "https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=500&q=80&auto=format&fit=crop",
       },
     ],
   },
+
   tracking: {
-    sectionTag: "Real-Time",
+    sectionTag: "Shipment Tracking",
     heading: "Track Your",
     headingHl: "Shipment",
+
     description:
-      "Enter your tracking ID for instant live updates — location, status, customs clearance, and ETA all in one view.",
-    inputPlaceholder: "e.g. VF-2025-00812",
+      "Enter your tracking ID to check the latest status of your shipment and stay updated throughout its transportation journey.",
+
+    inputPlaceholder: "Enter your tracking ID",
     btnText: "Track Now",
     btnFound: "✓ Found!",
-    hints: ["No login needed", "Live map view", "SMS alerts"],
+
+    hints: ["Easy tracking", "Shipment status", "Delivery updates"],
+
     demo: {
-      id: "#VF-2025-00812",
+      id: "#MTS-2025-00812",
       status: "● In Transit",
+
       from: "Mumbai",
-      fromCode: "BOM · Origin",
-      to: "Frankfurt",
-      toCode: "FRA · Destination",
+      fromCode: "MH · Origin",
+
+      to: "Pune",
+      toCode: "MH · Destination",
+
       timeline: [
         {
           status: "done",
-          title: "Picked up from sender",
-          time: "May 28 · 09:14 AM",
+          title: "Shipment picked up",
+          time: "Today · 09:14 AM",
         },
+
         {
           status: "done",
-          title: "Departed Mumbai Airport",
-          time: "May 28 · 11:40 PM",
+          title: "Departed from origin",
+          time: "Today · 11:40 AM",
         },
+
         {
           status: "now",
-          title: "In transit — Dubai layover",
-          time: "May 29 · 04:22 AM · Now",
+          title: "Shipment in transit",
+          time: "Today · In Transit",
         },
+
         {
           status: "pending",
-          title: "Arriving Frankfurt",
-          time: "May 30 · Est. 08:00 AM",
+          title: "Arriving at destination",
+          time: "Estimated delivery",
         },
       ],
     },
   },
+
   testimonials: {
     sectionTag: "Client Stories",
-    heading: "What They",
+    heading: "What Our Clients",
     headingHl: "Say",
+
     items: [
       {
         stars: "★★★★★",
-        text: "MahaveerTrans cut our import lead time from 3 weeks to 9 days. The tracking platform is genuinely world-class — our ops team loves it.",
+        text: "Mahaveer Trans Solution provides reliable transportation support and keeps our team updated throughout the movement of goods.",
         name: "Rajesh Mehta",
-        role: "Supply Chain Director, Tata Consumer",
+        role: "Business Owner",
         avatar:
           "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&q=80&auto=format&fit=crop&crop=face",
       },
+
       {
         stars: "★★★★★",
-        text: "We handle 500+ shipments monthly across 30 countries. Zero-exception customs handling and brilliant account support sets MahaveerTrans apart.",
+        text: "Their team understands our transportation requirements and consistently works to ensure our shipments reach the destination on time.",
         name: "Priya Sharma",
-        role: "Head of Operations, GlobalMed",
+        role: "Operations Manager",
         avatar:
           "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&q=80&auto=format&fit=crop&crop=face",
       },
+
       {
         stars: "★★★★★",
-        text: "Cold chain precision is non-negotiable for us. MahaveerTrans's refrigerated fleet and monitoring gave us confidence to expand into five new markets.",
+        text: "We appreciate the communication and support provided during transportation. They are a dependable logistics partner for our business.",
         name: "Arjun Kapoor",
-        role: "CEO, FreshRoute Agri",
+        role: "Business Operations",
         avatar:
           "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&q=80&auto=format&fit=crop&crop=face",
       },
     ],
   },
+
   cta: {
     sectionTag: "Get Started",
-    title: "Ready to Ship",
-    titleHl: "Smarter?",
+    title: "Need Reliable",
+    titleHl: "Transport?",
     description:
-      "Get a free consultation with our experts. No commitment, no hidden fees — just the best logistics solution for your business.",
+      "Tell us your transportation requirement and get a reliable road logistics solution for your business anywhere across India.",
+
     cta1: "Get Free Quote →",
     cta2: "📞 Call us",
   },
@@ -894,7 +964,6 @@ export default function HomeWrapper() {
           <p>{d.footer.legal}</p>
         </div>
       </footer> */}
-
     </>
   );
 }

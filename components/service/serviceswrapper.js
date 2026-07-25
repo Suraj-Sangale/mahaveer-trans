@@ -36,33 +36,33 @@ const PAGE = {
 
   hero: {
     tag: "Our Capabilities",
-    headingPart1: "Every Mode.",
+    headingPart1: "Every Route.",
     headingHl: "One Partner.",
     description:
-      "From express air parcels to bulk ocean freight, cold-chain pharmaceuticals to last-mile urban delivery — MahaveerTrans provides the full spectrum of logistics services, backed by 25 years of expertise and a network spanning 180+ countries.",
+      "From express air cargo to bulk road freight, cold-chain pharmaceuticals to last-mile urban delivery — MahaveerTrans covers every corner of India with reliable, tech-driven logistics backed by 25 years of expertise.",
     stats: [
       { value: "12,400", suffix: "+", label: "Monthly Shipments" },
       { value: "99", suffix: "%", label: "On-time Rate" },
-      { value: "180", suffix: "+", label: "Countries" },
+      { value: "28", suffix: "+", label: "States Served" },
       { value: "24", suffix: "/7", label: "Live Support" },
     ],
   },
 
   ticker: [
-    "Air Freight",
-    "Ocean Shipping",
+    "Air Cargo",
     "Road Transport",
     "Cold Chain",
-    "Customs Clearance",
     "Warehousing & 3PL",
     "Last Mile Delivery",
+    "Rail Freight",
     "Project Cargo",
     "Express Courier",
     "Reverse Logistics",
     "Hazmat Handling",
     "FTL & LTL",
-    "FCL & LCL",
     "Temperature Control",
+    "Pan-India Network",
+    "Same-Day Dispatch",
   ],
 
   servicesList: {
@@ -76,7 +76,7 @@ const PAGE = {
     filters: [
       { id: "all", label: "All Services", dot: "#0ea5e9" },
       { id: "air", label: "Air", dot: "#7c3aed" },
-      { id: "ocean", label: "Ocean", dot: "#1d4ed8" },
+      { id: "rail", label: "Rail", dot: "#1d4ed8" },
       { id: "road", label: "Road", dot: "#f59e0b" },
       { id: "cold", label: "Cold Chain", dot: "#16a34a" },
       { id: "wh", label: "Warehousing", dot: "#dc2626" },
@@ -87,11 +87,11 @@ const PAGE = {
         tag: "Express",
         tagClass: "tpPurple",
         icon: "✈️",
-        title: "Air Freight",
+        title: "Air Cargo (Domestic)",
         description:
-          "Time-critical shipments handled with precision. We offer next-flight-out, standard express, and economy air services through partnerships with 40+ carriers globally.",
+          "Time-critical domestic shipments handled with precision. Same-day and next-day air cargo across all major Indian cities via IndiGo, SpiceJet, Air India and other domestic carriers.",
         features: [
-          "Door-to-door with customs included",
+          "Door-to-door across all metro cities",
           "Next-flight-out available 365 days",
           "Dangerous goods & pharma certified",
           "Live GPS tracking per consignment",
@@ -102,23 +102,23 @@ const PAGE = {
           "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=700&q=80&auto=format&fit=crop",
       },
       {
-        id: "ocean",
-        tag: "FCL / LCL",
+        id: "rail",
+        tag: "Economy / Express",
         tagClass: "tpBlue",
-        icon: "🚢",
-        title: "Sea Freight",
+        icon: "🚂",
+        title: "Rail Freight",
         description:
-          "Cost-effective ocean freight across all major trade lanes. Full container loads (FCL) and groupage (LCL) with guaranteed space allocations on key routes.",
+          "Cost-effective and reliable rail cargo across India’s extensive rail network. Ideal for bulk goods, heavy machinery, and long-haul inter-state shipments via Indian Railways & CONCOR.",
         features: [
-          "20ft, 40ft, HC & reefer containers",
-          "LCL consolidation from 0.1 CBM",
-          "Port-to-port and door-to-door",
-          "Vessel tracking & ETA alerts",
+          "Pan-India rail network coverage",
+          "Container & wagon load options",
+          "CONCOR & private freight station access",
+          "Consignment tracking & ETA alerts",
         ],
-        price: "35,000",
-        unit: "per container",
+        price: "18,000",
+        unit: "per wagon",
         image:
-          "https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=700&q=80&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1553030029-6db37e0f8b98?w=700&q=80&auto=format&fit=crop",
       },
       {
         id: "road",
@@ -127,11 +127,11 @@ const PAGE = {
         icon: "🚛",
         title: "Road Transport",
         description:
-          "Nationwide road network with 200+ GPS-tracked trucks. FTL for full loads, LTL for partials, and dedicated vehicles for time-critical lanes.",
+          "India’s most comprehensive road network with 500+ GPS-tracked trucks. FTL for full loads, LTL for partials — covering every state highway and major industrial corridor.",
         features: [
-          "200+ owned & partner vehicles",
+          "500+ owned & partner vehicles pan-India",
           "GPS + temperature monitoring",
-          "Overnight express lanes (major cities)",
+          "Overnight express lanes (metro cities)",
           "POD via mobile app within 2 hrs",
         ],
         price: "12,000",
@@ -146,12 +146,12 @@ const PAGE = {
         icon: "❄️",
         title: "Cold Chain Logistics",
         description:
-          "End-to-end temperature-controlled supply chain for pharmaceutical, biotech, and perishable food products. GDP-compliant facilities across all hubs.",
+          "End-to-end temperature-controlled supply chain for pharmaceutical, biotech, and perishable food products across India. GDP & FSSAI-compliant facilities at all major hubs.",
         features: [
           "2°C–8°C, -20°C & ambient lanes",
           "Real-time temp logging (every 5 min)",
-          "GDP & HACCP certified warehouses",
-          "Break-bulk & re-icing at transit hubs",
+          "GDP & FSSAI certified warehouses",
+          "Reefer vans across 50+ Indian cities",
         ],
         price: "8,500",
         unit: "per pallet/day",
@@ -178,16 +178,16 @@ const PAGE = {
           "https://images.unsplash.com/photo-1553413077-190dd305871c?w=700&q=80&auto=format&fit=crop",
       },
       {
-        id: "air",
+        id: "road",
         tag: "B2C",
         tagClass: "tpSky",
-        icon: "🛵",
+        icon: "🚛",
         title: "Last Mile Delivery",
         description:
-          "Urban and semi-urban delivery through a hybrid fleet of EV bikes, cargo vans, and drone pilots. Integrates directly with your e-commerce platform via REST API.",
+          "Urban and semi-urban delivery across 500+ Indian pin codes through a hybrid fleet of EV bikes and cargo vans. Integrates directly with your e-commerce platform via REST API.",
         features: [
-          "Same-day & next-day options",
-          "Live customer tracking link on SMS",
+          "Same-day & next-day delivery pan-India",
+          "Live tracking link on SMS & WhatsApp",
           "Failed delivery auto-rescheduling",
           "Proof-of-delivery photo + OTP",
         ],
@@ -268,29 +268,29 @@ const PAGE = {
     headingPart1: "Find the Right",
     headingHl: "Service for You",
     description:
-      "Not sure which service fits your shipment? Use this quick comparison to match your requirements to the right mode.",
+      "Not sure which service fits your shipment? Use this quick comparison to match your requirements within India.",
     headers: [
       "Feature",
-      "Air Freight",
-      "Sea Freight ★",
-      "Road Transport",
+      "Air Cargo",
+      "Road Transport ★",
+      "Rail Freight",
       "Cold Chain",
     ],
     highlightCol: 2,
     rows: [
       {
         feature: "Transit Time",
-        vals: ["1–3 days", "14–28 days", "1–5 days", "Same as mode"],
+        vals: ["Same day–1 day", "1–4 days", "3–7 days", "Same as mode"],
       },
-      { feature: "Cost", vals: ["High", "Low", "Medium", "Medium–High"] },
-      { feature: "Weight Limit", vals: ["Any", "Any", "Up to 25T", "Any"] },
+      { feature: "Cost", vals: ["High", "Medium", "Low", "Medium–High"] },
+      { feature: "Weight Limit", vals: ["Up to 500 kg", "Up to 25T", "Any", "Any"] },
       { feature: "Tracking", vals: ["✓", "✓", "✓", "✓"] },
-      { feature: "Door-to-Door", vals: ["✓", "✓", "✓", "✓"] },
-      { feature: "Customs Included", vals: ["✓", "✓", "–", "✓"] },
+      { feature: "Door-to-Door", vals: ["✓", "✓", "–", "✓"] },
+      { feature: "Pan-India Cover", vals: ["✓", "✓", "✓", "✓"] },
       { feature: "Temp Control", vals: ["–", "–", "–", "✓"] },
       {
         feature: "Min. Volume",
-        vals: ["1 kg", "0.1 CBM", "100 kg", "1 pallet"],
+        vals: ["0.5 kg", "100 kg", "1 tonne", "1 pallet"],
       },
     ],
     highlightBadge: "Most Popular",
@@ -360,29 +360,29 @@ const PAGE = {
       id: "#MT-2025-00812",
       status: "● In Transit",
       from: "Mumbai",
-      fromCode: "BOM · Origin",
-      to: "Frankfurt",
-      toCode: "FRA · Destination",
+      fromCode: "MUM · Origin",
+      to: "New Delhi",
+      toCode: "DEL · Destination",
       timeline: [
         {
           status: "done",
           title: "Picked up from sender",
-          time: "May 28 · 09:14 AM",
+          time: "Jul 25 · 09:14 AM",
         },
         {
           status: "done",
-          title: "Departed Mumbai Airport",
-          time: "May 28 · 11:40 PM",
+          title: "Departed Mumbai Warehouse",
+          time: "Jul 25 · 02:30 PM",
         },
         {
           status: "now",
-          title: "In transit — Dubai layover",
-          time: "May 29 · 04:22 AM · Now",
+          title: "In transit — Nagpur checkpoint",
+          time: "Jul 26 · 04:22 AM · Now",
         },
         {
           status: "pending",
-          title: "Arriving Frankfurt",
-          time: "May 30 · Est. 08:00 AM",
+          title: "Arriving Delhi Hub",
+          time: "Jul 26 · Est. 06:00 PM",
         },
       ],
     },
@@ -393,6 +393,7 @@ const PAGE = {
     headingPart1: "Trusted by",
     headingHl: "Industry Leaders",
     cta: "Read All Case Studies →",
+    ctaLink: "",
     items: [
       {
         stars: "★★★★★",
@@ -430,27 +431,27 @@ const PAGE = {
     items: [
       {
         q: "How quickly can I get a quote?",
-        a: "For standard shipments, our AI generates an instant quote online in under 60 seconds. For complex, oversized, or project cargo, a dedicated team member will respond within 2 business hours.",
+        a: "For standard domestic shipments, our system returns an instant quote in under 60 seconds. For project cargo or special requirements, a dedicated team member will respond within 2 business hours.",
       },
       {
-        q: "Do you handle customs documentation?",
-        a: "Yes. We provide end-to-end customs clearance including HS code classification, duty calculation, import/export declarations, and liaison with customs authorities in both origin and destination countries.",
+        q: "Which states and cities do you cover?",
+        a: "We cover all 28 states and 8 union territories across India, including major metros like Mumbai, Delhi, Bangalore, Chennai, Hyderabad, Pune, Kolkata, and Ahmedabad, plus tier-2 and tier-3 towns.",
       },
       {
         q: "What is the minimum shipment size?",
-        a: "For LCL ocean and LTL road, we accept from 0.1 CBM / 1 kg. Air freight accepts from 0.5 kg. Last mile delivery starts from a single parcel. No minimum for warehousing storage.",
+        a: "For LTL road freight, we accept from 10 kg. Air cargo starts from 0.5 kg. Last mile delivery starts from a single parcel. No minimum for warehousing storage.",
       },
       {
-        q: "Is cold chain service available internationally?",
-        a: "Yes. Our temperature-controlled network covers all major trade lanes including India–EU, India–US, and intra-Asia. We use active (dry ice, gel packs, electric reefer) and passive solutions depending on transit time.",
+        q: "Is cold chain service available across India?",
+        a: "Yes. Our temperature-controlled network spans all major Indian cities with reefer vans, cold storage hubs, and GDP & FSSAI-certified facilities for pharmaceuticals and perishable food.",
       },
       {
         q: "How do I integrate your tracking with my platform?",
-        a: "We offer a REST API with full Swagger documentation, webhooks for status events, and a pre-built plugin for Shopify, WooCommerce, and SAP. API keys are provisioned within 24 hours of account activation.",
+        a: "We offer a REST API with full Swagger documentation, webhooks for status events, and pre-built plugins for Shopify, WooCommerce, and SAP. API keys are provisioned within 24 hours of account activation.",
       },
       {
         q: "What insurance options are available?",
-        a: "All shipments carry basic carrier liability. We offer additional Marine Cargo Insurance for full replacement value at 0.15% of cargo value. Pharma and high-value electronics get specialist cover through Lloyd's underwriters.",
+        a: "All shipments carry basic carrier liability. We offer additional Cargo Insurance for full replacement value. Pharma and high-value electronics shipments receive specialist coverage.",
       },
     ],
   },
@@ -458,17 +459,17 @@ const PAGE = {
   cta: {
     tag: "Get Started Today",
     headingPart1: "Move Your Cargo",
-    headingHl: "With Confidence",
+    headingHl: "Across India",
     description:
       "Talk to a logistics expert in under 5 minutes. No commitment, transparent pricing, and a dedicated account manager from day one.",
     btn1: "Get Free Quote →",
-    btn2: "📞 +91 22 4001 8000",
+    btn2: `📞 ${getConstant("contact_no_display")}`,
   },
 
   footer: {
     logo: getConstant("company_name_short"),
     tagline:
-      "Delivering the world's goods with precision and care. Your trusted logistics partner since 1999.",
+      "Delivering India's goods with precision, speed, and care. Your trusted pan-India logistics partner since 1999.",
     socials: [
       { label: "in", url: "#" },
       { label: "tw", url: "#" },
@@ -479,8 +480,8 @@ const PAGE = {
       {
         heading: "Services",
         links: [
-          ["Air Freight", "#"],
-          ["Sea Freight", "#"],
+          ["Air Cargo", "#"],
+          ["Rail Freight", "#"],
           ["Road Transport", "#"],
           ["Cold Chain", "#"],
           ["Warehousing", "#"],
@@ -517,7 +518,6 @@ const PAGE = {
     footerLinks: "Privacy · Terms · Sitemap",
   },
 
-  fab: "💬",
 };
 
 /* Small helper: join CSS-module class names, skipping falsy values */
@@ -628,15 +628,9 @@ export default function ServicesWrapper() {
       {/* BREADCRUMB */}
       <div className={styles.breadcrumb}>
         {D.breadcrumb.map((b, i) => (
-          <span
-            key={b.label}
-            style={{ display: "flex", alignItems: "center", gap: ".5rem" }}
-          >
-            {i > 0 && <span className={styles.bcSep}>/</span>}
-            <a
-              href={b.href}
-              className={cx(styles.bcItem, b.current && styles.current)}
-            >
+          <span key={b.label} style={{ display: "flex", alignItems: "center", gap: ".35rem" }}>
+            {i > 0 && <span className={styles.bcSep}>›</span>}
+            <a href={b.href} className={cx(styles.bcItem, b.current && styles.current)}>
               {b.label}
             </a>
           </span>
@@ -648,25 +642,44 @@ export default function ServicesWrapper() {
         <div className={styles.svcHeroBg} />
         <div className={styles.svcHeroGlow} />
         <div className={styles.svcHeroInner}>
-          <div className={styles.secTag}>{D.hero.tag}</div>
-          <h1 className={styles.secH}>
+
+          {/* Badge */}
+          <div className={styles.heroBadge}>{D.hero.tag}</div>
+
+          {/* Headline */}
+          <h1 className={styles.heroHeadline}>
             {D.hero.headingPart1}{" "}
-            <span className={styles.hl}>{D.hero.headingHl}</span>
+            <span className={styles.heroHl}>{D.hero.headingHl}</span>
           </h1>
+
+          {/* Description */}
           <p className={styles.heroDesc}>{D.hero.description}</p>
-          <div className={styles.heroMeta}>
+
+          {/* CTA Buttons */}
+          <div className={styles.heroCtas}>
+            <a href="/quote" className={styles.heroCtaPrimary}>
+              Get Free Quote →
+            </a>
+            <a href="#services" className={styles.heroCtaSecondary}>
+              Explore Services ↓
+            </a>
+          </div>
+
+          {/* Stats ribbon */}
+          <div className={styles.heroStats}>
             {D.hero.stats.map((s) => (
-              <div className={styles.hmItem} key={s.label}>
-                <div className={styles.hmVal}>
-                  {s.value}
-                  <span className={styles.s}>{s.suffix}</span>
+              <div className={styles.heroStat} key={s.label}>
+                <div className={styles.heroStatVal}>
+                  {s.value}<span>{s.suffix}</span>
                 </div>
-                <div className={styles.hmLbl}>{s.label}</div>
+                <div className={styles.heroStatLbl}>{s.label}</div>
               </div>
             ))}
           </div>
+
         </div>
       </div>
+
 
       {/* TICKER */}
       <div className={styles.tickerWrap}>
@@ -1119,12 +1132,12 @@ export default function ServicesWrapper() {
               <span className={styles.hl}>{D.testimonials.headingHl}</span>
             </h2>
           </div>
-          <button
+          {/* <button
             className={styles.btnPrimary}
             style={{ whiteSpace: "nowrap" }}
           >
             {D.testimonials.cta}
-          </button>
+          </button> */}
         </div>
         <div className={styles.testGrid}>
           {D.testimonials.items.map((t, i) => (

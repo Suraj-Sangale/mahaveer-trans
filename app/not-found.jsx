@@ -41,6 +41,8 @@ const styles = `
     font-family: 'Space Grotesk', sans-serif;
     overflow-x: hidden;
     min-height: 100vh;
+    /* Always dark — never inherits global theme */
+    color-scheme: dark;
 
     display:flex;
     flex-direction:column;
@@ -659,6 +661,27 @@ export default function Crane404({ coilSrc = "/image.png", onGoHome, showDebug =
   const [scrub, setScrub] = useState(0);
   const [paused, setPaused] = useState(false);
   const [readout, setReadout] = useState("");
+
+  /* ---- Force dark mode on <html> for the lifetime of this page ---- */
+  useEffect(() => {
+    const html = document.documentElement;
+    const prev = html.getAttribute("data-theme");
+    html.setAttribute("data-theme", "dark");
+
+    // Watch for any external toggle (navbar, system, next-themes) and snap back to dark
+    const observer = new MutationObserver(() => {
+      if (html.getAttribute("data-theme") !== "dark") {
+        html.setAttribute("data-theme", "dark");
+      }
+    });
+    observer.observe(html, { attributes: true, attributeFilter: ["data-theme", "class"] });
+
+    return () => {
+      observer.disconnect();
+      if (prev == null) html.removeAttribute("data-theme");
+      else html.setAttribute("data-theme", prev);
+    };
+  }, []);
 
   /* ---- ambient fog particles (same generation logic as the original inline <script>) ---- */
   useEffect(() => {

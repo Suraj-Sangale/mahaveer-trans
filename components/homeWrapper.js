@@ -160,7 +160,7 @@ const SITE_DATA = {
         description:
           "Cost-effective transportation for smaller shipments by efficiently utilizing available truck capacity.",
         image:
-          "https://images.unsplash.com/photo-1586191582119-6d54e8d6e6f4?w=600&q=80&auto=format&fit=crop",
+          "https://mahaveertrans.vercel.app/images/vehicale/semibed.png",
       },
 
       {
@@ -288,8 +288,7 @@ const SITE_DATA = {
         sub: "Flexible cargo transportation",
         tag: "LTL",
         tall: false,
-        image:
-          "https://images.unsplash.com/photo-1586191582119-6d54e8d6e6f4?w=500&q=80&auto=format&fit=crop",
+        image: "https://mahaveertrans.vercel.app/images/vehicale/semibed.png",
       },
 
       {

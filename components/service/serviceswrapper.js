@@ -992,13 +992,20 @@ export default function ServicesWrapper() {
               key={it.name}
             >
               <span className={styles.indCardBar} />
-              <div className={styles.indIcon}>
+              <div
+                className={styles.indIcon}
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <img
                   src={it.icon}
                   alt={it.name}
                   width={40}
                   height={40}
-                  // style={{ objectFit: "contain", display: "block" }}
+                  style={{ objectFit: "contain", display: "block" }}
                 />
               </div>
               <div className={styles.indName}>{it.name}</div>

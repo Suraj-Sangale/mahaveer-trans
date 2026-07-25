@@ -254,45 +254,17 @@ const PARTNERS = [
 
 const OFFICES = [
   {
-    flag: "🇮🇳",
-    city: "Mumbai (HQ)",
+    flag: "MH",
+    city: "Navi Mumbai (HQ)",
     type: "Global Headquarters",
-    addr: "Plot 47, MIDC Andheri East, Mumbai 400093, Maharashtra, India",
+    addr: "4022, 4023, 4th Floor BIMA Complex Kalamboli 400203, Maharashtra, India",
     tags: ["Operations Hub", "Air & Ocean", "Cold Chain", "Customs"],
   },
   {
-    flag: "🇮🇳",
-    city: "Delhi NCR",
-    type: "North India Hub",
-    addr: "Sector 68, IMT Manesar, Gurugram 122051, Haryana, India",
-    tags: ["Road Network", "3PL", "Last Mile"],
-  },
-  {
-    flag: "🇮🇳",
-    city: "Chennai",
-    type: "South India Hub",
-    addr: "MEPZ Special Economic Zone, Tambaram, Chennai 600045, Tamil Nadu, India",
-    tags: ["Port Services", "Automotive", "Export Hub"],
-  },
-  {
-    flag: "🇦🇪",
-    city: "Dubai",
-    type: "Middle East Office",
-    addr: "Jebel Ali Free Zone, South Zone, Dubai, UAE",
-    tags: ["GCC Coverage", "Re-export", "Bonded WH"],
-  },
-  {
-    flag: "🇸🇬",
-    city: "Singapore",
-    type: "Asia-Pacific Hub",
-    addr: "6 Changi Business Park, #04-12, Singapore 486002",
-    tags: ["APAC Network", "Ocean FCL", "Air Express"],
-  },
-  {
-    flag: "🇩🇪",
-    city: "Frankfurt",
-    type: "Europe Office",
-    addr: "Cargo City Süd, Gebäude 534, Frankfurt Airport, 60549 Germany",
+    flag: "HY",
+    city: "Hyderabad",
+    type: "Operations Office",
+    addr: "Hyderabad, Telangana, India",
     tags: ["EU Distribution", "Pharma Lane", "Customs DE"],
   },
 ];

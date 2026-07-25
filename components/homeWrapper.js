@@ -109,6 +109,7 @@ const SITE_DATA = {
     description:
       "From a single parcel to a full container — we handle every mode, every route, with zero compromise on visibility.",
     learnMoreText: "Learn more →",
+    learnMoreLink: "/about",
     items: [
       {
         tag: "Express",
@@ -603,9 +604,9 @@ export default function HomeWrapper() {
               {s.icon && <div className={cx("svc-icon")}>{s.icon}</div>}
               <h3 className={cx("svc-title")}>{s.title}</h3>
               <p className={cx("svc-desc")}>{s.description}</p>
-              <a href="#" className={cx("svc-link")}>
+              <Link href={d.services.learnMoreLink} className={cx("svc-link")}>
                 {d.services.learnMoreText}
-              </a>
+              </Link>
             </AnimCard>
           ))}
         </div>

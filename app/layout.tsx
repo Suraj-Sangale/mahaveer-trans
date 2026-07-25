@@ -11,6 +11,9 @@ import AiChat from "@/components/AiChat/AiChat";
 export const metadata: Metadata = {
   title: `${constantsList.COMPANY_NAME_SHORT} — Modern Logistics`,
   description: "Fast, reliable, global logistics solutions for every business.",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({

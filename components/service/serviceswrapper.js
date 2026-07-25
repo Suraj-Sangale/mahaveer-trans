@@ -753,7 +753,7 @@ export default function ServicesWrapper() {
                 </div>
               </div>
               <div className={styles.svcCardBody}>
-                <div className={styles.svcCardIcon}>{s.icon}</div>
+                {/* <div className={styles.svcCardIcon}>{s.icon}</div> */}
                 <h3 className={styles.svcCardTitle}>{s.title}</h3>
                 <p className={styles.svcCardDesc}>{s.description}</p>
                 <div className={styles.svcCardFeatures}>

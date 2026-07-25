@@ -1117,9 +1117,9 @@
 }
 .indGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 6rem;
-  row-gap: 2rem;
+  /* Desktop: 4 columns on wide screens, auto-fills down to 200px minimum */
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
 }
 .indCard {
   background: var(--card);
@@ -1773,6 +1773,11 @@
     grid-template-columns: 1fr 1fr;
     gap: 2.5rem;
   }
+  .indGrid {
+    /* Tablet: 3 columns */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
 }
 @media (max-width: 640px) {
   .section {
@@ -1832,7 +1837,9 @@
     font-size: 1.9rem;
   }
   .indGrid {
-    grid-template-columns: 1fr 1fr;
+    /* Mobile: 2 columns */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.875rem;
   }
   .testGrid {
     grid-template-columns: 1fr;

@@ -550,6 +550,8 @@ export default function ServicesWrapper() {
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
   const [trackValue, setTrackValue] = useState("");
   const [trackState, setTrackState] = useState("idle"); // idle | success | error
+  const [selectedRegion, setSelectedRegion] = useState(null); // for map focus
+  const [mapMode, setMapMode] = useState("street"); // "street" | "satellite"
 
   /* ── REFS for imperative DOM animation ── */
   const revealRefs = useRef([]);
@@ -873,7 +875,12 @@ export default function ServicesWrapper() {
         <div className={styles.covGrid}>
           <div className={cx(styles.covVisual, styles.reveal)} ref={addReveal}>
             <div className={styles.covMapWrap}>
-              <IndiaMap regions={D.coverage.regions} />
+              <IndiaMap
+                regions={D.coverage.regions}
+                selectedRegion={selectedRegion}
+                mode={mapMode}
+                onToggleMode={() => setMapMode((m) => m === "street" ? "satellite" : "street")}
+              />
             </div>
             {/* <div className={styles.covBadge}>
               <div className={styles.covBadgeVal}>{D.coverage.badgeVal}</div>
@@ -904,15 +911,29 @@ export default function ServicesWrapper() {
               style={{ transitionDelay: ".2s" }}
               ref={addReveal}
             >
-              {D.coverage.regions.map((r) => (
-                <div className={styles.covRegion} key={r.name}>
-                  <span
-                    className={styles.covRegionDot}
-                    style={{ background: r.dot }}
-                  />
-                  {r.name}
-                </div>
-              ))}
+              {D.coverage.regions.map((r) => {
+                const isActive = selectedRegion === r.name;
+                return (
+                  <div
+                    className={styles.covRegion}
+                    key={r.name}
+                    onClick={() => setSelectedRegion(isActive ? null : r.name)}
+                    style={{
+                      cursor: "pointer",
+                      borderColor: isActive ? r.dot : undefined,
+                      background: isActive ? `${r.dot}14` : undefined,
+                      color: isActive ? r.dot : undefined,
+                      transform: isActive ? "scale(1.03)" : undefined,
+                    }}
+                  >
+                    <span
+                      className={styles.covRegionDot}
+                      style={{ background: r.dot }}
+                    />
+                    {r.name}
+                  </div>
+                );
+              })}
             </div>
             <div
               className={styles.reveal}

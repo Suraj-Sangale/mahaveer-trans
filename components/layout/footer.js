@@ -18,7 +18,7 @@ export default function Footer() {
       .join(" ");
   };
   const footer = {
-    logo: getConstant("company_name_short"),
+    logo: getConstant("COMPANY_TITLE_FULL"),
     tagline:
       "Delivering the world's goods with precision and care. Your trusted logistics partner since 1999.",
     socials: [
@@ -31,12 +31,12 @@ export default function Footer() {
       {
         heading: "Services",
         links: [
-          { label: "Air Freight", href: "/" },
-          { label: "Sea Freight", href: "/" },
-          { label: "Road Transport", href: "/" },
-          { label: "Warehousing", href: "/" },
-          { label: "Cold Chain", href: "/" },
-          { label: "Customs", href: "/" },
+          { label: "Air Freight", href: "/services?service=air" },
+          { label: "Sea Freight", href: "/services?service=sea" },
+          { label: "Road Transport", href: "/services?service=road" },
+          { label: "Warehousing", href: "/services?service=wh" },
+          { label: "Cold Chain", href: "/services?service=cold" },
+          { label: "Customs", href: "/services?service=customs" },
         ],
       },
       {

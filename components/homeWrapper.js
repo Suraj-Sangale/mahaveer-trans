@@ -57,7 +57,7 @@ const SITE_DATA = {
     description:
       "End-to-end road transportation and logistics solutions designed for businesses across India. From local deliveries to long-distance movement, we ensure safe, reliable, and timely transportation.",
     cta1: "Get a Transport Quote →",
-    cta2: "▶ Explore Services",
+    cta2: "Explore Services",
 
     image:
       "https://autobahntrucking.com/storage/app/vehicles/images/Bharatbenz-truck-5528TT.jpg",
@@ -159,8 +159,7 @@ const SITE_DATA = {
         title: "Part Load Transport",
         description:
           "Cost-effective transportation for smaller shipments by efficiently utilizing available truck capacity.",
-        image:
-          "https://mahaveertrans.vercel.app/images/vehicale/semibed.png",
+        image: "/images/vehicale/semibed.png",
       },
 
       {
@@ -211,7 +210,7 @@ const SITE_DATA = {
     p2: "From local movement to long-distance transportation between major cities and industrial hubs, our team works to provide efficient and practical logistics solutions based on each customer's requirements.",
 
     cta: "Know More About Us →",
-
+    ctaLink: "/about",
     image:
       "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=900&q=80&auto=format&fit=crop",
 
@@ -288,7 +287,7 @@ const SITE_DATA = {
         sub: "Flexible cargo transportation",
         tag: "LTL",
         tall: false,
-        image: "https://mahaveertrans.vercel.app/images/vehicale/semibed.png",
+        image: "/images/vehicale/semibed.png",
       },
 
       {
@@ -297,7 +296,7 @@ const SITE_DATA = {
         tag: "Cargo",
         tall: false,
         image:
-          "https://images.unsplash.com/photo-1509691363482-a0d9c9246f16?w=500&q=80&auto=format&fit=crop",
+          "/images/vehicale/lorry4.jpg",
       },
 
       {
@@ -560,8 +559,12 @@ export default function HomeWrapper() {
             </h1>
             <p className={cx("hero-desc")}>{d.hero.description}</p>
             <div className={cx("hero-actions")}>
-              <button className={cx("btn-primary")}>{d.hero.cta1}</button>
-              <button className={cx("btn-outline")}>{d.hero.cta2}</button>
+              <Link href={"/quote"} className={cx("btn-primary")}>
+                {d.hero.cta1}
+              </Link>
+              <Link href={"/services"} className={cx("btn-outline")}>
+                {d.hero.cta2}
+              </Link>
             </div>
             <div className={cx("hero-trust")}>
               <div className={cx("trust-avs")}>
@@ -736,9 +739,12 @@ export default function HomeWrapper() {
                 </div>
               </Reveal>
               <Reveal delay={0.35}>
-                <a href="#" className={cx("btn-primary")}>
+                <Link
+                  href={d.about.ctaLink || "/about"}
+                  className={cx("btn-primary")}
+                >
                   {d.about.cta}
-                </a>
+                </Link>
               </Reveal>
             </div>
           </div>
@@ -788,7 +794,7 @@ export default function HomeWrapper() {
             {d.fleet.items.map((f, i) => (
               <div key={i} className={`${cx(`gi ${f.tall ? "tall" : ""}`)}`}>
                 <img src={f.image} alt={f.title} />
-                <div className={cx("gi-tag")}>{f.tag}</div>
+                {/* <div className={cx("gi-tag")}>{f.tag}</div> */}
                 <div className={cx("gi-label")}>
                   <h4>{f.title}</h4>
                   <p>{f.sub}</p>
@@ -800,7 +806,7 @@ export default function HomeWrapper() {
       </section>
 
       {/* TRACKING */}
-      <section id="tracking" className={cx("tracking")}>
+      {/* <section id="tracking" className={cx("tracking")}>
         <div className={cx("section-wrap")}>
           <div className={cx("track-grid")}>
             <Reveal>
@@ -886,7 +892,7 @@ export default function HomeWrapper() {
             </Reveal>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* TESTIMONIALS */}
       <section id="testimonials" className={cx("testimonials")}>

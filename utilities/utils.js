@@ -27,3 +27,16 @@ export const applyCSS = (
 export const getConstant = (key) => {
   return constantsList[key.toUpperCase()] ?? null;
 };
+
+export const scrollSectionIntoView = (id) => {
+  const element = document.getElementById(id);
+
+  if (element) {
+    setTimeout(() => {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 1000)
+  }
+};

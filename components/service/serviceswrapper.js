@@ -4,6 +4,11 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { useTheme } from "next-themes";
 import styles from "@/styles/service.module.css";
 import { getConstant } from "@/utilities/utils";
+import { useRouter, useSearchParams } from "next/navigation";
+import { scrollSectionIntoView } from "@/utilities/utils";
+import dynamic from "next/dynamic";
+
+const IndiaMap = dynamic(() => import("./IndiaMap"), { ssr: false });
 
 /* ════════════════════════════════
    MASTER DATA OBJECT
@@ -283,7 +288,10 @@ const PAGE = {
         vals: ["Same day–1 day", "1–4 days", "3–7 days", "Same as mode"],
       },
       { feature: "Cost", vals: ["High", "Medium", "Low", "Medium–High"] },
-      { feature: "Weight Limit", vals: ["Up to 500 kg", "Up to 25T", "Any", "Any"] },
+      {
+        feature: "Weight Limit",
+        vals: ["Up to 500 kg", "Up to 25T", "Any", "Any"],
+      },
       { feature: "Tracking", vals: ["✓", "✓", "✓", "✓"] },
       { feature: "Door-to-Door", vals: ["✓", "✓", "–", "✓"] },
       { feature: "Pan-India Cover", vals: ["✓", "✓", "✓", "✓"] },
@@ -517,7 +525,6 @@ const PAGE = {
     copyright: getConstant("company_copyright"),
     footerLinks: "Privacy · Terms · Sitemap",
   },
-
 };
 
 /* Small helper: join CSS-module class names, skipping falsy values */
@@ -525,6 +532,11 @@ const cx = (...classes) => classes.filter(Boolean).join(" ");
 
 export default function ServicesWrapper() {
   const D = PAGE;
+  const router = useRouter();
+  // const { service } = router.query || {};
+  const searchParams = useSearchParams();
+  const service = searchParams.get("service") || null;
+
 
   /* ── UI STATE ── */
   // ── next-themes: global theme from ThemeProvider context ───────────────
@@ -534,7 +546,7 @@ export default function ServicesWrapper() {
 
   const [scrolled, setScrolled] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [activeFilter, setActiveFilter] = useState("all");
+  const [activeFilter, setActiveFilter] = useState(service);
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
   const [trackValue, setTrackValue] = useState("");
   const [trackState, setTrackState] = useState("idle"); // idle | success | error
@@ -542,6 +554,13 @@ export default function ServicesWrapper() {
   /* ── REFS for imperative DOM animation ── */
   const revealRefs = useRef([]);
   const counterRefs = useRef([]); // { el, target }
+
+  useEffect(() => {
+    if (service) {
+      scrollSectionIntoView("services_cards")
+    }
+  }, [service])
+
 
   const addReveal = useCallback((el) => {
     if (el && !revealRefs.current.includes(el)) revealRefs.current.push(el);
@@ -628,9 +647,15 @@ export default function ServicesWrapper() {
       {/* BREADCRUMB */}
       <div className={styles.breadcrumb}>
         {D.breadcrumb.map((b, i) => (
-          <span key={b.label} style={{ display: "flex", alignItems: "center", gap: ".35rem" }}>
+          <span
+            key={b.label}
+            style={{ display: "flex", alignItems: "center", gap: ".35rem" }}
+          >
             {i > 0 && <span className={styles.bcSep}>›</span>}
-            <a href={b.href} className={cx(styles.bcItem, b.current && styles.current)}>
+            <a
+              href={b.href}
+              className={cx(styles.bcItem, b.current && styles.current)}
+            >
               {b.label}
             </a>
           </span>
@@ -642,7 +667,6 @@ export default function ServicesWrapper() {
         <div className={styles.svcHeroBg} />
         <div className={styles.svcHeroGlow} />
         <div className={styles.svcHeroInner}>
-
           {/* Badge */}
           <div className={styles.heroBadge}>{D.hero.tag}</div>
 
@@ -670,16 +694,15 @@ export default function ServicesWrapper() {
             {D.hero.stats.map((s) => (
               <div className={styles.heroStat} key={s.label}>
                 <div className={styles.heroStatVal}>
-                  {s.value}<span>{s.suffix}</span>
+                  {s.value}
+                  <span>{s.suffix}</span>
                 </div>
                 <div className={styles.heroStatLbl}>{s.label}</div>
               </div>
             ))}
           </div>
-
         </div>
       </div>
-
 
       {/* TICKER */}
       <div className={styles.tickerWrap}>
@@ -694,7 +717,7 @@ export default function ServicesWrapper() {
       </div>
 
       {/* SERVICE CARDS LIST */}
-      <section className={cx(styles.section, styles.servicesList)}>
+      <section className={cx(styles.section, styles.servicesList)} id="services_cards">
         <div className={cx(styles.reveal)} ref={addReveal}>
           <div className={styles.secTag}>{D.servicesList.tag}</div>
           <div
@@ -777,13 +800,13 @@ export default function ServicesWrapper() {
                   ))}
                 </div>
                 <div className={styles.svcCardFooter}>
-                  <a href="#" className={styles.svcLink}>
+                  <a href="/quote" className={styles.svcLink}>
                     {D.servicesList.learnMore}
                   </a>
-                  <span className={styles.svcPriceTag}>
+                  {/* <span className={styles.svcPriceTag}>
                     {D.servicesList.priceFrom}
                     {s.price} <span style={{ opacity: 0.7 }}>{s.unit}</span>
-                  </span>
+                  </span> */}
                 </div>
               </div>
             </div>
@@ -849,16 +872,13 @@ export default function ServicesWrapper() {
       <section className={cx(styles.section, styles.coverage)}>
         <div className={styles.covGrid}>
           <div className={cx(styles.covVisual, styles.reveal)} ref={addReveal}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              className={styles.covImg}
-              src={D.coverage.image}
-              alt="Coverage"
-            />
-            <div className={styles.covBadge}>
+            <div className={styles.covMapWrap}>
+              <IndiaMap regions={D.coverage.regions} />
+            </div>
+            {/* <div className={styles.covBadge}>
               <div className={styles.covBadgeVal}>{D.coverage.badgeVal}</div>
               <div className={styles.covBadgeLbl}>{D.coverage.badgeLbl}</div>
-            </div>
+            </div> */}
           </div>
           <div className={styles.covContent}>
             <div className={cx(styles.secTag, styles.reveal)} ref={addReveal}>
@@ -904,6 +924,7 @@ export default function ServicesWrapper() {
           </div>
         </div>
       </section>
+
 
       {/* COMPARISON TABLE */}
       <section className={cx(styles.section, styles.comparison)}>
@@ -1029,7 +1050,7 @@ export default function ServicesWrapper() {
       </section>
 
       {/* TRACKING CTA */}
-      <section className={cx(styles.section, styles.trackCta)}>
+      {/* <section className={cx(styles.section, styles.trackCta)}>
         <div className={styles.trackInner}>
           <div className={cx(styles.trackLeft, styles.reveal)} ref={addReveal}>
             <div className={styles.secTag}>{D.tracking.tag}</div>
@@ -1120,7 +1141,7 @@ export default function ServicesWrapper() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* TESTIMONIALS */}
       <section className={cx(styles.section, styles.testimonials)}>

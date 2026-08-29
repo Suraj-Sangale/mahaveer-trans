@@ -1,3 +1,5 @@
+import { getConstant } from '@/utilities/utils';
+import Link from 'next/link';
 import React from 'react'
 
 export default function CtaSection() {
@@ -10,8 +12,8 @@ export default function CtaSection() {
         <h2 className="sec-h" id="ctaTitle">Ready to Ship</h2>
         <p id="ctaDesc">Partner with MahaveerTrans for fast, reliable, and transparent logistics solutions that help your business scale.</p>
         <div className="cta-btns">
-          <button className="btn-w" id="ctaCta1">Get Free Quote →</button>
-          <button className="btn-wg" id="ctaPhone">📞 Call us</button>
+          <Link  href={"/quote"} className="btn-w" id="ctaCta1">Get Free Quote →</Link>
+          <a href={`tel:${getConstant("CONTACT_NO")}`} className="btn-wg" id="ctaPhone">📞 Call us</a>
         </div>
       </div>
     </section>

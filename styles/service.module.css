@@ -1098,12 +1098,12 @@
 .covVisual {
   position: relative;
 }
-.covImg {
+.covMapWrap {
   width: 100%;
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-lg);
   height: 380px;
-  object-fit: cover;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
 }
 .covBadge {
   position: absolute;

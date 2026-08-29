@@ -10,10 +10,12 @@
     "convert": "node scripts/html-to-nextjs.js"
   },
   "dependencies": {
+    "leaflet": "^1.9.4",
     "next": "16.2.9",
     "next-themes": "^0.4.6",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "react-leaflet": "^5.0.0",
     "sass": "^1.101.0",
     "styled-components": "^6.4.3"
   },

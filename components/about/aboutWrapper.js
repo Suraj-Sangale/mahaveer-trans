@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
 import styles from "@/styles/about.module.css";
+import Link from "next/link";
 
 /* ═══════════ DATA ═══════════ */
 const TICKER_ITEMS = [
@@ -464,12 +465,13 @@ export default function AboutWrapper() {
               and a dedicated team of 2,800+ logistics professionals.
             </p>
             <div className={styles.heroActions}>
-              <button
+              <Link
                 className={styles.btnPrimary}
-                onClick={() => (window.location.href = "/quote")}
+                // onClick={() => (window.location.href = "/quote")}
+                href={"/quote"}
               >
                 Get Free Quote →
-              </button>
+              </Link>
               <button
                 className={styles.btnGhost}
                 onClick={() =>

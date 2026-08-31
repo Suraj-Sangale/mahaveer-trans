@@ -1258,7 +1258,7 @@
   }
 
   .route-left .sec-h {
-    /* color: #f1f5f9; */
+    color: #f1f5f9;
     margin-bottom: 1rem;
   }
 
@@ -1711,7 +1711,7 @@
   }
 
   .cta-inner-center .sec-h {
-    /* color: #f1f5f9; */
+    color: #f1f5f9;
     font-size: clamp(2.2rem, 5vw, 3.8rem);
     margin-bottom: 1.1rem;
   }

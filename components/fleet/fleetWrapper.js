@@ -13,6 +13,7 @@ import CtaRevealClient from "./ctaRevealClient";
 import Header from "../layout/header";
 import { applyCSS } from "../../utilities/utils";
 import styles from "@/styles/fleet.module.css";
+import CtaSection from "../home/ctaSection";
 
 const DATA = {
   breadcrumb: [
@@ -466,7 +467,7 @@ export default function FleetWrapper() {
       </section>
 
       {/* CTA */}
-      <section className={css("cta-section")}>
+      {/* <section className={css("cta-section")}>
         <div className={css("cta-inner-center sr")} id="cta-sr">
           <div className={css("sec-tag")}>{DATA.cta.tag}</div>
           <h2 className={css("sec-h")}>
@@ -479,7 +480,8 @@ export default function FleetWrapper() {
             <button className={css("btn-wg")}>{DATA.cta.btn2}</button>
           </div>
         </div>
-      </section>
+      </section> */}
+      <CtaSection />
 
       {/* FAB */}
       <button className={css("fab")}>{DATA.fab}</button>

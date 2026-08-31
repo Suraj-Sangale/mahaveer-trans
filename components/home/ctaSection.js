@@ -13,7 +13,7 @@ export default function CtaSection() {
         <p id="ctaDesc">Partner with MahaveerTrans for fast, reliable, and transparent logistics solutions that help your business scale.</p>
         <div className="cta-btns">
           <Link  href={"/quote"} className="btn-w" id="ctaCta1">Get Free Quote →</Link>
-          <a href={`tel:${getConstant("CONTACT_NO")}`} className="btn-wg" id="ctaPhone">📞 Call us</a>
+          <a href={`tel:${getConstant("CONTACT_NO")}`} className="btn-wg" id="ctaPhone">📞 Call us  at {getConstant("CONTACT_NO_DISPLAY")}</a>
         </div>
       </div>
     </section>

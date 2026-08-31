@@ -850,10 +850,10 @@
   /* ── PHOTO GALLERY ── */
   .photo-gallery {
     background: var(--bg);
+    margin-top: 12rem;
     /* background: pink; */
-    padding: 5.5rem 5%;
   }
-
+  
   .gal-head {
     display: flex;
     justify-content: space-between;
@@ -861,6 +861,7 @@
     margin-bottom: 3rem;
     flex-wrap: wrap;
     gap: 1.5rem;
+    padding: 0 5% 0 5%;
   }
 
   .gal-filters {
@@ -915,14 +916,14 @@
     overflow: hidden;
     cursor: pointer;
     background: var(--bg3);
-    /* opacity: 0; */
-    transform: translateY(32px) scale(0.97);
+    opacity: 0;
+    transform: translateY(40px) scale(0.96);
     transition:
-      opacity 0.65s ease,
-      transform 0.65s ease;
+      opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .gi.vis {
+  .gi[data-vis="true"] {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
@@ -1006,6 +1007,121 @@
   .gi-label p {
     font-size: 0.72rem;
     color: rgba(255, 255, 255, 0.55);
+  }
+
+  /* ════════════════════════════════════════
+     NEW PARALLAX GALLERY — 4-column layout
+  ════════════════════════════════════════ */
+
+  /* Outer clip — prevents columns from bleeding outside the section */
+  .pg-outer {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    overflow: hidden;
+    padding: 0 1rem 3rem;
+    /* Extra height so translated columns always have content visible */
+    height: 100vh;
+  }
+
+  /* Each column — GPU-composited, no scroll bars */
+  .pg-col {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    /* rAF sets transform directly via JS — willChange set inline */
+  }
+
+  /* Individual image card — height set by data-size */
+  .pg-item {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--bg3);
+    flex-shrink: 0;
+    height: 260px; /* default / medium */
+  }
+
+  .pg-item[data-size="tall"]   { height: 380px; }
+  .pg-item[data-size="short"]  { height: 190px; }
+
+  /* Image fills container via absolute positioning — no height ambiguity */
+  .pg-item img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.82);
+    transition:
+      transform 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+      filter 0.4s ease;
+  }
+
+  .pg-item:hover img {
+    transform: scale(1.06);
+    filter: brightness(0.55);
+  }
+
+
+  /* Overlay — tag + label, revealed on hover */
+  .pg-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0.75rem;
+    pointer-events: none;
+  }
+
+  .pg-tag {
+    align-self: flex-start;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.65rem;
+    border-radius: 100px;
+    background: rgba(0, 0, 0, 0.38);
+    backdrop-filter: blur(8px);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+
+  .pg-label {
+    background: linear-gradient(to top, rgba(13, 17, 23, 0.9) 0%, transparent 100%);
+    padding: 0.85rem 0.9rem 0.7rem;
+    border-radius: 0 0 10px 10px;
+    opacity: 0;
+    transform: translateY(6px);
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease;
+    margin: -0.75rem;
+    margin-top: auto;
+  }
+
+  .pg-item:hover .pg-label {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .pg-label h4 {
+    font-family: var(--font-d);
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.1rem;
+    line-height: 1.3;
+  }
+
+  .pg-label p {
+    font-size: 0.68rem;
+    color: rgba(255, 255, 255, 0.55);
+    line-height: 1.4;
   }
 
   /* ── LIGHTBOX ── */
@@ -1860,6 +1976,31 @@
       border-right: none;
     }
   }
+
+  /* Parallax gallery — tablet */
+  @media (max-width: 960px) {
+    .pg-outer {
+      grid-template-columns: repeat(2, 1fr);
+      height: 50vh;
+    }
+    /* Hide cols 3+4 on tablet — show only 2 */
+    .pg-col:nth-child(n+3) {
+      display: none;
+    }
+  }
+
+  /* Parallax gallery — mobile */
+  @media (max-width: 600px) {
+    .pg-outer {
+      grid-template-columns: repeat(2, 1fr);
+      height: 80vh;
+      gap: 8px;
+    }
+    .pg-col:nth-child(n+3) {
+      display: none;
+    }
+  }
+
 
   :root {
     --background: #0a0a0a;

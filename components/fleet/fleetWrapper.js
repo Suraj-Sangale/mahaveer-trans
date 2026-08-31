@@ -116,7 +116,7 @@ const DATA = {
         tag: "Flatbed",
         title: "Steel Coil Transport",
         sub: "Bhilai to Pune Industrial Corridor",
-        img: "https://images.unsplash.com/photo-1540835296355-0a0015f3c02e?w=600&q=80&auto=format&fit=crop",
+        img: "/images/vehicale/semibed.png",
       },
       {
         cat: "cargo",
@@ -427,6 +427,7 @@ export default function FleetWrapper() {
 
       {/* GALLERY */}
       <Gallery DATA={DATA}/>
+      
 
       {/* ROUTE MAP */}
       <RouteMap DATA={DATA} />

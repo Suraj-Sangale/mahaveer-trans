@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scroll Parallax Gallery</title>
+
+<!-- GSAP + ScrollTrigger -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #fff;
+    color: #111;
+}
+
+/* =========================
+   SECTION ABOVE GALLERY
+========================= */
+.hero-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 30px;
+    background: #ffff;
+    text-align: center;
+}
+
+.hero-content {
+    max-width: 900px;
+}
+
+.hero-content h1 {
+    margin: 0 0 25px;
+    font-size: clamp(44px, 7vw, 100px);
+    line-height: .95;
+}
+
+/* word-split spans */
+.hero-word {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+    margin-right: 0.22em;
+}
+.hero-word-inner {
+    display: inline-block;
+    transform: translateY(110%);
+}
+
+.hero-content p {
+    margin: 0 auto;
+    max-width: 650px;
+    font-size: 20px;
+    line-height: 1.6;
+    color: #555;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+/* =========================
+   GALLERY SCROLL AREA
+========================= */
+.gallery-section {
+    position: relative;
+    height: 300vh;
+    background: #fff;
+}
+
+.gallery-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Visible red-box area */
+.gallery-viewport {
+    position: relative;
+    /* width: min(900px, 92vw);
+    height: min(520px, 70vh); */
+     width: 99%;
+  height: 85%;
+  margin: 0 auto;
+  /* border: 10px solid #0a2440; */
+  /* border-radius: 14px; */
+  /* box-shadow: 0 10px 30px rgba(0,0,0,0.3); */
+  overflow: hidden;
+    /* border: 2px solid red; */
+    background: #fff;
+}
+
+/* Top/bottom fade */
+.gallery-viewport::before,
+.gallery-viewport::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 75px;
+    z-index: 50;
+    pointer-events: none;
+}
+
+.gallery-viewport::before {
+    /* top: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,1),
+        rgba(255,255,255,0)
+    ); */
+}
+
+.gallery-viewport::after {
+    bottom: 0;
+    background: linear-gradient(
+        to top,
+        rgba(255,255,255,1),
+        rgba(255,255,255,0)
+    );
+}
+
+/* =========================
+   GALLERY CONTENT
+========================= */
+.gallery-content {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+    padding: 0 35px;
+    transform: translateY(-50%);
+}
+
+/* Each column moves independently */
+.gallery-column {
+    display: flex;
+    flex-direction: column;
+    gap: 29px;
+    will-change: transform;
+}
+
+.gallery-column:nth-child(1) {
+    padding-top: 0;
+}
+
+.gallery-column:nth-child(2) {
+    padding-top: 70px;
+}
+
+.gallery-column:nth-child(3) {
+    padding-top: 25px;
+}
+
+.gallery-column:nth-child(4) {
+    padding-top: 90px;
+}
+
+
+
+/* =========================
+   IMAGES
+========================= */
+.gallery-item {
+    width: 100%;
+    aspect-ratio: .72;
+    flex-shrink: 0;
+    overflow: hidden;
+    background: #a5d8f7;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform .3s ease;
+    /* initial state for GSAP reveal */
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+}
+
+.gallery-item img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.gallery-item:hover {
+    transform: scale(1.04);
+    position: relative;
+    z-index: 10;
+}
+
+/* =========================
+   SECTION BELOW
+========================= */
+.after-gallery {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 30px;
+    background: #f5f5f5;
+    text-align: center;
+}
+
+.after-gallery h2 {
+    margin: 0;
+    font-size: clamp(40px, 6vw, 80px);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 800px) {
+    .gallery-content {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        padding: 0 20px;
+    }
+
+    .gallery-column:nth-child(4) {
+        display: none;
+    }
+
+    .gallery-viewport {
+        width: 94vw;
+        height: 450px;
+    }
+}
+
+@media (max-width: 550px) {
+    .gallery-content {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        padding: 0 12px;
+    }
+
+    .gallery-column:nth-child(3),
+    .gallery-column:nth-child(4) {
+        display: none;
+    }
+
+    .gallery-viewport {
+        width: 96vw;
+        height: 380px;
+    }
+
+    .gallery-column {
+        gap: 12px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    .gallery-item {
+        transition: none;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     SECTION ABOVE
+========================= -->
+<section class="hero-section">
+    <div class="hero-content">
+        <h1>Creative Gallery</h1>
+        <p>
+            Scroll down to reveal the gallery.
+            The columns move in alternating directions
+            while the center viewport stays visible.
+        </p>
+    </div>
+</section>
+
+
+<!-- =========================
+     GALLERY
+========================= -->
+<section class="gallery-section" id="gallerySection">
+
+    <div class="gallery-sticky">
+
+        <div class="gallery-viewport">
+
+            <div class="gallery-content" id="galleryContent">
+
+                <!-- COLUMN 1 - UP -->
+                <div class="gallery-column" data-direction="up">
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1015/500/700" alt="Gallery image 1">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1016/500/700" alt="Gallery image 2">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1018/500/700" alt="Gallery image 3">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1020/500/700" alt="Gallery image 4">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1024/500/700" alt="Gallery image 5">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1025/500/700" alt="Gallery image 6">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1027/500/700" alt="Gallery image 7">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1029/500/700" alt="Gallery image 8">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1031/500/700" alt="Gallery image 9">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1033/500/700" alt="Gallery image 10">
+                    </div>
+
+                </div>
+
+
+                <!-- COLUMN 2 - DOWN -->
+                <div class="gallery-column" data-direction="down">
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1035/500/700" alt="Gallery image 8">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1036/500/700" alt="Gallery image 9">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1039/500/700" alt="Gallery image 10">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1040/500/700" alt="Gallery image 11">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1041/500/700" alt="Gallery image 12">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1042/500/700" alt="Gallery image 13">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1043/500/700" alt="Gallery image 14">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1044/500/700" alt="Gallery image 15">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1045/500/700" alt="Gallery image 16">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1047/500/700" alt="Gallery image 17">
+                    </div>
+
+                </div>
+
+
+                <!-- COLUMN 3 - UP -->
+                <div class="gallery-column" data-direction="up">
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1050/500/700" alt="Gallery image 15">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1051/500/700" alt="Gallery image 16">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1052/500/700" alt="Gallery image 17">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1053/500/700" alt="Gallery image 18">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1054/500/700" alt="Gallery image 19">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1055/500/700" alt="Gallery image 20">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1056/500/700" alt="Gallery image 21">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1057/500/700" alt="Gallery image 22">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1058/500/700" alt="Gallery image 23">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1059/500/700" alt="Gallery image 24">
+                    </div>
+
+                </div>
+
+
+                <!-- COLUMN 4 - DOWN -->
+                <div class="gallery-column" data-direction="down">
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1060/500/700" alt="Gallery image 22">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1061/500/700" alt="Gallery image 23">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1062/500/700" alt="Gallery image 24">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1063/500/700" alt="Gallery image 25">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1064/500/700" alt="Gallery image 26">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1065/500/700" alt="Gallery image 27">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1066/500/700" alt="Gallery image 28">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1067/500/700" alt="Gallery image 29">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1068/500/700" alt="Gallery image 30">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1069/500/700" alt="Gallery image 31">
+                    </div>
+
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- =========================
+     SECTION BELOW
+========================= -->
+<section class="after-gallery">
+    <h2>Keep Exploring</h2>
+</section>
+
+
+<script>
+(function () {
+    "use strict";
+
+    /*
+     * gallerySection is the outer, NON-sticky wrapper whose
+     * getBoundingClientRect().top actually changes as you scroll.
+     * The inner .gallery-sticky / .gallery-viewport stays locked
+     * at top:0 while sticky, so its rect is useless for progress.
+     */
+    const gallerySection  = document.getElementById("gallerySection");
+    const galleryViewport = document.querySelector(".gallery-viewport");
+    const columns         = document.querySelectorAll(".gallery-column");
+
+    if (!gallerySection || !galleryViewport || !columns.length) {
+        return;
+    }
+
+    /*
+     * Controls how far the columns move while the
+     * gallery viewport passes through the screen.
+     */
+    const movementAmount = 950;
+
+    let ticking = false;
+
+    function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, value));
+    }
+
+    function updateGallery() {
+
+        /*
+         * Use the OUTER section's rect — it scrolls normally
+         * even though the inner sticky element doesn't.
+         *
+         * sectionRect.top journey:
+         *   +screenHeight  → section just entering from below  (progress = 0)
+         *   0              → section top at viewport top
+         *   -sectionHeight → section fully gone above           (progress = 1)
+         */
+        const sectionRect   = gallerySection.getBoundingClientRect();
+        const screenHeight  = window.innerHeight;
+        const sectionHeight = gallerySection.offsetHeight;
+
+        /*
+         * Total distance the section travels across the screen.
+         */
+        const totalDistance = screenHeight + sectionHeight;
+
+        /*
+         * How far we've scrolled into the section (0 → totalDistance).
+         */
+        const scrolled = clamp(screenHeight - sectionRect.top, 0, totalDistance);
+
+        /*
+         * Normalize to 0 → 1 progress, then scale to movementAmount.
+         */
+        const progress = scrolled / totalDistance;
+        const movement = progress * movementAmount;
+
+        columns.forEach(function (column) {
+
+            const direction = column.dataset.direction;
+
+            if (direction === "up") {
+
+                /*
+                 * Column 1, 3, 5  →  MOVE UP
+                 */
+                column.style.transform =
+                    "translate3d(0, " + (-movement) + "px, 0)";
+
+            } else {
+
+                /*
+                 * Column 2, 4  →  MOVE DOWN
+                 */
+                column.style.transform =
+                    "translate3d(0, " + movement + "px, 0)";
+            }
+
+        });
+
+        ticking = false;
+    }
+    
+function requestUpdate() {
+        if (ticking) {
+            return;
+        }
+
+        ticking = true;
+
+        window.requestAnimationFrame(function () {
+            updateGallery();
+            ticking = false;
+        });
+    }
+
+    window.addEventListener(
+        "scroll",
+        requestUpdate,
+        { passive: true }
+    );
+
+    window.addEventListener(
+        "resize",
+        requestUpdate,
+        { passive: true }
+    );
+
+    updateGallery();
+})();
+</script>
+
+<script>
+/* ========================================================
+   GSAP Animations
+======================================================== */
+(function () {
+    "use strict";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    /* -------------------------------------------------------
+       1. HERO h1 — split into words, slide up on load
+    ------------------------------------------------------- */
+    var h1 = document.querySelector(".hero-content h1");
+    if (h1) {
+        var words = h1.textContent.trim().split(/\s+/);
+        h1.innerHTML = words
+            .map(function (w) {
+                return '<span class="hero-word"><span class="hero-word-inner">' + w + '</span></span>';
+            })
+            .join(" ");
+
+        gsap.to(".hero-word-inner", {
+            translateY: "0%",
+            duration: 1,
+            ease: "expo.out",
+            stagger: 0.12,
+            delay: 0.2
+        });
+    }
+
+    /* -------------------------------------------------------
+       2. HERO paragraph — fade + rise on load
+    ------------------------------------------------------- */
+    gsap.to(".hero-content p", {
+        opacity: 1,
+        translateY: 0,
+        duration: 1,
+        ease: "power3.out",
+        delay: 0.8
+    });
+
+    /* -------------------------------------------------------
+       3. GALLERY ITEMS — staggered fade-in per column
+          when the gallery section enters the viewport
+    ------------------------------------------------------- */
+    var columns = document.querySelectorAll(".gallery-column");
+    columns.forEach(function (col, colIdx) {
+        var items = col.querySelectorAll(".gallery-item");
+
+        ScrollTrigger.create({
+            trigger: "#gallerySection",
+            start: "top 88%",
+            once: true,
+            onEnter: function () {
+                gsap.to(items, {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    duration: 0.7,
+                    ease: "power3.out",
+                    stagger: 0.07,
+                    delay: colIdx * 0.1
+                });
+            }
+        });
+    });
+
+    /* -------------------------------------------------------
+       4. GALLERY ITEMS — 3D tilt on hover
+    ------------------------------------------------------- */
+    document.querySelectorAll(".gallery-item").forEach(function (card) {
+        card.addEventListener("mousemove", function (e) {
+            var rect = card.getBoundingClientRect();
+            var dx   = (e.clientX - (rect.left + rect.width  / 2)) / (rect.width  / 2);
+            var dy   = (e.clientY - (rect.top  + rect.height / 2)) / (rect.height / 2);
+
+            gsap.to(card, {
+                rotateY:             dx * 9,
+                rotateX:            -dy * 9,
+                transformPerspective: 700,
+                transformOrigin:     "center center",
+                duration:             0.3,
+                ease:                "power2.out",
+                overwrite:           "auto"
+            });
+        });
+
+        card.addEventListener("mouseleave", function () {
+            gsap.to(card, {
+                rotateX: 0,
+                rotateY: 0,
+                duration: 0.55,
+                ease:    "elastic.out(1, 0.65)",
+                overwrite: "auto"
+            });
+        });
+    });
+
+})();
+</script>
+
+</body>
+</html>

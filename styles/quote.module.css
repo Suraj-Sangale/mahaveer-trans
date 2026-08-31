@@ -43,7 +43,7 @@
 /* ═══════════ HERO SPLIT ═══════════ */
 .pageWrap {
   display: grid;
-  grid-template-columns: 1fr 60vw;
+  grid-template-columns: 1fr 70vw;
   min-height: 100vh;
   background: var(--dark-bg);
   padding: 5rem 0rem;
@@ -72,6 +72,7 @@
     0 0 0 1px rgba(255, 255, 255, 0.06),
     0 32px 80px rgba(0, 0, 0, 0.45),
     0 8px 24px rgba(0, 0, 0, 0.3);
+    max-height: fit-content;
 }
 
 .lpGrid {
@@ -1158,6 +1159,7 @@
 @media (max-width: 640px) {
   .rightPanel {
     padding: 1.5rem 4%;
+    padding-top: 6rem;
   }
   .svcGrid {
     grid-template-columns: 1fr;

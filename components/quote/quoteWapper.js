@@ -20,6 +20,7 @@ import {
   pickRandomUrgencyCount,
   generateReference,
 } from "@/utilities/masterData";
+import { getConstant } from "../../utilities/utils";
 
 // tiny classnames helper — avoids pulling in a dependency
 function cx(...parts) {
@@ -1114,7 +1115,7 @@ export default function QuoteWrapper() {
                 Our ops team is available 24/7 to build a custom quote over the
                 phone.
               </div>
-              <button className={styles.phBtn}>📞 +91 22 4001 8000</button>
+              <a href={`tel:${getConstant("CONTACT_NO")}`} className={`${styles.phBtn} ${styles.btn}`}>📞 {getConstant("CONTACT_NO_DISPLAY")}</a>
             </div>
           )}
         </div>

@@ -27,7 +27,7 @@ const d = {
       { label: "Services", href: "/services", herader: true, sidebar: true },
       { label: "About", href: "/about", herader: true, sidebar: true },
       { label: "Fleet", href: "/fleet", herader: true, sidebar: true },
-      { label: "Track", href: "/tracking", herader: true, sidebar: true },
+      // { label: "Track", href: "/tracking", herader: true, sidebar: true },
       // { label: "Reviews", href: "/testimonials", herader: true, sidebar: true },
       { label: "Get a Quote", href: "/quote", herader: true, sidebar: true },
     ],

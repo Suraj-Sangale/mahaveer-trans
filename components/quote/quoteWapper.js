@@ -386,7 +386,6 @@ export default function QuoteWrapper() {
       });
 
       const json = await res.json();
-      console.log("🚀 ~ json:", json)
 
       if (!json.ok) {
         throw new Error(json.error || "Server error — please try again.");

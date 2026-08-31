@@ -202,11 +202,12 @@ export function generateReferenceWithTime() {
   const now = new Date();
 
   const year = now.getFullYear();
+  const date = `${year}${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}`;
   const time =
     String(now.getHours()).padStart(2, "0") +
     String(now.getMinutes()).padStart(2, "0") +
     String(now.getSeconds()).padStart(2, "0") +
     String(now.getMilliseconds()).padStart(2, "0");
 
-  return `#MT-${year}-${time}`;
+  return `#MT-${date}-${time}`;
 }

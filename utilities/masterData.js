@@ -198,3 +198,15 @@ export function generateReference() {
   const num = Math.floor(Math.random() * 90000 + 10000);
   return `#MT-${year}-${num}`;
 }
+export function generateReferenceWithTime() {
+  const now = new Date();
+
+  const year = now.getFullYear();
+  const time =
+    String(now.getHours()).padStart(2, "0") +
+    String(now.getMinutes()).padStart(2, "0") +
+    String(now.getSeconds()).padStart(2, "0") +
+    String(now.getMilliseconds()).padStart(2, "0");
+
+  return `#MT-${year}-${time}`;
+}

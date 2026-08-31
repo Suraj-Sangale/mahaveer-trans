@@ -18,7 +18,6 @@ import {
   calcEstimate,
   buildDateOptions,
   pickRandomUrgencyCount,
-  generateReference,
 } from "@/utilities/masterData";
 import { getConstant } from "../../utilities/utils";
 
@@ -263,6 +262,8 @@ export default function QuoteWrapper() {
   const [cNotes, setCNotes] = useState("");
   const [fieldErrors, setFieldErrors] = useState({});
   const errorTimer = useRef(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   // ── success ──
   const [reference, setReference] = useState("");
@@ -335,12 +336,13 @@ export default function QuoteWrapper() {
     );
   }
 
-  function submitForm() {
+  async function submitForm() {
     const errs = {};
     if (!cName.trim()) errs.cName = true;
     if (!cEmail.trim()) errs.cEmail = true;
     if (!cPhone.trim()) errs.cPhone = true;
 
+    console.log("🚀 ~ Object.keys(errs).:", Object.keys(errs))
     if (Object.keys(errs).length) {
       setFieldErrors(errs);
       clearTimeout(errorTimer.current);
@@ -348,8 +350,55 @@ export default function QuoteWrapper() {
       return;
     }
 
-    setReference(generateReference());
-    goStep(5);
+    setSubmitting(true);
+    setSubmitError("");
+
+    try {
+      // Resolve the selected ready date label for the email
+      const readyDateObj = dateOptions.find((d) => d.id === selectedDateId);
+      const readyDate = readyDateObj
+        ? readyDateObj.id === "custom"
+          ? "Custom date (TBD)"
+          : `${readyDateObj.day} ${readyDateObj.label}`
+        : selectedDateId;
+
+      const payload = {
+        // Step 1
+        selectedSvc,
+        // Step 2
+        commodity, hscode, weight, volume, pieces, packaging, cargoValue,
+        specialHandling,
+        // Step 3
+        origin, destination, pickupType, deliveryType, incoterm, readyDate,
+        frequency,
+        // Step 4
+        selectedAddons,
+        // Contact
+        cName, cCompany, cEmail, cPhone, cNotes,
+        // Estimate
+        estimate,
+      };
+
+      const res = await fetch("/api/quote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const json = await res.json();
+      console.log("🚀 ~ json:", json)
+
+      if (!json.ok) {
+        throw new Error(json.error || "Server error — please try again.");
+      }
+
+      setReference(json.reference);
+      goStep(5);
+    } catch (err) {
+      setSubmitError(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   // ── ticker content (duplicated once, for a seamless loop) ──
@@ -1063,12 +1112,40 @@ export default function QuoteWrapper() {
               </div>
             </div>
 
+            {submitError && (
+              <div
+                style={{
+                  background: "#fef2f2",
+                  border: "1px solid #fca5a5",
+                  borderRadius: "8px",
+                  padding: "10px 14px",
+                  color: "#dc2626",
+                  fontSize: "13px",
+                  marginBottom: "12px",
+                }}
+              >
+                ⚠️ {submitError}
+              </div>
+            )}
             <div className={styles.btnRow}>
-              <button className={styles.btnBack} onClick={() => goStep(3)}>
+              <button
+                className={styles.btnBack}
+                onClick={() => goStep(3)}
+                disabled={submitting}
+              >
                 ← Back
               </button>
-              <button className={styles.btnSubmit} onClick={submitForm}>
-                <span>🚀</span> Request My Quote — Free
+              <button
+                className={styles.btnSubmit}
+                onClick={submitForm}
+                disabled={submitting}
+                style={submitting ? { opacity: 0.7, cursor: "not-allowed" } : {}}
+              >
+                {submitting ? (
+                  <><span style={{ display: "inline-block", animation: "spin 1s linear infinite" }}>⏳</span> Sending…</>
+                ) : (
+                  <><span>🚀</span> Request My Quote — Free</>
+                )}
               </button>
             </div>
           </div>

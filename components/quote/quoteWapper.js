@@ -393,7 +393,7 @@ export default function QuoteWrapper() {
       }
 
       setReference(json.reference);
-      // goStep(5);
+      goStep(5);
     } catch (err) {
       setSubmitError(err.message || "Something went wrong. Please try again.");
     } finally {

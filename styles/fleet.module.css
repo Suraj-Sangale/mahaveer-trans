@@ -1231,6 +1231,7 @@
     position: relative;
     overflow: hidden;
     padding: 5.5rem 5%;
+    margin-top: 2.75rem;
   }
 
   .route-canvas-wrap {

@@ -167,7 +167,7 @@ export default function Gallery({ DATA }) {
             </h2>
           </div>
           <div className={css("gal-filters")}>
-            {DATA.gallery.filters.map((f) => (
+            {/* {DATA.gallery.filters.map((f) => (
               <button
                 key={f.id}
                 className={`${css("gf-btn")} ${activeFilter === f.id ? css("active") : ""}`}
@@ -176,7 +176,7 @@ export default function Gallery({ DATA }) {
                 <span className={css("gf-dot")} style={{ background: f.dot }} />
                 {f.label}
               </button>
-            ))}
+            ))} */}
           </div>
         </div>
 

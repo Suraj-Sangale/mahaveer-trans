@@ -45,6 +45,7 @@ export default function GalleryNew({ DATA }) {
   /* Distribute photos round-robin into 4 columns, padding to MIN_PER_COL */
   const totalNeeded = Math.max(photos.length, MIN_PER_COL * 4);
   const columns = [[], [], [], []];
+  console.log("🚀 ~ columns:", columns)
   if (photos.length > 0) {
     for (let i = 0; i < totalNeeded; i++) {
       const p = photos[i % photos.length];
@@ -357,7 +358,7 @@ export default function GalleryNew({ DATA }) {
         .spg-root .gallery-viewport {
           position: relative;
           width: 99%;
-          height: 85%;
+          height: 100%;
           margin: 0 auto;
           overflow: hidden;
         }
@@ -368,7 +369,7 @@ export default function GalleryNew({ DATA }) {
           height: 75px;
           z-index: 50;
           pointer-events: none;
-          background: linear-gradient(to top, rgba(0,0,0,0.15), transparent);
+          // background: linear-gradient(to top, rgba(0,0,0,0.15), transparent);
         }
         .spg-root .gallery-content {
           position: absolute;
@@ -431,19 +432,81 @@ export default function GalleryNew({ DATA }) {
         .spg-root .spg-label p  { margin: 0; font-size: .72rem; color: rgba(255,255,255,.75); }
 
         /* ─── Responsive ─── */
-        @media (max-width: 800px) {
-          .spg-root .gallery-content { grid-template-columns: repeat(3, 1fr); gap: 15px; padding: 0 20px; }
-          .spg-root .gallery-column:nth-child(4) { display: none; }
-          .spg-root .gallery-viewport { width: 94vw; height: 450px; }
+
+        /* Tablet landscape — still 4 cols, tighter gaps */
+        @media (max-width: 1280px) {
+          .spg-root .gallery-content { gap: 20px; padding: 0 24px; }
+          .spg-root .gallery-column  { gap: 20px; }
         }
-        @media (max-width: 550px) {
-          .spg-root .gallery-content { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 12px; }
+
+        /* Tablet portrait — 3 cols, hide col 4 */
+        @media (max-width: 1024px) {
+          .spg-root .gallery-section  { height: 280vh; }
+          .spg-root .gallery-content  { grid-template-columns: repeat(3, 1fr); gap: 16px; padding: 0 20px; }
+          .spg-root .gallery-column   { gap: 16px; }
+          .spg-root .gallery-column:nth-child(4) { display: none; }
+          .spg-root .gallery-viewport { height: 100%; }
+        }
+
+        /* Mobile landscape / large phone — 2 cols, hide cols 3+4 */
+        @media (max-width: 768px) {
+          .spg-root .gallery-section  { height: 260vh; }
+          .spg-root .gallery-content  { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 14px; }
+          .spg-root .gallery-column   { gap: 12px; }
+          .spg-root .gallery-column:nth-child(2) { padding-top: 40px; }
           .spg-root .gallery-column:nth-child(3),
           .spg-root .gallery-column:nth-child(4) { display: none; }
-          .spg-root .gallery-viewport { width: 96vw; height: 380px; }
-          .spg-root .gallery-column { gap: 12px; }
-          .spg-lb-prev { left: -44px; }
-          .spg-lb-next { right: -44px; }
+          .spg-root .gallery-viewport { height: 75%; }
+          .spg-root .spg-item { aspect-ratio: .8; border-radius: 8px; }
+
+          /* Lightbox — nav inside the overlay, not outside */
+          .spg-lb-prev { left: 8px; }
+          .spg-lb-next { right: 8px; }
+          .spg-lb-img  { max-width: 92vw; max-height: 75vh; border-radius: 8px; }
+          .spg-lb-close { top: -40px; width: 36px; height: 36px; font-size: 1rem; }
+          .spg-lb-caption { bottom: -48px; }
+          .spg-lb-caption h4 { font-size: .9rem; }
+        }
+
+        /* Small phone — 1 col, full-width feel */
+        @media (max-width: 480px) {
+          .spg-root .gallery-section  { height: 100vh; padding:0px }   
+          .spg-root .gallery-content  { grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 10px; }
+          .spg-root .gallery-column   { gap: 10px; }
+          .spg-root .gallery-column:nth-child(1) { padding-top: 0; }
+          .spg-root .gallery-column:nth-child(2) { padding-top: 30px; }
+          .spg-root .gallery-viewport { height: 100%; }
+
+          /* Lightbox full-screen on very small screens */
+          .spg-lightbox { align-items: flex-end; padding-bottom: 0; }
+          .spg-lb-inner {
+            flex-direction: column;
+            max-width: 100vw;
+            max-height: 100dvh;
+            gap: 0;
+            border-radius: 16px 16px 0 0;
+            background: rgba(20,20,20,.95);
+            padding: 12px 16px 24px;
+          }
+          .spg-lb-img  { max-width: 100%; max-height: 65dvh; border-radius: 10px; margin-top: 36px; }
+          .spg-lb-prev { left: 12px; top: auto; bottom: 8px; transform: none; }
+          .spg-lb-next { right: 12px; top: auto; bottom: 8px; transform: none; }
+          .spg-lb-close { top: 8px; right: 8px; }
+          .spg-lb-caption { position: static; padding: 10px 0 0; }
+          .spg-lb-caption h4 { font-size: .85rem; }
+        }
+
+        /* Touch devices — remove hover scale on items (tilt handled in JS) */
+        @media (hover: none) {
+          .spg-root .spg-item:hover img     { transform: none; }
+          .spg-root .spg-item:hover .spg-overlay { opacity: 1; }
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+          .spg-root .spg-item { transition: none; opacity: 1; transform: none; }
+          .spg-lb-img { animation: none; }
+          .spg-lightbox { animation: none; }
         }
       `}</style>
 
@@ -514,4 +577,4 @@ export default function GalleryNew({ DATA }) {
       </div>
     </>
   );
-}
+}

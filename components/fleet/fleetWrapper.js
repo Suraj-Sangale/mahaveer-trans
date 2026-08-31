@@ -100,7 +100,7 @@ const DATA = {
         tag: "Mountain Route",
         title: "Rohtang Pass Delivery",
         sub: "High-altitude cargo, Manali sector",
-        img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80&auto=format&fit=crop",
+        img: "/images/gallery/img (1).jpeg",
       },
       {
         cat: "ops",
@@ -108,7 +108,7 @@ const DATA = {
         tag: "Control Room",
         title: "24/7 Fleet Operations",
         sub: "MahaveerTrans Control Tower, Mumbai",
-        img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80&auto=format&fit=crop",
+        img: "/images/gallery/img (4).jpeg",
       },
       {
         cat: "trucks",
@@ -124,7 +124,7 @@ const DATA = {
         tag: "Warehouse",
         title: "Smart Warehouse — Bhiwandi",
         sub: "3M sqft distribution centre",
-        img: "https://images.unsplash.com/photo-1553413077-190dd305871c?w=700&q=80&auto=format&fit=crop",
+        img: "/images/gallery/img (5).jpeg",
       },
       {
         cat: "roads",
@@ -132,7 +132,7 @@ const DATA = {
         tag: "Night Ops",
         title: "Night Convoy — NH44",
         sub: "Hyderabad to Chennai, 2:00 AM",
-        img: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=700&q=80&auto=format&fit=crop",
+        img: "/images/gallery/img (6).jpeg",
       },
       {
         cat: "ops",
@@ -140,7 +140,7 @@ const DATA = {
         tag: "Team",
         title: "Driver Briefing — Mumbai Hub",
         sub: "Daily safety & route debrief",
-        img: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=700&q=80&auto=format&fit=crop",
+        img: "/images/gallery/img (7).jpeg",
       },
       {
         cat: "trucks",
@@ -148,7 +148,7 @@ const DATA = {
         tag: "EV Last Mile",
         title: "Electric Delivery Fleet",
         sub: "Bengaluru urban zone, 200+ EVs",
-        img: "https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=700&q=80&auto=format&fit=crop",
+        img: "/images/gallery/img (10).jpeg",
       },
       {
         cat: "roads",
@@ -156,7 +156,7 @@ const DATA = {
         tag: "Sunset Run",
         title: "Golden Hour — Rajasthan NH",
         sub: "Jaipur to Jodhpur corridor",
-        img: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&q=80&auto=format&fit=crop",
+        img: "/images/gallery/img (9).jpeg",
       },
     ],
   },

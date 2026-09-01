@@ -29,6 +29,7 @@ const d = {
       { label: "Fleet", href: "/fleet", herader: true, sidebar: true },
       // { label: "Track", href: "/tracking", herader: true, sidebar: true },
       // { label: "Reviews", href: "/testimonials", herader: true, sidebar: true },
+      { label: "Contact Us", href: "/contact", herader: true, sidebar: true },
       { label: "Get a Quote", href: "/quote", herader: true, sidebar: true },
     ],
     drawerCta: "Get Free Quote →",

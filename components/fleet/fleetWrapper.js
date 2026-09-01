@@ -483,9 +483,6 @@ export default function FleetWrapper() {
       </section> */}
       <CtaSection />
 
-      {/* FAB */}
-      <button className={css("fab")}>{DATA.fab}</button>
-
       {/* Scroll reveal for static elements */}
       <CtaRevealClient />
     </>

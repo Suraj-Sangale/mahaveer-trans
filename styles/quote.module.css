@@ -65,6 +65,7 @@
   background: var(--bg3);
   padding: 2rem;
   /* overflow-y: auto; */
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   border-radius: 24px 0px 0px 24px;
@@ -72,7 +73,8 @@
     0 0 0 1px rgba(255, 255, 255, 0.06),
     0 32px 80px rgba(0, 0, 0, 0.45),
     0 8px 24px rgba(0, 0, 0, 0.3);
-    max-height: fit-content;
+  max-height: fit-content;
+  min-width: 0;
 }
 
 .lpGrid {
@@ -293,12 +295,15 @@
   align-items: center;
   gap: 0;
   margin-bottom: 1rem;
+  min-width: 0;
+  overflow: hidden;
 }
 .stepItem {
   display: flex;
   align-items: center;
   gap: 0.55rem;
   flex: 1;
+  min-width: 0;
 }
 .stepItem:last-child {
   flex: none;
@@ -338,6 +343,8 @@
   font-weight: 600;
   color: var(--muted);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .stepLabel.active {
   color: var(--accent);
@@ -622,6 +629,8 @@
   gap: 0.5rem;
   flex-wrap: wrap;
   margin-top: 0.35rem;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 /* Hidden native checkbox */
@@ -1160,6 +1169,7 @@
   .rightPanel {
     padding: 1.5rem 4%;
     padding-top: 6rem;
+    overflow-x: hidden;
   }
   .svcGrid {
     grid-template-columns: 1fr;
@@ -1183,6 +1193,42 @@
   .btnNext,
   .btnSubmit {
     width: 100%;
+  }
+  .stepper {
+    gap: 0;
+  }
+  .stepLabel {
+    font-size: 0.72rem;
+  }
+  .specialPill {
+    font-size: 0.78rem;
+    padding: 0.35rem 0.7rem 0.35rem 0.55rem;
+  }
+  .stepItem{
+    flex-direction: column;
+  }
+  .addonPrice{
+    font-size: 0.8rem;
+  }
+  .addonLeft{
+    width: 70%;
+  }
+  
+  .specialRow{
+    padding-left: 4px;
+  }
+}
+@media (max-width: 400px) {
+  .fieldRow.triple {
+    grid-template-columns: 1fr;
+  }
+  .stepLabel {
+    display: none;
+  }
+  .stepNum {
+    width: 28px;
+    height: 28px;
+    font-size: 0.7rem;
   }
 }
 

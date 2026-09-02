@@ -9,18 +9,31 @@
 .wrapper {
   position: relative;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
-/* ── Swiper override: remove default bullets padding ── */
+/* ── Swiper override: strict overflow containment with shadow breathing room ── */
 .swiper {
   width: 100%;
-  padding-bottom: 0 !important; /* we render our own controls below */
-  overflow: visible !important;  /* allow card shadows to bleed outside */
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden !important;
+  padding: 12px 6px 16px !important;
+  margin: -12px -6px -16px !important;
 }
 
-/* ── Slide: let height be defined by content ────── */
+/* ── Slide: flex container for full height children ────── */
 .slide {
   height: auto;
+  display: flex;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.slide > * {
+  width: 100%;
+  height: 100%;
 }
 
 /* ── Nav Row: prev · dots · next ─────────────────── */

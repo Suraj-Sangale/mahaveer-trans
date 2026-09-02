@@ -17,6 +17,7 @@
  *   slideClassName  {string}              Extra class on each SwiperSlide
  */
 
+import { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay, A11y } from "swiper/modules";
 
@@ -41,6 +42,15 @@ export default function CardSwiper({
   className = "",
   slideClassName = "",
 }) {
+  const [mounted, setMounted] = useState(false);
+  const [prevEl, setPrevEl] = useState(null);
+  const [nextEl, setNextEl] = useState(null);
+  const [paginationEl, setPaginationEl] = useState(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   if (!slides.length) return null;
 
   const modules = [A11y];
@@ -55,43 +65,82 @@ export default function CardSwiper({
 
   return (
     <div className={`${styles.wrapper} ${className}`}>
-      <Swiper
-        modules={modules}
-        spaceBetween={spaceBetween}
-        slidesPerView={perViewSm}    /* mobile-first base */
-        loop={loop}
-        navigation={showNavigation ? { nextEl: `.${styles.btnNext}`, prevEl: `.${styles.btnPrev}` } : false}
-        pagination={showPagination ? { clickable: true, el: `.${styles.pagination}` } : false}
-        autoplay={autoplayConfig || false}
-        breakpoints={{
-          641: {
-            slidesPerView: perViewMd,
-            spaceBetween: spaceBetween,
-          },
-          901: {
-            slidesPerView: perView,
-            spaceBetween: spaceBetween,
-          },
-        }}
-        className={styles.swiper}
-      >
-        {slides.map((slide, i) => (
-          <SwiperSlide key={i} className={`${styles.slide} ${slideClassName}`}>
-            {slide}
-          </SwiperSlide>
-        ))}
-      </Swiper>
+      {mounted ? (
+        <Swiper
+          modules={modules}
+          spaceBetween={spaceBetween}
+          slidesPerView={perViewSm}
+          loop={loop && slides.length > perView}
+          observer={true}
+          observeParents={true}
+          resizeObserver={true}
+          watchSlidesProgress={true}
+          navigation={
+            showNavigation && prevEl && nextEl
+              ? { prevEl, nextEl }
+              : showNavigation
+              ? true
+              : false
+          }
+          pagination={
+            showPagination && paginationEl
+              ? { el: paginationEl, clickable: true }
+              : showPagination
+              ? { clickable: true }
+              : false
+          }
+          autoplay={autoplayConfig}
+          breakpoints={{
+            640: {
+              slidesPerView: perViewMd,
+              spaceBetween: spaceBetween,
+            },
+            1024: {
+              slidesPerView: perView,
+              spaceBetween: spaceBetween,
+            },
+          }}
+          className={styles.swiper}
+        >
+          {slides.map((slide, i) => (
+            <SwiperSlide key={i} className={`${styles.slide} ${slideClassName}`}>
+              {slide}
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      ) : (
+        <div className={styles.swiper} style={{ display: "flex", gap: `${spaceBetween}px`, overflow: "hidden" }}>
+          {slides.slice(0, perView).map((slide, i) => (
+            <div key={i} style={{ flex: `0 0 calc((100% - ${(perView - 1) * spaceBetween}px) / ${perView})`, minWidth: 0 }}>
+              {slide}
+            </div>
+          ))}
+        </div>
+      )}
 
-      {/* Custom navigation arrows */}
+      {/* Custom navigation row */}
       {showNavigation && (
         <div className={styles.navRow}>
-          <button className={`${styles.navBtn} ${styles.btnPrev}`} aria-label="Previous slide">
+          <button
+            ref={(node) => setPrevEl(node)}
+            className={`${styles.navBtn} ${styles.btnPrev}`}
+            aria-label="Previous slide"
+          >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="15 18 9 12 15 6" />
             </svg>
           </button>
-          {showPagination && <div className={styles.pagination} />}
-          <button className={`${styles.navBtn} ${styles.btnNext}`} aria-label="Next slide">
+          {showPagination && (
+            <div
+              ref={(node) => setPaginationEl(node)}
+              className={styles.pagination}
+            />
+          )}
+          <button
+            ref={(node) => setNextEl(node)}
+            className={`${styles.navBtn} ${styles.btnNext}`}
+            aria-label="Next slide"
+          >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="9 18 15 12 9 6" />
             </svg>
@@ -101,8 +150,12 @@ export default function CardSwiper({
 
       {/* Standalone pagination (when no navigation arrows) */}
       {!showNavigation && showPagination && (
-        <div className={styles.pagination} />
+        <div
+          ref={(node) => setPaginationEl(node)}
+          className={styles.pagination}
+        />
       )}
     </div>
   );
 }
+

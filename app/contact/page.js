@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ContactWrapper from "@/components/contact/contactWrapper";
 
 export const metadata = {
@@ -8,5 +8,9 @@ export const metadata = {
 };
 
 export default function ContactPage() {
-  return <ContactWrapper />;
+  return (
+    <Suspense fallback={null}>
+      <ContactWrapper />
+    </Suspense>
+  );
 }

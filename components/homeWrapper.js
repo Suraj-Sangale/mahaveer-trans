@@ -7,6 +7,7 @@ import Footer from "./layout/footer";
 import { getConstant } from "@/utilities/utils";
 import Link from "next/link";
 import CommonModal from "./common/commonModal";
+import CardSwiper from "./common/CardSwiper";
 
 const cx = (...args) => {
   return args
@@ -162,7 +163,15 @@ const SITE_DATA = {
           "Cost-effective transportation for smaller shipments by efficiently utilizing available truck capacity.",
         image: "/images/vehicale/semibed.png",
       },
-
+{
+        tag: "Support Service",
+        tagClass: "tp-green",
+        icon: "",
+        title: "Heavy Machinery Transportation Service",
+        description:
+          "Specialized transportation for heavy equipment, machinery, and oversized loads with proper safety and handling. Reliable for  heavy machinery transportation services in the Maharashtra region, specialized logistics providers manage end-to-end industrial relocations, project cargo, and over-dimensional consignments (ODC).",
+        image:"/images/gallery/img (7).jpeg",
+      },
       {
         tag: "Support Service",
         tagClass: "tp-green",
@@ -669,14 +678,16 @@ export default function HomeWrapper() {
             </Link>
           )}
         </div>
-        <div className={cx("svc-grid")}>
-          {d.services.items.map((s, i) => (
+        <CardSwiper
+          perView={3}
+          perViewMd={2}
+          perViewSm={1}
+          spaceBetween={20}
+          autoplay={{ delay: 2000, disableOnInteraction: false }}
+          slides={d.services.items.map((s, i) => (
             <AnimCard key={i} className={cx("svc-card")} delay={i * 0.07}>
               <img className={cx("svc-img")} src={s.image} alt={s.title} />
               <div className={cx("card-wrap")}>
-                {/* <span className={cx(`svc-tag-pill ${s.tagClass}`)}>
-                  {s.tag}
-                </span> */}
                 {s.icon && <div className={cx("svc-icon")}>{s.icon}</div>}
                 <h3 className={cx("svc-title")}>{s.title}</h3>
                 <p className={cx("svc-desc")}>
@@ -690,16 +701,10 @@ export default function HomeWrapper() {
                 >
                   {d.services.learnMoreText}
                 </button>
-                {/* <Link
-                  href={d.services.learnMoreLink}
-                  className={cx("svc-link")}
-                >
-                  {d.services.learnMoreText}
-                </Link> */}
               </div>
             </AnimCard>
           ))}
-        </div>
+        />
       </section>
 
       {/* NUMBERS */}

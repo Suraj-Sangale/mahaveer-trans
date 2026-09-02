@@ -1,0 +1,104 @@
+/*
+ * CardSwiper.module.css
+ * Styles for the reusable CardSwiper component.
+ * Uses CSS custom properties from homeWrapper so it
+ * inherits the active theme (light / dark / accent).
+ */
+
+/* ── Wrapper ──────────────────────────────────────── */
+.wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* ── Swiper override: remove default bullets padding ── */
+.swiper {
+  width: 100%;
+  padding-bottom: 0 !important; /* we render our own controls below */
+  overflow: visible !important;  /* allow card shadows to bleed outside */
+}
+
+/* ── Slide: let height be defined by content ────── */
+.slide {
+  height: auto;
+}
+
+/* ── Nav Row: prev · dots · next ─────────────────── */
+.navRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* ── Nav buttons ─────────────────────────────────── */
+.navBtn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border2, #d1d5db);
+  background: var(--card, #fff);
+  color: var(--ink, #0d1117);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    background 0.22s,
+    border-color 0.22s,
+    color 0.22s,
+    transform 0.15s,
+    box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.navBtn:hover {
+  background: var(--accent, #0ea5e9);
+  border-color: var(--accent, #0ea5e9);
+  color: #fff;
+  transform: scale(1.1);
+  box-shadow: 0 4px 16px rgba(14, 165, 233, 0.3);
+}
+
+.navBtn:active {
+  transform: scale(0.96);
+}
+
+/* Swiper sets these to display:none when at first/last slide in non-loop mode */
+:global(.swiper-button-disabled) .navBtn {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* ── Pagination dots ─────────────────────────────── */
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  justify-content: center;
+}
+
+/* Swiper injects .swiper-pagination-bullet inside .pagination */
+.pagination :global(.swiper-pagination-bullet) {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--border2, #d1d5db);
+  opacity: 1;
+  transition:
+    background 0.25s,
+    transform 0.25s,
+    width 0.3s;
+  cursor: pointer;
+  margin: 0 !important;
+}
+
+.pagination :global(.swiper-pagination-bullet-active) {
+  background: var(--accent, #0ea5e9);
+  transform: scale(1.4);
+  width: 18px;
+  border-radius: 4px;
+}

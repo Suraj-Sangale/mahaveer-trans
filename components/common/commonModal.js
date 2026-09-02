@@ -5,7 +5,7 @@ const ANIMATION_DURATION = 1000; // must match the CSS transition duration below
 export default function CommonModal({
   open,
   onClose,
-  title = "Popup title",
+  title = "",
   height = "70vh",
   children,
   footer,
@@ -138,7 +138,7 @@ export default function CommonModal({
             className={`
               pointer-events-auto
               absolute
-              -top-14 left-1/2 z-10
+              -top-12 left-[92%] z-10
               flex h-10 w-10
               -translate-x-1/2
               items-center justify-center
@@ -187,7 +187,6 @@ export default function CommonModal({
                   flex shrink-0
                   items-center justify-between
                   border-b
-                  px-5 py-4
                 "
                 style={{
                   borderColor: "var(--border)",
@@ -229,7 +228,6 @@ export default function CommonModal({
                 min-h-0
                 flex-1
                 overflow-y-auto
-                px-5 py-4
               "
               style={{
                 color: "var(--ink2)",
@@ -246,7 +244,6 @@ export default function CommonModal({
                   justify-end
                   gap-3
                   border-t
-                  px-5 py-4
                 "
                 style={{
                   borderColor: "var(--border)",

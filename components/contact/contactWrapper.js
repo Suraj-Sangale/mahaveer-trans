@@ -1,14 +1,15 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import styles from "@/styles/contact.module.css";
+import { scrollSectionIntoView } from "@/utilities/utils";
 
 // ── Department quick-select options ──────────────────────────────────────────
 const DEPARTMENTS = [
   { key: "General Inquiry", icon: "💬" },
-  { key: "Freight Quote",   icon: "📦" },
-  { key: "Tracking Help",   icon: "📍" },
-  { key: "Billing",         icon: "💳" },
-  { key: "Partnership",     icon: "🤝" },
+  { key: "Freight Quote", icon: "📦" },
+  { key: "Tracking Help", icon: "📍" },
+  { key: "Billing", icon: "💳" },
+  { key: "Partnership", icon: "🤝" },
 ];
 
 // ── Contact info cards data ───────────────────────────────────────────────────
@@ -45,23 +46,23 @@ const CONTACT_CARDS = [
 
 const BUSINESS_HOURS = [
   { day: "Monday – Friday", time: "9:00 AM – 7:00 PM", open: true },
-  { day: "Saturday",        time: "10:00 AM – 4:00 PM", open: true },
-  { day: "Sunday",          time: "Closed",             open: false },
+  { day: "Saturday - Sunday", time: "9:00 AM – 4:00 PM", open: true },
+  // { day: "",          time: "Closed",             open: false },
 ];
 
 // ── Component ────────────────────────────────────────────────────────────────
 export default function ContactWrapper() {
   const [department, setDepartment] = useState(DEPARTMENTS[0].key);
-  const [name, setName]             = useState("");
-  const [company, setCompany]       = useState("");
-  const [email, setEmail]           = useState("");
-  const [phone, setPhone]           = useState("");
-  const [subject, setSubject]       = useState("");
-  const [message, setMessage]       = useState("");
+  const [name, setName] = useState("");
+  const [company, setCompany] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
   const [fieldErrors, setFieldErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
-  const [reference, setReference]   = useState("");
+  const [reference, setReference] = useState("");
 
   // Load fonts once
   useEffect(() => {
@@ -87,8 +88,8 @@ export default function ContactWrapper() {
     e.preventDefault();
 
     const errs = {};
-    if (!name.trim())    errs.name    = true;
-    if (!email.trim())   errs.email   = true;
+    if (!name.trim()) errs.name = true;
+    if (!email.trim()) errs.email = true;
     if (!subject.trim()) errs.subject = true;
     if (!message.trim()) errs.message = true;
 
@@ -104,10 +105,19 @@ export default function ContactWrapper() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, company, email, phone, subject, department, message }),
+        body: JSON.stringify({
+          name,
+          company,
+          email,
+          phone,
+          subject,
+          department,
+          message,
+        }),
       });
       const json = await res.json();
-      if (!json.ok) throw new Error(json.error || "Server error — please try again.");
+      if (!json.ok)
+        throw new Error(json.error || "Server error — please try again.");
       setReference(json.reference);
     } catch (err) {
       setSubmitError(err.message || "Something went wrong. Please try again.");
@@ -117,17 +127,28 @@ export default function ContactWrapper() {
   }
 
   function resetForm() {
-    setName(""); setCompany(""); setEmail(""); setPhone("");
-    setSubject(""); setMessage(""); setFieldErrors({});
-    setSubmitError(""); setReference("");
+    setName("");
+    setCompany("");
+    setEmail("");
+    setPhone("");
+    setSubject("");
+    setMessage("");
+    setFieldErrors({});
+    setSubmitError("");
+    setReference("");
     setDepartment(DEPARTMENTS[0].key);
   }
 
   const isSuccess = Boolean(reference);
 
+  const handlePartnerClick = () => {
+    setDepartment("Partnership");
+    setSubject("Partnership");
+    scrollSectionIntoView("contact-form");
+  };
+
   return (
     <div className={styles.root}>
-
       {/* ── HERO ──────────────────────────────────────────────── */}
       <section className={styles.hero} aria-label="Contact hero">
         <div className={styles.heroGrid} aria-hidden="true" />
@@ -155,7 +176,10 @@ export default function ContactWrapper() {
             { dot: "#7c3aed", text: "Offices in Mumbai" },
           ].map(({ dot, text }) => (
             <span key={text} className={styles.heroPill}>
-              <span className={styles.heroPillDot} style={{ background: dot }} />
+              <span
+                className={styles.heroPillDot}
+                style={{ background: dot }}
+              />
               {text}
             </span>
           ))}
@@ -164,7 +188,6 @@ export default function ContactWrapper() {
 
       {/* ── MAIN GRID ─────────────────────────────────────────── */}
       <div className={styles.main}>
-
         {/* LEFT — info + map */}
         <div className={styles.infoPanel}>
           <h2 className={styles.infoTitle}>Get in Touch</h2>
@@ -180,37 +203,48 @@ export default function ContactWrapper() {
                 <div className={styles.cardIcon} style={{ background: iconBg }}>
                   {icon}
                 </div>
-                <div className={styles.cardLabel}>{label}</div>
-                <div className={styles.cardValue}>
-                  <a
-                    href={href}
-                    className={styles.cardLink}
-                    target={href.startsWith("http") ? "_blank" : undefined}
-                    rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  >
-                    {value}
-                  </a>
+                <div className={styles.cardWrapper}>
+                  <div className={styles.cardLabel}>{label}</div>
+                  <div className={styles.cardValue}>
+                    <a
+                      href={href}
+                      className={styles.cardLink}
+                      target={href.startsWith("http") ? "_blank" : undefined}
+                      rel={
+                        href.startsWith("http")
+                          ? "noopener noreferrer"
+                          : undefined
+                      }
+                    >
+                      {value}
+                    </a>
+                  </div>
                 </div>
               </div>
             ))}
 
             {/* Address — full width */}
             <div className={`${styles.card} ${styles.cardWide}`}>
-              <div className={styles.cardIcon} style={{ background: "rgba(245,158,11,0.12)" }}>
+              <div
+                className={styles.cardIcon}
+                style={{ background: "rgba(245,158,11,0.12)" }}
+              >
                 📍
               </div>
-              <div className={styles.cardLabel}>Head Office</div>
-              <div className={styles.cardValue}>
-                Mahaveer Trans Solutions, Mumbai, Maharashtra, India
+              <div className={styles.cardWrapper}>
+                <div className={styles.cardLabel}>Head Office</div>
+                <div className={styles.cardValue}>
+                  Mahaveer Trans Solutions, Mumbai, Maharashtra, India
+                </div>
               </div>
             </div>
+
+           
           </div>
 
           {/* Business hours */}
           <div className={styles.hoursStrip}>
-            <div className={styles.hoursTitle}>
-              🕐 Business Hours (IST)
-            </div>
+            <div className={styles.hoursTitle}>🕐 Business Hours (IST)</div>
             {BUSINESS_HOURS.map(({ day, time, open }) => (
               <div key={day} className={styles.hoursRow}>
                 <span className={styles.hoursDay}>{day}</span>
@@ -218,7 +252,26 @@ export default function ContactWrapper() {
                 {open && <span className={styles.hoursOpen}>OPEN</span>}
               </div>
             ))}
+            
           </div>
+           {/* 24×7 Support — full width */}
+            <div className={`${styles.card} ${styles.cardWide} ${styles.supportCard}`}>
+              <div
+                className={styles.cardIcon}
+                style={{ background: "rgba(99,102,241,0.12)" }}
+              >
+                🛟
+              </div>
+              <div className={styles.cardWrapper}>
+                <div className={styles.cardLabel}>24 × 7 Support</div>
+                <div className={styles.cardValue}>
+                  Our team is available around the clock — day, night, weekends
+                  &amp; holidays.
+                </div>
+              </div>
+              <span className={styles.supportBadge}>Always On</span>
+            </div>
+          
 
           {/* Google Maps embed */}
           <div className={styles.mapWrap}>
@@ -267,20 +320,29 @@ export default function ContactWrapper() {
           ) : (
             /* ── FORM STATE ── */
             <>
-              <h2 className={styles.formTitle}>Send a Message</h2>
+              <h2 className={styles.formTitle} id="contact-form">
+                Send a Message
+              </h2>
               <p className={styles.formSub}>
                 Select a topic and fill in the form — we&apos;ll route it to the
                 right team automatically.
               </p>
 
               {/* Department tabs */}
-              <div className={styles.deptTabs} role="group" aria-label="Department">
+              <div
+                className={styles.deptTabs}
+                role="group"
+                aria-label="Department"
+              >
                 {DEPARTMENTS.map(({ key, icon }) => (
                   <button
                     key={key}
                     type="button"
                     className={`${styles.deptTab} ${department === key ? styles.deptTabActive : ""}`}
-                    onClick={() => { setDepartment(key); setSubject(key); }}
+                    onClick={() => {
+                      setDepartment(key);
+                      setSubject(key);
+                    }}
                     aria-pressed={department === key}
                   >
                     {icon} {key}
@@ -307,7 +369,10 @@ export default function ContactWrapper() {
                   </div>
                   <div className={styles.fieldGroup}>
                     <label htmlFor="ct-company" className={styles.fieldLabel}>
-                      Company <span style={{ color: "var(--muted2)", fontWeight: 400 }}>(optional)</span>
+                      Company{" "}
+                      <span style={{ color: "var(--muted2)", fontWeight: 400 }}>
+                        (optional)
+                      </span>
                     </label>
                     <input
                       id="ct-company"
@@ -339,7 +404,10 @@ export default function ContactWrapper() {
                   </div>
                   <div className={styles.fieldGroup}>
                     <label htmlFor="ct-phone" className={styles.fieldLabel}>
-                      Phone <span style={{ color: "var(--muted2)", fontWeight: 400 }}>(optional)</span>
+                      Phone{" "}
+                      <span style={{ color: "var(--muted2)", fontWeight: 400 }}>
+                        (optional)
+                      </span>
                     </label>
                     <input
                       id="ct-phone"
@@ -388,7 +456,9 @@ export default function ContactWrapper() {
 
                 {/* error alert */}
                 {submitError && (
-                  <div className={styles.alertErr} role="alert">{submitError}</div>
+                  <div className={styles.alertErr} role="alert">
+                    {submitError}
+                  </div>
                 )}
 
                 {/* submit */}
@@ -424,24 +494,25 @@ export default function ContactWrapper() {
           <span className={styles.ctaEmoji}>📦</span>
           <div className={styles.ctaTitle}>Need a freight quote fast?</div>
           <p className={styles.ctaSub}>
-            Use our 4-step quote form and get a detailed estimate in under 2 minutes.
+            Use our 4-step quote form and get a detailed estimate in under 2
+            minutes.
           </p>
           <a href="/quote" className={styles.ctaBtn}>
             Get a Quote →
           </a>
         </div>
         <div className={`${styles.ctaCard} ${styles.ctaCard2}`}>
-          <span className={styles.ctaEmoji}>📍</span>
-          <div className={styles.ctaTitle}>Track your shipment</div>
+          <span className={styles.ctaEmoji}>🤝</span>
+          <div className={styles.ctaTitle}>Partner With Us</div>
           <p className={styles.ctaSub}>
-            Enter your tracking number for real-time GPS updates, ETA, and delivery status.
+            Looking for a reliable logistics partner? Let's build a long-term
+            B2B relationship that scales with your business.
           </p>
-          <a href="/tracking" className={styles.ctaBtn}>
-            Track Shipment →
-          </a>
+          <button onClick={handlePartnerClick} className={styles.ctaBtn}>
+            Start a Partnership →
+          </button>
         </div>
       </div>
-
     </div>
   );
 }

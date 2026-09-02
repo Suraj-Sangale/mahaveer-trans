@@ -1111,7 +1111,7 @@
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1.5fr repeat(3, 1fr);
+  grid-template-columns: 1.5fr 1fr 1fr;
   gap: 3rem;
   margin-bottom: 3rem;
 }
@@ -1339,8 +1339,23 @@
     min-height: 200px;
     height: 200px;
   }
+  /* Footer: 2 equal columns at tablet-landscape */
   .f-top {
     grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+  }
+  /* Brand takes full width as its own row */
+  .f-brand {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .f-brand p {
+    max-width: 380px;
+    margin-bottom: 0;
   }
   .nav-links,
   .nav-right > *:not(.hamburger) {
@@ -1348,9 +1363,6 @@
   }
   .hamburger {
     display: flex;
-  }
-  .f-top {
-    grid-template-columns: 1fr;
   }
 }
 @media (max-width: 640px) {
@@ -1611,10 +1623,31 @@
   }
 
   .f-top {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem 1rem;
     padding-bottom: 2rem;
     margin-bottom: 2rem;
+  }
+
+  /* Brand: full width above the 2-col link grid */
+  .f-brand {
+    grid-column: 1 / -1;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1.5rem;
+  }
+
+  .f-brand p {
+    max-width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  /* No top divider needed — brand bottom border separates them */
+  .f-col {
+    padding-top: 0;
+    border-top: none;
   }
 
   .f-bottom {
@@ -1641,5 +1674,30 @@
   .fleet-head .btn-outline {
     width: 100%;
     justify-content: center;
+  }
+}
+
+/* ── Footer: tablet portrait (768px) ────────────────────────── */
+@media (max-width: 768px) {
+  .f-top {
+    /* Brand row + 3 link columns stacked in a 3-col mini-grid */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem 1rem;
+  }
+
+  .f-brand {
+    grid-column: 1 / -1;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .f-brand p {
+    max-width: 100%;
+    margin-bottom: 0.75rem;
+  }
+
+  .f-socs {
+    flex-wrap: wrap;
   }
 }

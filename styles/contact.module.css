@@ -188,6 +188,9 @@
   padding: 20px;
   transition: box-shadow 0.25s, border-color 0.25s, transform 0.25s;
   cursor: default;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .card:hover {
@@ -238,6 +241,64 @@
 /* ── Wide card (address) ── */
 .cardWide {
   grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cardWrapper{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* ── 24×7 Support card ── */
+.supportCard {
+  border-color: rgba(99, 102, 241, 0.35);
+  background: linear-gradient(
+    135deg,
+    var(--card) 0%,
+    rgba(99, 102, 241, 0.04) 100%
+  );
+  justify-content: flex-start;
+  padding: 1rem 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.supportBadge {
+  margin-left: auto;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #16a34a;
+  background: #f0fdf4;
+  border: 1px solid #89f7af;
+  padding: 4px 12px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+}
+
+.supportBadge::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #16a34a;
+  animation: pulse 1.8s ease-in-out infinite;
+  display: inline-block;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.75); }
+}
+
+[data-theme="dark"] .supportBadge {
+  background: rgba(22, 163, 74, 0.15);
+  border-color: rgba(22, 163, 74, 0.3);
 }
 
 /* ── Hours strip ── */

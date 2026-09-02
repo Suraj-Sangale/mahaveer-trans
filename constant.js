@@ -8,5 +8,5 @@ export const constantsList = {
   COMPANY_EMAIL: "info@mahaveertrans.com",
   COMPANY_WEBSITE: "mahaveertrans.com",
   COMPANY_ADDRESS: "Mumbai, India",
-  COMPANY_COPYRIGHT: "© 2025 MahaveerTrans Logistics Pvt. Ltd. All rights reserved.",
+  COMPANY_COPYRIGHT: "© 2025 MahaveerTrans Solutions Pvt. Ltd. All rights reserved.",
 };

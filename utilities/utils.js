@@ -28,15 +28,17 @@ export const getConstant = (key) => {
   return constantsList[key.toUpperCase()] ?? null;
 };
 
-export const scrollSectionIntoView = (id) => {
+export const scrollSectionIntoView = (id, offset = 100) => {
   const element = document.getElementById(id);
 
   if (element) {
+    element.style.scrollMarginTop = `${offset}px`;
+
     setTimeout(() => {
       element.scrollIntoView({
         behavior: "smooth",
         block: "start",
       });
-    }, 1000)
+    }, 100);
   }
 };

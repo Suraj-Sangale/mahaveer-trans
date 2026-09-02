@@ -404,7 +404,7 @@ export default function Header() {
             </Link>
           )}
 
-          <div className={`${css("mobileThemeWrap")} mt-3`}>
+          <div className={`${css("mobileThemeWrap")}`}>
             <ThemeToggle checked={theme === "dark"} onChange={toggleTheme} />
           </div>
 

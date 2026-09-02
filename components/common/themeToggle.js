@@ -280,4 +280,171 @@ const Wrapper = styled.div`
   input:checked + .toggle .stars span:nth-child(5) {
     transition-delay: 0.25s;
   }
+
+  /* ---------- Responsive ---------- */
+
+  @media (max-width: 768px) {
+    .toggle {
+      width: 58px;
+      height: 28px;
+    }
+
+    .thumb {
+      left: 3px;
+      top: 3px;
+      width: 20px;
+      height: 20px;
+    }
+
+    input:checked + .toggle .thumb {
+      --x: 32px;
+    }
+
+    .cloud1 {
+      width: 17px;
+      height: 8px;
+      top: 8px;
+      left: 32px;
+    }
+
+    .cloud1::before {
+      width: 9px;
+      height: 9px;
+      left: 2px;
+      top: -4px;
+    }
+
+    .cloud1::after {
+      width: 11px;
+      height: 11px;
+      right: 2px;
+      top: -5px;
+    }
+
+    .cloud2 {
+      width: 14px;
+      height: 6px;
+      top: 19px;
+      left: 43px;
+    }
+
+    .cloud2::before {
+      width: 8px;
+      height: 8px;
+      top: -3px;
+      left: 2px;
+    }
+
+    .cloud2::after {
+      width: 8px;
+      height: 8px;
+      right: 1px;
+      top: -4px;
+    }
+
+    .stars span:nth-child(1) { top: 6px;  right: 14px; }
+    .stars span:nth-child(2) { top: 12px; right: 24px; }
+    .stars span:nth-child(3) { top: 22px; right: 12px; }
+    .stars span:nth-child(4) { top: 17px; right: 33px; }
+    .stars span:nth-child(5) { top: 5px;  right: 35px; }
+
+    input:checked + .toggle .sunMoon::before {
+      width: 6px;
+      height: 6px;
+      left: 7px;
+      top: 7px;
+    }
+
+    input:checked + .toggle .sunMoon::after {
+      width: 4px;
+      height: 4px;
+      right: 7px;
+      bottom: 7px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .toggle {
+      width: 50px;
+      height: 24px;
+    }
+
+    .thumb {
+      left: 3px;
+      top: 3px;
+      width: 17px;
+      height: 17px;
+    }
+
+    input:checked + .toggle .thumb {
+      --x: 27px;
+    }
+
+    .cloud1 {
+      width: 14px;
+      height: 6px;
+      top: 6px;
+      left: 26px;
+    }
+
+    .cloud1::before {
+      width: 7px;
+      height: 7px;
+      left: 2px;
+      top: -3px;
+    }
+
+    .cloud1::after {
+      width: 9px;
+      height: 9px;
+      right: 1px;
+      top: -4px;
+    }
+
+    .cloud2 {
+      width: 11px;
+      height: 5px;
+      top: 16px;
+      left: 36px;
+    }
+
+    .cloud2::before {
+      width: 6px;
+      height: 6px;
+      top: -3px;
+      left: 1px;
+    }
+
+    .cloud2::after {
+      width: 6px;
+      height: 6px;
+      right: 1px;
+      top: -3px;
+    }
+
+    .stars span {
+      width: 2px;
+      height: 2px;
+    }
+
+    .stars span:nth-child(1) { top: 5px;  right: 12px; }
+    .stars span:nth-child(2) { top: 10px; right: 20px; }
+    .stars span:nth-child(3) { top: 18px; right: 10px; }
+    .stars span:nth-child(4) { top: 14px; right: 28px; }
+    .stars span:nth-child(5) { top: 4px;  right: 29px; }
+
+    input:checked + .toggle .sunMoon::before {
+      width: 5px;
+      height: 5px;
+      left: 5px;
+      top: 5px;
+    }
+
+    input:checked + .toggle .sunMoon::after {
+      width: 3px;
+      height: 3px;
+      right: 5px;
+      bottom: 5px;
+    }
+  }
 `;

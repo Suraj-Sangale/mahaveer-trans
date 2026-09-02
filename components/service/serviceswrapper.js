@@ -537,7 +537,6 @@ export default function ServicesWrapper() {
   const searchParams = useSearchParams();
   const service = searchParams.get("service") || null;
 
-
   /* ── UI STATE ── */
   // ── next-themes: global theme from ThemeProvider context ───────────────
   const { resolvedTheme, setTheme } = useTheme();
@@ -546,7 +545,7 @@ export default function ServicesWrapper() {
 
   const [scrolled, setScrolled] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [activeFilter, setActiveFilter] = useState(service);
+  const [activeFilter, setActiveFilter] = useState(service || "all");
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
   const [trackValue, setTrackValue] = useState("");
   const [trackState, setTrackState] = useState("idle"); // idle | success | error
@@ -559,10 +558,9 @@ export default function ServicesWrapper() {
 
   useEffect(() => {
     if (service) {
-      scrollSectionIntoView("services_cards")
+      scrollSectionIntoView("services_cards");
     }
-  }, [service])
-
+  }, [service]);
 
   const addReveal = useCallback((el) => {
     if (el && !revealRefs.current.includes(el)) revealRefs.current.push(el);
@@ -719,7 +717,10 @@ export default function ServicesWrapper() {
       </div>
 
       {/* SERVICE CARDS LIST */}
-      <section className={cx(styles.section, styles.servicesList)} id="services_cards">
+      <section
+        className={cx(styles.section, styles.servicesList)}
+        id="services_cards"
+      >
         <div className={cx(styles.reveal)} ref={addReveal}>
           <div className={styles.secTag}>{D.servicesList.tag}</div>
           <div
@@ -879,7 +880,9 @@ export default function ServicesWrapper() {
                 regions={D.coverage.regions}
                 selectedRegion={selectedRegion}
                 mode={mapMode}
-                onToggleMode={() => setMapMode((m) => m === "street" ? "satellite" : "street")}
+                onToggleMode={() =>
+                  setMapMode((m) => (m === "street" ? "satellite" : "street"))
+                }
               />
             </div>
             {/* <div className={styles.covBadge}>
@@ -945,7 +948,6 @@ export default function ServicesWrapper() {
           </div>
         </div>
       </section>
-
 
       {/* COMPARISON TABLE */}
       <section className={cx(styles.section, styles.comparison)}>

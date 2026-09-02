@@ -6,6 +6,7 @@ import styles from "@/styles/homeWrapper.module.css";
 import Footer from "./layout/footer";
 import { getConstant } from "@/utilities/utils";
 import Link from "next/link";
+import CommonModal from "./common/commonModal";
 
 const cx = (...args) => {
   return args
@@ -134,9 +135,9 @@ const SITE_DATA = {
         tag: "Primary Service",
         tagClass: "tp-amber",
         icon: "",
-        title: "Road Transport",
+        title: "Factory to Foundation Logistics",
         description:
-          "Reliable road transportation services across India for safe and timely movement of commercial goods and cargo.",
+          "We provide factory to Foundation Logistics service. Factory to foundation logistics refers to the comprehensive process of transporting industrial equipment and components from the manufacturing facility to their final installation site, often a construction or industrial project location. This type of logistics is crucial for large-scale industrial projects and involves several stages and detailed planning to ensure the safe and efficient delivery and installation of the equipment. Here are the key components and considerations involved in factory to foundation logistics:",
         image:
           "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=600&q=80&auto=format&fit=crop",
       },
@@ -295,8 +296,7 @@ const SITE_DATA = {
         sub: "Safe movement of commercial cargo",
         tag: "Cargo",
         tall: false,
-        image:
-          "/images/vehicale/lorry4.jpg",
+        image: "/images/vehicale/lorry4.jpg",
       },
 
       {
@@ -500,6 +500,7 @@ export default function HomeWrapper() {
   const d = SITE_DATA;
   const [trackVal, setTrackVal] = useState("");
   const [trackState, setTrackState] = useState("idle");
+  const [selectedService, setSelectedService] = useState(null);
 
   const handleTrack = () => {
     if (!trackVal.trim()) {
@@ -672,13 +673,30 @@ export default function HomeWrapper() {
           {d.services.items.map((s, i) => (
             <AnimCard key={i} className={cx("svc-card")} delay={i * 0.07}>
               <img className={cx("svc-img")} src={s.image} alt={s.title} />
-              <span className={cx(`svc-tag-pill ${s.tagClass}`)}>{s.tag}</span>
-              {s.icon && <div className={cx("svc-icon")}>{s.icon}</div>}
-              <h3 className={cx("svc-title")}>{s.title}</h3>
-              <p className={cx("svc-desc")}>{s.description}</p>
-              <Link href={d.services.learnMoreLink} className={cx("svc-link")}>
-                {d.services.learnMoreText}
-              </Link>
+              <div className={cx("card-wrap")}>
+                {/* <span className={cx(`svc-tag-pill ${s.tagClass}`)}>
+                  {s.tag}
+                </span> */}
+                {s.icon && <div className={cx("svc-icon")}>{s.icon}</div>}
+                <h3 className={cx("svc-title")}>{s.title}</h3>
+                <p className={cx("svc-desc")}>
+                  {s.description.length > 100
+                    ? s.description.slice(0, 100) + "..."
+                    : s.description}
+                </p>
+                <button
+                  onClick={() => setSelectedService(s)}
+                  className={cx("svc-link")}
+                >
+                  {d.services.learnMoreText}
+                </button>
+                {/* <Link
+                  href={d.services.learnMoreLink}
+                  className={cx("svc-link")}
+                >
+                  {d.services.learnMoreText}
+                </Link> */}
+              </div>
             </AnimCard>
           ))}
         </div>
@@ -921,6 +939,50 @@ export default function HomeWrapper() {
           </div>
         </div>
       </section>
+
+      <CommonModal
+        open={!!selectedService}
+        onClose={() => setSelectedService(null)}
+        title={selectedService?.title ?? ""}
+        height="75vh"
+      >
+        {selectedService && (
+          <div>
+            {/* Service image */}
+            {selectedService.image && (
+              <img
+                src={selectedService.image}
+                alt={selectedService.title}
+                className="w-full h-48 object-cover rounded-xl mb-4"
+              />
+            )}
+
+            {/* Tag pill */}
+            <span
+              className={cx(`svc-tag-pill ${selectedService.tagClass}`)}
+              style={{ display: "inline-block", marginBottom: "0.75rem" }}
+            >
+              {selectedService.tag}
+            </span>
+
+            {/* Full description */}
+            <p className="text-sm leading-relaxed" style={{ color: "var(--ink3)" }}>
+              {selectedService.description}
+            </p>
+
+            {/* CTA */}
+            <div className="mt-6">
+              <Link
+                href={d.services.learnMoreLink}
+                className={cx("btn-primary")}
+                onClick={() => setSelectedService(null)}
+              >
+                View All Services →
+              </Link>
+            </div>
+          </div>
+        )}
+      </CommonModal>
 
       {/* CTA */}
       <CtaSection />

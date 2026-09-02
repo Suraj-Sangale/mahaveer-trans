@@ -1,6 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:wght@400;500;600&family=Playfair+Display:wght@700;800&family=Outfit:wght@400;500;600;700&family=Josefin+Sans:wght@400;600;700&family=Cormorant+Garamond:wght@600;700&family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&family=Nunito:wght@400;500;600&display=swap");
+@import "tailwindcss";
 
-:root {
+/* Tell Tailwind v4 to scan all source files for utility class names */
+@source "../components/**/*.{js,jsx,ts,tsx}";
+@source "../app/**/*.{js,jsx,ts,tsx}";
+@source "../hooks/**/*.{js,jsx,ts,tsx}";
+
+@layer base {
+  :root {
     --bg: #ffffff;
     --bg2: #f9fafb;
     --bg3: #f3f4f6;
@@ -77,6 +84,7 @@
     line-height: 1.6;
   }
 
-a {
-  text-decoration: none;
+  a {
+    text-decoration: none;
+  }
 }

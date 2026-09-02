@@ -174,7 +174,7 @@ export default function CommonModal({
             `}
             style={{
               height,
-              maxHeight: "90vh",
+              maxHeight: "77vh",
               background: "var(--card)",
               boxShadow: "var(--shadow-lg)",
               willChange: "transform, opacity",

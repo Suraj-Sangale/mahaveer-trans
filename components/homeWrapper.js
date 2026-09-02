@@ -944,17 +944,17 @@ export default function HomeWrapper() {
         open={!!selectedService}
         onClose={() => setSelectedService(null)}
         // title={selectedService?.title ?? ""}
-        height="80vh"
+        height="fit-content"
       >
         {selectedService && (
-          <div className="px-4">
-            <h2 className="text-xl leading-relaxed font-bold py-3" style={{ color: "var(--text)" }}>{selectedService?.title}</h2>
+          <div className="px-4 mt-4 mb-6">
+            <h2 className="text-xl leading-relaxed font-bold" style={{ color: "var(--text)" }}>{selectedService?.title}</h2>
             {/* Service image */}
             {selectedService.image && (
               <img
                 src={selectedService.image}
                 alt={selectedService.title}
-                className="w-full h-48 object-cover rounded-2xl mb-4"
+                className="w-full h-48 object-cover rounded-2xl my-2"
               />
             )}
             <div className="">

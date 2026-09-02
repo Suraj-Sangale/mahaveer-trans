@@ -976,11 +976,11 @@ export default function HomeWrapper() {
             {/* CTA */}
             <div className="mt-6">
               <Link
-                href={d.services.learnMoreLink}
+                href={`/contact?for=${selectedService?.title.replace("&", "%26")} Enquiry`}
                 className={cx("btn-primary")}
                 onClick={() => setSelectedService(null)}
               >
-                View All Services →
+                Enquire Now →
               </Link>
             </div>
 

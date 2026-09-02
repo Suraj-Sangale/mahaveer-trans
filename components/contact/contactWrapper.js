@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "@/styles/contact.module.css";
 import { scrollSectionIntoView } from "@/utilities/utils";
+import { useRouter, useSearchParams } from "next/navigation";
 
 // ── Department quick-select options ──────────────────────────────────────────
 const DEPARTMENTS = [
@@ -52,6 +53,12 @@ const BUSINESS_HOURS = [
 
 // ── Component ────────────────────────────────────────────────────────────────
 export default function ContactWrapper() {
+  const router = useRouter();
+
+    const searchParams = useSearchParams();
+    const contactFor = searchParams.get("for") || null;
+
+
   const [department, setDepartment] = useState(DEPARTMENTS[0].key);
   const [name, setName] = useState("");
   const [company, setCompany] = useState("");
@@ -74,6 +81,12 @@ export default function ContactWrapper() {
       link.href =
         "https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:wght@300;400;500;600&display=swap";
       document.head.appendChild(link);
+    }
+
+    if(contactFor){
+      scrollSectionIntoView("contact-form");
+      setSubject(contactFor);
+      // setDepartment(contactFor);
     }
   }, []);
 

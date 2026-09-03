@@ -450,13 +450,13 @@ export default function GalleryNew({ DATA }) {
 
         /* Mobile landscape / large phone — 2 cols, hide cols 3+4 */
         @media (max-width: 768px) {
-          .spg-root .gallery-section  { height: 260vh; }
+          .spg-root .gallery-section  { height: 260vh; padding: 0px }
           .spg-root .gallery-content  { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 14px; }
           .spg-root .gallery-column   { gap: 12px; }
           .spg-root .gallery-column:nth-child(2) { padding-top: 40px; }
           .spg-root .gallery-column:nth-child(3),
           .spg-root .gallery-column:nth-child(4) { display: none; }
-          .spg-root .gallery-viewport { height: 75%; }
+          .spg-root .gallery-viewport { height: 100%; }
           .spg-root .spg-item { aspect-ratio: .8; border-radius: 8px; }
 
           /* Lightbox — nav inside the overlay, not outside */

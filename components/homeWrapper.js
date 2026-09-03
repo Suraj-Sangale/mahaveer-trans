@@ -572,7 +572,7 @@ export default function HomeWrapper() {
               <Link href={"/quote"} className={cx("btn-primary")}>
                 {d.hero.cta1}
               </Link>
-              <Link href={"/services"} className={cx("btn-outline")}>
+              <Link href={"/services"} className={cx("btn-outline !text-white")}>
                 {d.hero.cta2}
               </Link>
             </div>
@@ -681,9 +681,10 @@ export default function HomeWrapper() {
         <CardSwiper
           perView={3}
           perViewMd={2}
-          perViewSm={1}
+          perViewSm={1.3}
           spaceBetween={20}
-          autoplay={{ delay: 2000, disableOnInteraction: false }}
+          speed={1200}
+          autoplay={selectedService == null ? { delay: 2000, disableOnInteraction: false } : false}
           slides={d.services.items.map((s, i) => (
             <AnimCard key={i} className={cx("svc-card")} delay={i * 0.07}>
               <img className={cx("svc-img")} src={s.image} alt={s.title} />

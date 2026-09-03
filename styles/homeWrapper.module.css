@@ -445,7 +445,7 @@
 .svc-top {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: flex-start;
   margin-bottom: 3rem;
   gap: 2rem;
   flex-wrap: wrap;

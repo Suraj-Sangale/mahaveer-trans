@@ -1,5 +1,5 @@
+"use client";
 import React from "react";
-
 import dynamic from "next/dynamic";
 import ThemeInit from "./themeInit";
 import Navbar from "./navbar";
@@ -11,7 +11,7 @@ import HeroParticles from "./HeroParticles";
 import Clients from "./clients";
 import CtaRevealClient from "./ctaRevealClient";
 import Header from "../layout/header";
-import { applyCSS } from "../../utilities/utils";
+import { applyCSS, scrollSectionIntoView } from "../../utilities/utils";
 import styles from "@/styles/fleet.module.css";
 import CtaSection from "../home/ctaSection";
 
@@ -394,8 +394,18 @@ export default function FleetWrapper() {
           </h1>
           <p className={css("hero-desc")}>{DATA.hero.description}</p>
           <div className={css("hero-actions")}>
-            <button className={css("btn-primary")}>{DATA.hero.cta1}</button>
-            <button className={css("btn-wg")}>{DATA.hero.cta2}</button>
+            <button
+              className={css("btn-primary")}
+              onClick={() => scrollSectionIntoView("fleet-gallery")}
+            >
+              {DATA.hero.cta1}
+            </button>
+            <button
+              className={css("btn-wg")}
+              onClick={() => scrollSectionIntoView("fleet-clients")}
+            >
+              {DATA.hero.cta2}
+            </button>
           </div>
         </div>
         <div className={css("hero-stats-strip")}>
@@ -424,11 +434,10 @@ export default function FleetWrapper() {
       </div>
 
       {/* STATS ROW */}
-      <StatsRow DATA={DATA}/>
+      <StatsRow DATA={DATA} />
 
       {/* GALLERY */}
-      <Gallery DATA={DATA}/>
-      
+      <Gallery DATA={DATA} />
 
       {/* ROUTE MAP */}
       <RouteMap DATA={DATA} />

@@ -30,7 +30,7 @@ export default function Clients({DATA}) {
   }, []);
 
   return (
-    <section className={css("clients-section")}>
+    <section className={css("clients-section")} id="fleet-clients">
       <div className={css("clients-head,sr")} ref={headRef}>
         <div>
           <div className={css("sec-tag")}>{DATA.clients.tag}</div>

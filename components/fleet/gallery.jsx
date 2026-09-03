@@ -157,7 +157,7 @@ export default function Gallery({ DATA }) {
       )}
 
       {/* ── Section header + filters ── */}
-      <section className={css("photo-gallery")}>
+      <section className={css("photo-gallery")} id="fleet-gallery">
         <div className={css("gal-head")} id="gal-head">
           <div>
             <div className={css("sec-tag")}>{DATA.gallery.tag}</div>

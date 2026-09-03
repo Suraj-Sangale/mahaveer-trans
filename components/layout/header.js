@@ -331,7 +331,7 @@ export default function Header() {
           </button>
           {/* CTA */}
           <Link
-            href="#cta"
+            href="/quote"
             className={css("btn-cta")}
             style={{
               width: "100%",
@@ -390,9 +390,9 @@ export default function Header() {
           </div>
 
           {/* Login — desktop only */}
-          <button className={css("btn-ghost,desktop-only")}>
+          {/* <button className={css("btn-ghost,desktop-only")}>
             {d.nav.login}
-          </button>
+          </button> */}
 
           {/* Get Quote — desktop only */}
           {!d.nav.getQuoteBtn.isDisabled && (

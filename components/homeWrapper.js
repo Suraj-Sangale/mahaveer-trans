@@ -572,7 +572,7 @@ export default function HomeWrapper() {
               <Link href={"/quote"} className={cx("btn-primary")}>
                 {d.hero.cta1}
               </Link>
-              <Link href={"/services"} className={cx("btn-outline !text-white")}>
+              <Link href={"/services"} className={cx("hero-outline-cta")}>
                 {d.hero.cta2}
               </Link>
             </div>

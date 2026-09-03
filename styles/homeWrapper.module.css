@@ -220,7 +220,24 @@
     border-color 0.2s,
     color 0.2s;
 }
+.hero-outline-cta{
+  background: none;
+  border: 1.5px solid var(--border);
+  padding: 0.73rem 1.5rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition:
+    border-color 0.2s,
+    color 0.2s;
+}
 .btn-outline:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.hero-outline-cta:hover {
   border-color: var(--accent);
   color: var(--accent);
 }
@@ -1301,6 +1318,10 @@
   .btn-outline {
     border-color: rgba(255,255,255,0.5);
     /* color: #fff; */
+  }
+  .hero-outline-cta {
+    border-color: rgba(255,255,255,0.5);
+    color: #fff;
   }
   .btn-outline:hover {
     border-color: #fff;

@@ -18,7 +18,14 @@ const CONTACT_CARDS = [
   {
     icon: "📞",
     iconBg: "rgba(14,165,233,0.12)",
-    label: "Phone",
+    label: "Freight Quotes & Sales",
+    value: "+91 70395 29129",
+    href: "tel:+917039529129",
+  },
+  {
+    icon: "📱",
+    iconBg: "rgba(14,165,233,0.12)",
+    label: "Corporate Office",
     value: "+91 70395 29129",
     href: "tel:+917039529129",
   },

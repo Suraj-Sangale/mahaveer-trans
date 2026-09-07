@@ -197,86 +197,54 @@ function IconBuilding() {
 // ── Contact Items Data ────────────────────────────────────────────────────────
 
 const CONTACT_ITEMS = [
-    {
+  {
     id: "sales",
     name: "Freight Quotes & Sales",
-    role: "Rates for FTL, LTL, fleet & air cargo",
-    badge: "Fast Quote",
+    badge: "Booking",
     icon: <IconTruck />,
     iconBg: "rgba(22, 163, 74, 0.12)",
     actions: [
       {
-        label: "Call",
-        icon: <IconPhone />,
-        href: `tel:${constantsList.CONTACT_NO || "+917039529129"}`,
-        type: "call",
+        label: "Sales & Quotes",
+        display: constantsList.CONTACT_NO_DISPLAY || "+91 70395 29129",
+        tel: constantsList.CONTACT_NO || "+917039529129",
+        whatsapp: `https://wa.me/+917039529129?text=Hi%20Mahaveer%20Trans,%20I%20would%20like%20to%20get%20a%20freight%20quote.`,
       },
-      {
-        label: "WhatsApp",
-        icon: <IconWhatsApp />,
-        href: `https://wa.me/+917039529129?text=Hi%20Mahaveer%20Trans,%20I%20would%20like%20to%20get%20a%20freight%20quote.`,
-        type: "whatsapp",
-        external: true,
-      },
-      {
-        label: "Get Quote",
-        icon: <IconQuote />,
-        href: "/quote",
-        type: "quote",
-        internal: true,
-      },
+      // {
+      //   label: "Urgent Bookings",
+      //   display: "+91 98765 43210",
+      //   tel: "+919876543210",
+      //   whatsapp: "https://wa.me/+919876543210",
+      // },
     ],
   },
   {
     id: "support",
     name: "Customer Support & Tracking",
-    role: "Shipment status, POD & 24/7 help",
     badge: "24/7 Live",
     icon: <IconHeadset />,
     iconBg: "rgba(2, 132, 199, 0.12)",
     actions: [
       {
-        label: "Call",
-        icon: <IconPhone />,
-        href: `tel:${constantsList.CONTACT_NO || "+917039529129"}`,
-        type: "call",
-      },
-      {
-        label: "WhatsApp",
-        icon: <IconWhatsApp />,
-        href: `https://wa.me/+917039529129?text=Hi%20Mahaveer%20Trans%20Support,%20I%20need%20help%20with%20shipment%20tracking.`,
-        type: "whatsapp",
-        external: true,
-      },
-      {
-        label: "Email",
-        icon: <IconMail />,
-        href: `mailto:${constantsList.COMPANY_EMAIL || "info@mahaveertrans.com"}?subject=Support%20Inquiry`,
-        type: "email",
+        label: "Helpline & Tracking",
+        display: constantsList.CONTACT_NO_DISPLAY || "+91 70395 29129",
+        tel: constantsList.CONTACT_NO || "+917039529129",
+        whatsapp: `https://wa.me/+917039529129?text=Hi%20Mahaveer%20Trans%20Support,%20I%20need%20help%20with%20shipment%20tracking.`,
       },
     ],
   },
-
   {
     id: "office",
     name: "Corporate Office (Mumbai)",
-    role: "B2B partnerships, corporate logistics & contracts",
     badge: "Head Office",
     icon: <IconBuilding />,
     iconBg: "rgba(124, 58, 237, 0.12)",
     actions: [
       {
-        label: "Email",
-        icon: <IconMail />,
-        href: `mailto:${constantsList.COMPANY_EMAIL || "info@mahaveertrans.com"}?subject=Corporate%20Inquiry`,
-        type: "email",
-      },
-      {
-        label: "Contact Form",
-        icon: <IconQuote />,
-        href: "/contact",
-        type: "call",
-        internal: true,
+        label: "Direct Desk",
+        display: constantsList.CONTACT_NO_DISPLAY || "+91 70395 29129",
+        tel: constantsList.CONTACT_NO || "+917039529129",
+        whatsapp: `https://wa.me/+917039529129?text=Hi%20Mahaveer%20Trans,%20I%20want%20to%20connect%20with%20the%20Mumbai%20office.`,
       },
     ],
   },

@@ -5,6 +5,7 @@ import Footer from "@/components/layout/footer";
 import { ThemeProvider } from "@/components/common/ThemeProvider";
 import { constantsList } from "@/constant";
 import AiChat from "@/components/AiChat/AiChat";
+import FloatingContact from "@/components/FloatingContact/FloatingContact";
 
 // Note: Next.js metadata must be a static object (build-time), so we read
 // constantsList directly here. All runtime component code uses getConstant().
@@ -31,6 +32,7 @@ export default function RootLayout({
           <Header />
           {children}
           <Footer />
+          <FloatingContact />
           {process.env.NEXT_PUBLIC_AI_CHAT_ENABLED === "1" && <AiChat />}
         </ThemeProvider>
       </body>

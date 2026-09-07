@@ -99,6 +99,8 @@ export default function AiChat() {
   const messagesEndRef = useRef(null);
   const textareaRef = useRef(null);
   const closingTimer = useRef(null);
+  const panelRef = useRef(null);
+  const triggerRef = useRef(null);
 
   // Auto-scroll to bottom on new messages
   useEffect(() => {
@@ -114,21 +116,63 @@ export default function AiChat() {
     }
   }, [open]);
 
-  const handleOpen = () => {
+  const handleOpen = useCallback(() => {
     clearTimeout(closingTimer.current);
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(
+        new CustomEvent("open-floating-widget", { detail: { id: "ai-chat" } })
+      );
+    }
     setMounted(true);
     setShowBadge(false);
-    // Small tick to let DOM render before triggering animation
     requestAnimationFrame(() => setOpen(true));
-  };
+  }, []);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setOpen(false);
-    // Wait for close animation to finish before unmounting
     closingTimer.current = setTimeout(() => setMounted(false), 250);
-  };
+  }, []);
 
   const handleToggle = () => (open ? handleClose() : handleOpen());
+
+  // Listen for open events from other floating widgets
+  useEffect(() => {
+    const handleOtherOpen = (e) => {
+      if (e.detail?.id !== "ai-chat" && open) {
+        handleClose();
+      }
+    };
+
+    window.addEventListener("open-floating-widget", handleOtherOpen);
+    return () => window.removeEventListener("open-floating-widget", handleOtherOpen);
+  }, [open, handleClose]);
+
+  // Click outside to close
+  useEffect(() => {
+    if (!open) return;
+
+    const handleClickOutside = (e) => {
+      if (
+        panelRef.current &&
+        !panelRef.current.contains(e.target) &&
+        triggerRef.current &&
+        !triggerRef.current.contains(e.target)
+      ) {
+        handleClose();
+      }
+    };
+
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") handleClose();
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open, handleClose]);
 
   const sendMessage = useCallback(async () => {
     const text = input.trim();
@@ -197,6 +241,7 @@ export default function AiChat() {
       {/* Floating trigger button */}
       <button
         id="ai-chat-trigger-btn"
+        ref={triggerRef}
         className="ai-chat-trigger"
         onClick={handleToggle}
         aria-label={open ? "Close AI chat" : "Open AI chat"}
@@ -212,6 +257,7 @@ export default function AiChat() {
       {mounted && (
         <div
           id="ai-chat-panel"
+          ref={panelRef}
           className="ai-chat-panel"
           data-open={String(open)}
           role="dialog"

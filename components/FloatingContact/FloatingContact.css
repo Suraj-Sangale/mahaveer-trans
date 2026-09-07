@@ -1,0 +1,446 @@
+/* ── Floating Contact Widget ────────────────────────────────────────────── */
+
+/* Floating trigger button positioned directly above AI Chat */
+.contact-float-trigger {
+  position: fixed;
+  bottom: 120px;
+  right: 28px;
+  z-index: 9999;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0284c7 0%, #0d9488 100%);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 32px rgba(2, 132, 199, 0.45), 0 2px 8px rgba(0, 0, 0, 0.18);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.25s ease;
+  outline: none;
+}
+
+.contact-float-trigger:hover {
+  transform: scale(1.12);
+  box-shadow: 0 12px 40px rgba(2, 132, 199, 0.6), 0 4px 16px rgba(0, 0, 0, 0.22);
+}
+
+.contact-float-trigger:active {
+  transform: scale(0.96);
+}
+
+.contact-float-trigger svg {
+  color: #fff;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Subtle pulse ring animation */
+.contact-float-trigger::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid #0284c7;
+  opacity: 0;
+  animation: contact-pulse 3s ease-out infinite;
+}
+
+@keyframes contact-pulse {
+  0%   { opacity: 0.55; transform: scale(1); }
+  100% { opacity: 0;    transform: scale(1.5); }
+}
+
+/* Status Indicator Dot on Trigger */
+.contact-float-status-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #22c55e;
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.6);
+}
+
+/* Tooltip hint on hover */
+.contact-float-tooltip {
+  position: absolute;
+  right: calc(100% + 12px);
+  background: var(--ink);
+  color: var(--bg);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(8px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+
+.contact-float-trigger:hover .contact-float-tooltip {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ── Contact Panel ──────────────────────────────────────────────────────── */
+.contact-float-panel {
+  position: fixed;
+  bottom: 100px;
+  right: 28px;
+  z-index: 9998;
+  width: 380px;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100dvh - 120px);
+  border-radius: 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg), 0 0 0 1px rgba(2, 132, 199, 0.12);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform-origin: bottom right;
+}
+
+.contact-float-panel[data-open="false"] {
+  animation: contact-panel-close 0.22s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  pointer-events: none;
+}
+
+.contact-float-panel[data-open="true"] {
+  animation: contact-panel-open 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes contact-panel-open {
+  from { opacity: 0; transform: scale(0.85) translateY(24px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);    }
+}
+
+@keyframes contact-panel-close {
+  from { opacity: 1; transform: scale(1)    translateY(0);    }
+  to   { opacity: 0; transform: scale(0.85) translateY(24px); }
+}
+
+/* ── Panel Header ───────────────────────────────────────────────────────── */
+.contact-float-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  background: linear-gradient(135deg, #0284c7 0%, #0d9488 100%);
+  flex-shrink: 0;
+}
+
+.contact-float-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.contact-float-avatar svg {
+  color: #fff;
+}
+
+.contact-float-header-info {
+  flex: 1;
+}
+
+.contact-float-header-title {
+  font-family: var(--font-b);
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.contact-float-header-sub {
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.88);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 3px;
+}
+
+.contact-float-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 6px #4ade80;
+  animation: contact-dot-blink 2s ease-in-out infinite;
+}
+
+@keyframes contact-dot-blink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.4; }
+}
+
+.contact-float-close {
+  background: rgba(255, 255, 255, 0.16);
+  border: none;
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: background 0.2s ease, transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.contact-float-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+}
+
+/* ── Panel Body / Cards ─────────────────────────────────────────────────── */
+.contact-float-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  scroll-behavior: smooth;
+  background: var(--bg2);
+}
+
+.contact-float-body::-webkit-scrollbar {
+  width: 4px;
+}
+
+.contact-float-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.contact-float-body::-webkit-scrollbar-thumb {
+  background: var(--border2);
+  border-radius: 4px;
+}
+
+/* Individual Contact Card */
+.contact-card-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--shadow);
+}
+
+.contact-card-item:hover {
+  transform: translateY(-2px);
+  border-color: rgba(2, 132, 199, 0.35);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Contact Card Top Info */
+.contact-card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.contact-card-icon-wrap {
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.contact-card-icon-wrap svg {
+  width: 20px;
+  height: 20px;
+}
+
+.contact-card-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.contact-card-name {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.25;
+  margin-bottom: 2px;
+}
+
+.contact-card-role {
+  font-size: 11.5px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.contact-card-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 20px;
+  background: var(--accent-lt);
+  color: var(--accent-dk);
+  white-space: nowrap;
+}
+
+/* Action Buttons Container */
+.contact-card-actions {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  padding-top: 4px;
+  border-top: 1px dashed var(--border);
+}
+
+.contact-action-btn {
+  flex: 1;
+  min-width: 70px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  font-size: 11.5px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+/* Action Variants */
+.contact-action-call {
+  background: rgba(2, 132, 199, 0.1);
+  color: #0284c7;
+  border-color: rgba(2, 132, 199, 0.2);
+}
+
+.contact-action-call:hover {
+  background: #0284c7;
+  color: #fff;
+  border-color: #0284c7;
+}
+
+.contact-action-whatsapp {
+  background: rgba(37, 211, 102, 0.12);
+  color: #16a34a;
+  border-color: rgba(37, 211, 102, 0.25);
+}
+
+.contact-action-whatsapp:hover {
+  background: #22c55e;
+  color: #fff;
+  border-color: #22c55e;
+}
+
+.contact-action-email {
+  background: rgba(124, 58, 237, 0.1);
+  color: #7c3aed;
+  border-color: rgba(124, 58, 237, 0.2);
+}
+
+.contact-action-email:hover {
+  background: #7c3aed;
+  color: #fff;
+  border-color: #7c3aed;
+}
+
+.contact-action-quote {
+  background: rgba(245, 158, 11, 0.12);
+  color: #d97706;
+  border-color: rgba(245, 158, 11, 0.25);
+}
+
+.contact-action-quote:hover {
+  background: #f59e0b;
+  color: #fff;
+  border-color: #f59e0b;
+}
+
+.contact-action-btn svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+/* ── Panel Footer ───────────────────────────────────────────────────────── */
+.contact-float-footer {
+  padding: 12px 16px;
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.contact-footer-note {
+  font-size: 11px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.contact-footer-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.contact-footer-link:hover {
+  background: var(--accent-lt);
+  color: var(--accent-dk);
+  border-color: var(--accent);
+}
+
+/* ── Responsive adjustments ─────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .contact-float-panel {
+    right: 12px;
+    bottom: 84px;
+    width: calc(100vw - 24px);
+    max-height: calc(100dvh - 100px);
+  }
+
+  .contact-float-trigger {
+    bottom: 84px;
+    right: 16px;
+    width: 52px;
+    height: 52px;
+  }
+
+  .contact-float-tooltip {
+    display: none;
+  }
+}

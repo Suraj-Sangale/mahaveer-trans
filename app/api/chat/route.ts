@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
-const MODEL = "llama-3.3-70b-versatile";
+const DEFAULT_MODEL = process.env.GROQ_MODEL || "groq/compound-mini";
 
 const SYSTEM_PROMPT = `You are a helpful support assistant for Mahaveer Trans Solutions, a professional logistics and transportation company based in Mumbai, India.
 
@@ -45,34 +45,56 @@ export async function POST(request: NextRequest) {
     // Keep last 10 messages max to stay within token limits
     const trimmedMessages = messages.slice(-10);
 
-    const groqResponse = await fetch(GROQ_API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: MODEL,
-        messages: [
-          { role: "system", content: SYSTEM_PROMPT },
-          ...trimmedMessages,
-        ],
-        max_tokens: 512,
-        temperature: 0.7,
-      }),
-    });
+    const modelsToTry = [
+      DEFAULT_MODEL,
+      "groq/compound",
+      "qwen/qwen3.8-27b",
+    ].filter((m, i, arr) => arr.indexOf(m) === i);
 
-    if (!groqResponse.ok) {
-      const errorData = await groqResponse.json().catch(() => ({}));
-      console.error("Groq API error:", groqResponse.status, errorData);
+    let lastError: any = null;
+    let reply = "";
+
+    for (const model of modelsToTry) {
+      try {
+        const groqResponse = await fetch(GROQ_API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${apiKey}`,
+          },
+          body: JSON.stringify({
+            model,
+            messages: [
+              { role: "system", content: SYSTEM_PROMPT },
+              ...trimmedMessages,
+            ],
+            max_tokens: 512,
+            temperature: 0.7,
+          }),
+        });
+
+        if (!groqResponse.ok) {
+          const errorData = await groqResponse.json().catch(() => ({}));
+          console.error(`Groq API error on model ${model}:`, groqResponse.status, errorData);
+          lastError = errorData;
+          continue;
+        }
+
+        const data = await groqResponse.json();
+        reply = data.choices?.[0]?.message?.content ?? "";
+        if (reply) break;
+      } catch (e) {
+        console.error(`Request to model ${model} failed:`, e);
+        lastError = e;
+      }
+    }
+
+    if (!reply) {
       return NextResponse.json(
         { error: "AI service temporarily unavailable. Please try again." },
         { status: 502 }
       );
     }
-
-    const data = await groqResponse.json();
-    const reply = data.choices?.[0]?.message?.content ?? "Sorry, I could not generate a response.";
 
     return NextResponse.json({ reply });
   } catch (err) {

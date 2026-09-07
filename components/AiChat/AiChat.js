@@ -1,13 +1,22 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import "./AiChat.css";
 
 // ── Icons (inline SVG — no extra deps) ────────────────────────────────────────
 
 function IconChat() {
   return (
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="26"
+      height="26"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
     </svg>
   );
@@ -15,7 +24,16 @@ function IconChat() {
 
 function IconX() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <line x1="18" y1="6" x2="6" y2="18" />
       <line x1="6" y1="6" x2="18" y2="18" />
     </svg>
@@ -24,7 +42,16 @@ function IconX() {
 
 function IconSend() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <line x1="22" y1="2" x2="11" y2="13" />
       <polygon points="22 2 15 22 11 13 2 9 22 2" />
     </svg>
@@ -33,7 +60,16 @@ function IconSend() {
 
 function IconBot() {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="22"
+      height="22"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <rect x="3" y="11" width="18" height="10" rx="2" />
       <circle cx="12" cy="5" r="2" />
       <line x1="12" y1="7" x2="12" y2="11" />
@@ -167,7 +203,9 @@ export default function AiChat() {
         aria-expanded={open}
       >
         {open ? <IconX /> : <IconChat />}
-        {showBadge && !open && <span className="ai-chat-badge" aria-hidden="true" />}
+        {showBadge && !open && (
+          <span className="ai-chat-badge" aria-hidden="true" />
+        )}
       </button>
 
       {/* Chat panel — only in DOM while open or animating closed */}
@@ -203,7 +241,12 @@ export default function AiChat() {
           </div>
 
           {/* Messages */}
-          <div className="ai-chat-messages" role="log" aria-live="polite" aria-label="Chat messages">
+          <div
+            className="ai-chat-messages"
+            role="log"
+            aria-live="polite"
+            aria-label="Chat messages"
+          >
             {messages.length === 0 && (
               <div className="ai-chat-welcome">
                 <div className="ai-chat-welcome-icon">
@@ -219,7 +262,32 @@ export default function AiChat() {
 
             {messages.map((msg, i) => (
               <div key={i} className={`ai-msg ${msg.role}`}>
-                <div className="ai-msg-bubble">{msg.content}</div>
+                <div className="ai-msg-bubble">
+                  {msg.content
+                    ?.split(/(\*\*.*?\*\*|\bhttps?:\/\/[^\s]+)/g)
+                    .map((part, idx) => {
+                      if (part.match(/^\*\*.*\*\*$/)) {
+                        return <strong key={idx}>{part.slice(2, -2)}</strong>;
+                      }
+
+                      if (part.match(/^https?:\/\//)) {
+                        return (
+                          <a
+                            key={idx}
+                            href={part}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="ai-link"
+                          >
+                            {part}
+                          </a>
+                        );
+                      }
+
+                      return <React.Fragment key={idx}>{part}</React.Fragment>;
+                    })}
+                </div>
+
                 <span className="ai-msg-time">{formatTime(msg.time)}</span>
               </div>
             ))}
@@ -227,7 +295,9 @@ export default function AiChat() {
             {loading && (
               <div className="ai-typing-indicator" aria-label="AI is typing">
                 <div className="ai-typing-dots">
-                  <span /><span /><span />
+                  <span />
+                  <span />
+                  <span />
                 </div>
               </div>
             )}

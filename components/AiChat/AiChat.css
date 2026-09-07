@@ -254,6 +254,10 @@
   border: 1px solid var(--border);
   border-bottom-left-radius: 4px;
 }
+.ai-link {
+  color: #5971f8;
+  text-decoration: underline;
+}
 
 .ai-msg-time {
   font-size: 10.5px;

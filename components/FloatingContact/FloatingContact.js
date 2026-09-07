@@ -210,12 +210,12 @@ const CONTACT_ITEMS = [
         tel: constantsList.CONTACT_NO || "+917039529129",
         whatsapp: `https://wa.me/+917039529129?text=Hi%20Mahaveer%20Trans,%20I%20would%20like%20to%20get%20a%20freight%20quote.`,
       },
-      // {
-      //   label: "Urgent Bookings",
-      //   display: "+91 98765 43210",
-      //   tel: "+919876543210",
-      //   whatsapp: "https://wa.me/+919876543210",
-      // },
+      {
+        label: "Urgent Bookings",
+        display: "+91 98765 43210",
+        tel: "+919876543210",
+        whatsapp: "https://wa.me/+919876543210",
+      },
     ],
   },
   {
@@ -390,37 +390,39 @@ export default function FloatingContact() {
                   </div>
                 </div>
 
-                <div className="contact-card-actions">
-                  {item.actions.map((act, idx) => {
-                    const actionClass = `contact-action-btn contact-action-${act.type}`;
-
-                    if (act.internal) {
-                      return (
-                        <Link
-                          key={idx}
-                          href={act.href}
-                          className={actionClass}
-                          onClick={handleClose}
+                <div className="contact-phone-list">
+                  {item.actions?.map((act, idx) => (
+                    <div key={idx} className="contact-phone-row">
+                      <div className="contact-phone-info">
+                        <span className="contact-phone-label">{act.label}</span>
+                        <a href={`tel:${act.tel || act.display}`} className="contact-phone-number">
+                          {act.display}
+                        </a>
+                      </div>
+                      <div className="contact-phone-actions">
+                        <a
+                          href={`tel:${act.tel || act.display}`}
+                          className="contact-action-btn contact-action-call"
+                          aria-label={`Call ${act.display}`}
                         >
-                          {act.icon}
-                          <span>{act.label}</span>
-                        </Link>
-                      );
-                    }
-
-                    return (
-                      <a
-                        key={idx}
-                        href={act.href}
-                        className={actionClass}
-                        target={act.external ? "_blank" : undefined}
-                        rel={act.external ? "noopener noreferrer" : undefined}
-                      >
-                        {act.icon}
-                        <span>{act.label}</span>
-                      </a>
-                    );
-                  })}
+                          <IconPhone />
+                          <span>Call</span>
+                        </a>
+                        {act.whatsapp && (
+                          <a
+                            href={act.whatsapp}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="contact-action-btn contact-action-whatsapp"
+                            aria-label={`WhatsApp ${act.display}`}
+                          >
+                            <IconWhatsApp />
+                            <span>WhatsApp</span>
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             ))}

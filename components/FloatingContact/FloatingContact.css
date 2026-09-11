@@ -5,17 +5,17 @@
   position: fixed;
   bottom: 120px;
   right: 28px;
-  z-index: 9999;
+  z-index: 9998;
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #0284c7 0%, #0d9488 100%);
+  background: linear-gradient(135deg, #0284c7 0%, #17ffec 100%);
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 32px rgba(2, 132, 199, 0.45), 0 2px 8px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 8px 32px rgba(10, 173, 255, 0.45), 0 2px 8px rgba(0, 0, 0, 0.18);
   transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
               box-shadow 0.25s ease;
   outline: none;
@@ -93,7 +93,7 @@
   position: fixed;
   bottom: 100px;
   right: 28px;
-  z-index: 9998;
+  z-index: 9997;
   width: 380px;
   max-width: calc(100vw - 32px);
   max-height: calc(100dvh - 120px);
@@ -460,10 +460,10 @@
   }
 
   .contact-float-trigger {
-    bottom: 84px;
+    bottom: 105px;
     right: 16px;
-    width: 52px;
-    height: 52px;
+    width: 60px;
+    height: 60px;
   }
 
   .contact-float-tooltip {

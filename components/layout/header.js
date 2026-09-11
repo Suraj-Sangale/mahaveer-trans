@@ -118,25 +118,77 @@ export default function Header() {
   const [activeAccent, setActiveAccent] = useState(0);
   const [activeDisplayFont, setActiveDisplayFont] = useState(0);
   const [activeBodyFont, setActiveBodyFont] = useState(0);
-  const [scrolled, setScrolled] = useState(false); // ← React state, not DOM class
+  const [scrolled, setScrolled] = useState(false);
 
+  // Restore saved theme customization on mount once without FOUC
   useEffect(() => {
-    const ac = ACCENT_COLORS[activeAccent];
+    try {
+      const savedAccent = localStorage.getItem("mt-accent");
+      if (savedAccent !== null) {
+        const idx = parseInt(savedAccent, 10);
+        if (!isNaN(idx) && ACCENT_COLORS[idx]) {
+          setActiveAccent(idx);
+          const ac = ACCENT_COLORS[idx];
+          document.documentElement.style.setProperty("--accent", ac.color);
+          document.documentElement.style.setProperty("--accent-shadow", ac.shadow);
+        }
+      }
+
+      const savedDisplay = localStorage.getItem("mt-display-font");
+      if (savedDisplay !== null) {
+        const idx = parseInt(savedDisplay, 10);
+        if (!isNaN(idx) && DISPLAY_FONTS[idx]) {
+          setActiveDisplayFont(idx);
+          const fontValue = `'${DISPLAY_FONTS[idx].font}', sans-serif`;
+          document.documentElement.style.setProperty("--font-display", fontValue);
+          document.documentElement.style.setProperty("--font-d", fontValue);
+        }
+      }
+
+      const savedBody = localStorage.getItem("mt-body-font");
+      if (savedBody !== null) {
+        const idx = parseInt(savedBody, 10);
+        if (!isNaN(idx) && BODY_FONTS[idx]) {
+          setActiveBodyFont(idx);
+          const fontValue = `'${BODY_FONTS[idx].font}', sans-serif`;
+          document.documentElement.style.setProperty("--font-body", fontValue);
+          document.documentElement.style.setProperty("--font-b", fontValue);
+        }
+      }
+    } catch (e) {
+      // ignore
+    }
+  }, []);
+
+  const handleSelectAccent = (idx) => {
+    setActiveAccent(idx);
+    const ac = ACCENT_COLORS[idx];
     document.documentElement.style.setProperty("--accent", ac.color);
     document.documentElement.style.setProperty("--accent-shadow", ac.shadow);
-  }, [activeAccent]);
+    try {
+      localStorage.setItem("mt-accent", idx.toString());
+    } catch (e) {}
+  };
 
-  useEffect(() => {
-    const fontValue = `'${DISPLAY_FONTS[activeDisplayFont].font}', sans-serif`;
+  const handleSelectDisplayFont = (idx) => {
+    setActiveDisplayFont(idx);
+    const fontValue = `'${DISPLAY_FONTS[idx].font}', sans-serif`;
     document.documentElement.style.setProperty("--font-display", fontValue);
     document.documentElement.style.setProperty("--font-d", fontValue);
-  }, [activeDisplayFont]);
+    try {
+      localStorage.setItem("mt-display-font", idx.toString());
+    } catch (e) {}
+  };
 
-  useEffect(() => {
-    const fontValue = `'${BODY_FONTS[activeBodyFont].font}', sans-serif`;
+  const handleSelectBodyFont = (idx) => {
+    setActiveBodyFont(idx);
+    const fontValue = `'${BODY_FONTS[idx].font}', sans-serif`;
     document.documentElement.style.setProperty("--font-body", fontValue);
     document.documentElement.style.setProperty("--font-b", fontValue);
-  }, [activeBodyFont]);
+    try {
+      localStorage.setItem("mt-body-font", idx.toString());
+    } catch (e) {}
+  };
 
   // ── scroll listener — drives React state, not DOM class ─────────────────
   useEffect(() => {
@@ -161,15 +213,6 @@ export default function Header() {
     setTheme(theme === "dark" ? "light" : "dark");
   };
 
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return null; // or a skeleton/placeholder
-  }
   return (
     <>
       <style>{CSS}</style>
@@ -205,7 +248,7 @@ export default function Header() {
                   className={`${css("fp-color")} ${activeAccent === i ? css("active") : ""}`}
                   style={{ background: ac.color }}
                   title={ac.title}
-                  onClick={() => setActiveAccent(i)}
+                  onClick={() => handleSelectAccent(i)}
                 />
               ))}
             </div>
@@ -219,7 +262,7 @@ export default function Header() {
               <div
                 key={i}
                 className={`${css("fp-font-opt")} ${activeDisplayFont === i ? css("active") : ""}`}
-                onClick={() => setActiveDisplayFont(i)}
+                onClick={() => handleSelectDisplayFont(i)}
               >
                 <div className={css("fopt-name")}>{f.font}</div>
                 <div
@@ -244,7 +287,7 @@ export default function Header() {
               <div
                 key={i}
                 className={`${css("fp-font-opt")} ${activeBodyFont === i ? css("active") : ""}`}
-                onClick={() => setActiveBodyFont(i)}
+                onClick={() => handleSelectBodyFont(i)}
               >
                 <div className={css("fopt-name")}>{f.font}</div>
                 <div

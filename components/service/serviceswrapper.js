@@ -7,6 +7,8 @@ import { getConstant } from "@/utilities/utils";
 import { useRouter, useSearchParams } from "next/navigation";
 import { scrollSectionIntoView } from "@/utilities/utils";
 import dynamic from "next/dynamic";
+import CommonModal from "@/components/common/commonModal";
+import Link from "next/link";
 
 const IndiaMap = dynamic(() => import("./IndiaMap"), { ssr: false });
 
@@ -54,152 +56,128 @@ const PAGE = {
   },
 
   ticker: [
-    "Air Cargo",
     "Road Transport",
-    "Cold Chain",
+    "FTL Transportation",
+    "LTL Transportation",
+    "Factory to Foundation",
+    "Heavy Machinery Transport",
+    "Full Truck Load",
     "Warehousing & 3PL",
-    "Last Mile Delivery",
-    "Rail Freight",
-    "Project Cargo",
-    "Express Courier",
-    "Reverse Logistics",
-    "Hazmat Handling",
-    "FTL & LTL",
-    "Temperature Control",
+    "Project Cargo & ODC",
+    "Part Load Transport",
     "Pan-India Network",
     "Same-Day Dispatch",
   ],
 
   servicesList: {
     tag: "What We Offer",
-    headingPart1: "Six Core",
+    headingPart1: "Our Core",
     headingHl: "Service Lines",
     description:
-      "Filter by category to explore the right solution for your shipment type, trade lane, or industry requirement.",
+      "Filter by category to explore the right solution for your shipment type, project requirement, or transport need.",
     learnMore: "Learn more →",
     priceFrom: "From ₹",
     filters: [
       { id: "all", label: "All Services", dot: "#0ea5e9" },
-      { id: "air", label: "Air", dot: "#7c3aed" },
-      { id: "rail", label: "Rail", dot: "#1d4ed8" },
-      { id: "road", label: "Road", dot: "#f59e0b" },
-      { id: "cold", label: "Cold Chain", dot: "#16a34a" },
+      { id: "f2f", label: "Factory to Foundation", dot: "#f59e0b" },
+      { id: "ftl", label: "Full Truck Load", dot: "#1d4ed8" },
+      { id: "ltl", label: "Part Load", dot: "#0ea5e9" },
+      { id: "heavy", label: "Heavy Machinery", dot: "#16a34a" },
       { id: "wh", label: "Warehousing", dot: "#dc2626" },
     ],
     items: [
       {
-        id: "air",
-        tag: "Express",
-        tagClass: "tpPurple",
-        icon: "✈️",
-        title: "Air Cargo (Domestic)",
-        description:
-          "Time-critical domestic shipments handled with precision. Same-day and next-day air cargo across all major Indian cities via IndiGo, SpiceJet, Air India and other domestic carriers.",
-        features: [
-          "Door-to-door across all metro cities",
-          "Next-flight-out available 365 days",
-          "Dangerous goods & pharma certified",
-          "Live GPS tracking per consignment",
-        ],
-        price: "4,500",
-        unit: "per kg",
-        image:
-          "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=700&q=80&auto=format&fit=crop",
-      },
-      {
-        id: "rail",
-        tag: "Economy / Express",
-        tagClass: "tpBlue",
-        icon: "🚂",
-        title: "Rail Freight",
-        description:
-          "Cost-effective and reliable rail cargo across India’s extensive rail network. Ideal for bulk goods, heavy machinery, and long-haul inter-state shipments via Indian Railways & CONCOR.",
-        features: [
-          "Pan-India rail network coverage",
-          "Container & wagon load options",
-          "CONCOR & private freight station access",
-          "Consignment tracking & ETA alerts",
-        ],
-        price: "18,000",
-        unit: "per wagon",
-        image:
-          "https://images.unsplash.com/photo-1553030029-6db37e0f8b98?w=700&q=80&auto=format&fit=crop",
-      },
-      {
-        id: "road",
-        tag: "FTL / LTL",
+        id: "f2f",
+        tag: "Primary Service",
         tagClass: "tpAmber",
-        icon: "🚛",
-        title: "Road Transport",
+        icon: "🏗️",
+        title: "Factory to Foundation Logistics",
         description:
-          "India’s most comprehensive road network with 500+ GPS-tracked trucks. FTL for full loads, LTL for partials — covering every state highway and major industrial corridor.",
+          "We provide factory to Foundation Logistics service. Factory to foundation logistics refers to the comprehensive process of transporting industrial equipment and components from the manufacturing facility to their final installation site, often a construction or industrial project location. This type of logistics is crucial for large-scale industrial projects and involves several stages and detailed planning to ensure the safe and efficient delivery and installation of the equipment.",
         features: [
-          "500+ owned & partner vehicles pan-India",
-          "GPS + temperature monitoring",
-          "Overnight express lanes (metro cities)",
-          "POD via mobile app within 2 hrs",
+          "End-to-end site delivery & foundation placement",
+          "Route survey, obstacle & feasibility assessment",
+          "Multi-axle hydraulic trailers & heavy cranes",
+          "Turnkey project cargo management pan-India",
         ],
-        price: "12,000",
-        unit: "per trip",
+        price: "Custom",
+        unit: "project quote",
         image:
           "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=700&q=80&auto=format&fit=crop",
       },
       {
-        id: "cold",
-        tag: "Pharma / Food",
-        tagClass: "tpGreen",
-        icon: "❄️",
-        title: "Cold Chain Logistics",
+        id: "ftl",
+        tag: "FTL",
+        tagClass: "tpBlue",
+        icon: "🚛",
+        title: "Full Truck Load",
         description:
-          "End-to-end temperature-controlled supply chain for pharmaceutical, biotech, and perishable food products across India. GDP & FSSAI-compliant facilities at all major hubs.",
+          "Dedicated trucks for businesses requiring complete vehicle capacity for secure, direct, and efficient long-distance transportation across India.",
         features: [
-          "2°C–8°C, -20°C & ambient lanes",
-          "Real-time temp logging (every 5 min)",
-          "GDP & FSSAI certified warehouses",
-          "Reefer vans across 50+ Indian cities",
+          "Dedicated point-to-point direct transit",
+          "500+ GPS-enabled commercial vehicles",
+          "Real-time tracking & route optimization",
+          "Guaranteed dispatch & zero transshipment risk",
         ],
-        price: "8,500",
-        unit: "per pallet/day",
+        price: "12,000",
+        unit: "per trip",
         image:
-          "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=700&q=80&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&q=80&auto=format&fit=crop",
+      },
+      {
+        id: "ltl",
+        tag: "LTL",
+        tagClass: "tpSky",
+        icon: "📦",
+        title: "Part Load Transport",
+        description:
+          "Cost-effective transportation for smaller shipments by efficiently utilizing available truck capacity with scheduled dispatches.",
+        features: [
+          "Cost-effective shared capacity pricing",
+          "Regular scheduled departures across major corridors",
+          "Safe consolidation & careful parcel handling",
+          "Door-to-door pickup and delivery options",
+        ],
+        price: "499",
+        unit: "per quintal",
+        image: "/images/vehicale/semibed.png",
+      },
+      {
+        id: "heavy",
+        tag: "Heavy Transport",
+        tagClass: "tpGreen",
+        icon: "🚜",
+        title: "Heavy Machinery Transportation Service",
+        description:
+          "Specialized transportation for heavy equipment, industrial machinery, and oversized loads with proper safety protocols and handling across Maharashtra and pan-India.",
+        features: [
+          "ODC & over-dimensional cargo expertise",
+          "Low-bed, semi-bed, and hydraulic modular axles",
+          "Transit permissions, escort & route clearances",
+          "Experienced rigging and securing operators",
+        ],
+        price: "Custom",
+        unit: "per load",
+        image: "/images/gallery/img (7).jpeg",
       },
       {
         id: "wh",
-        tag: "3PL",
+        tag: "Warehousing / 3PL",
         tagClass: "tpRed",
         icon: "🏭",
-        title: "Warehousing & 3PL",
+        title: "Warehousing & Distribution",
         description:
-          "3 million sq.ft of strategically located smart warehouse space across 12 Indian cities. Integrated WMS for real-time inventory visibility.",
+          "Flexible warehousing, storage, inventory distribution, and dispatch support to simplify and streamline your supply chain operations.",
         features: [
-          "WMS integration via API or portal",
-          "Pick & pack, kitting, labelling",
-          "Same-day dispatch cut-off 4:00 PM",
-          "Returns management & QC inspection",
+          "Secure, modern warehousing & storage facilities",
+          "Systematic inventory management & tracking",
+          "Fast pick, pack, labeling & order processing",
+          "Integrated local and regional dispatch network",
         ],
         price: "18",
         unit: "per sq.ft/month",
         image:
           "https://images.unsplash.com/photo-1553413077-190dd305871c?w=700&q=80&auto=format&fit=crop",
-      },
-      {
-        id: "road",
-        tag: "B2C",
-        tagClass: "tpSky",
-        icon: "🚛",
-        title: "Last Mile Delivery",
-        description:
-          "Urban and semi-urban delivery across 500+ Indian pin codes through a hybrid fleet of EV bikes and cargo vans. Integrates directly with your e-commerce platform via REST API.",
-        features: [
-          "Same-day & next-day delivery pan-India",
-          "Live tracking link on SMS & WhatsApp",
-          "Failed delivery auto-rescheduling",
-          "Proof-of-delivery photo + OTP",
-        ],
-        price: "49",
-        unit: "per delivery",
-        image:
-          "https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=700&q=80&auto=format&fit=crop",
       },
     ],
   },
@@ -276,29 +254,28 @@ const PAGE = {
       "Not sure which service fits your shipment? Use this quick comparison to match your requirements within India.",
     headers: [
       "Feature",
-      "Air Cargo",
-      "Road Transport ★",
-      "Rail Freight",
-      "Cold Chain",
+      "Full Truck Load ★",
+      "Part Load (LTL)",
+      "Heavy Machinery",
+      "Factory to Foundation",
     ],
-    highlightCol: 2,
+    highlightCol: 1,
     rows: [
       {
         feature: "Transit Time",
-        vals: ["Same day–1 day", "1–4 days", "3–7 days", "Same as mode"],
+        vals: ["1–3 days (Direct)", "2–5 days (Hubs)", "Scheduled / SLA", "Project Milestones"],
       },
-      { feature: "Cost", vals: ["High", "Medium", "Low", "Medium–High"] },
+      { feature: "Cost Efficiency", vals: ["Dedicated Full Vehicle", "Shared / Economical", "Specialized Project", "Turnkey End-to-End"] },
       {
-        feature: "Weight Limit",
-        vals: ["Up to 500 kg", "Up to 25T", "Any", "Any"],
+        feature: "Capacity",
+        vals: ["Up to 35 Tonnes", "10 kg – 10 Tonnes", "Over-Dimensional (ODC)", "Plant Equipment & ODC"],
       },
-      { feature: "Tracking", vals: ["✓", "✓", "✓", "✓"] },
-      { feature: "Door-to-Door", vals: ["✓", "✓", "–", "✓"] },
-      { feature: "Pan-India Cover", vals: ["✓", "✓", "✓", "✓"] },
-      { feature: "Temp Control", vals: ["–", "–", "–", "✓"] },
+      { feature: "Tracking", vals: ["✓ GPS Live", "✓ GPS Live", "✓ Dedicated Escort", "✓ Live Project Ops"] },
+      { feature: "Door-to-Door", vals: ["✓ Direct Route", "✓ Regular Route", "✓ Site Placement", "✓ Foundation Delivery"] },
+      { feature: "Pan-India Cover", vals: ["✓ All States", "✓ Major Corridors", "✓ Pan-India & MH", "✓ Nationwide"] },
       {
         feature: "Min. Volume",
-        vals: ["0.5 kg", "100 kg", "1 tonne", "1 pallet"],
+        vals: ["Full truck", "10 kg", "Single consignment", "Complete project"],
       },
     ],
     highlightBadge: "Most Popular",
@@ -488,12 +465,11 @@ const PAGE = {
       {
         heading: "Services",
         links: [
-          ["Air Cargo", "#"],
-          ["Rail Freight", "#"],
-          ["Road Transport", "#"],
-          ["Cold Chain", "#"],
-          ["Warehousing", "#"],
-          ["Last Mile", "#"],
+          ["Factory to Foundation", "#services_cards"],
+          ["Full Truck Load (FTL)", "#services_cards"],
+          ["Part Load Transport (LTL)", "#services_cards"],
+          ["Heavy Machinery Transport", "#services_cards"],
+          ["Warehousing & Distribution", "#services_cards"],
         ],
       },
       {
@@ -551,6 +527,7 @@ export default function ServicesWrapper() {
   const [trackState, setTrackState] = useState("idle"); // idle | success | error
   const [selectedRegion, setSelectedRegion] = useState(null); // for map focus
   const [mapMode, setMapMode] = useState("street"); // "street" | "satellite"
+  const [selectedService, setSelectedService] = useState(null);
 
   /* ── REFS for imperative DOM animation ── */
   const revealRefs = useRef([]);
@@ -775,7 +752,8 @@ export default function ServicesWrapper() {
                   s.id !== activeFilter &&
                   styles.hiddenCard,
               )}
-              style={{ transitionDelay: `${(i % 3) * 0.08}s` }}
+              style={{ transitionDelay: `${(i % 3) * 0.08}s`, cursor: "pointer" }}
+              onClick={() => setSelectedService(s)}
             >
               <div className={styles.svcCardImgWrap}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -794,7 +772,7 @@ export default function ServicesWrapper() {
               <div className={styles.svcCardBody}>
                 {/* <div className={styles.svcCardIcon}>{s.icon}</div> */}
                 <h3 className={styles.svcCardTitle}>{s.title}</h3>
-                <p className={styles.svcCardDesc}>{s.description}</p>
+                <p className={styles.svcCardDesc}>{s.description.slice(0, 120) + "..."}</p>
                 <div className={styles.svcCardFeatures}>
                   {s.features.map((f) => (
                     <div className={styles.svcFeat} key={f}>
@@ -803,9 +781,17 @@ export default function ServicesWrapper() {
                   ))}
                 </div>
                 <div className={styles.svcCardFooter}>
-                  <a href="/quote" className={styles.svcLink}>
+                  <button
+                    type="button"
+                    className={styles.svcLink}
+                    style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedService(s);
+                    }}
+                  >
                     {D.servicesList.learnMore}
-                  </a>
+                  </button>
                   {/* <span className={styles.svcPriceTag}>
                     {D.servicesList.priceFrom}
                     {s.price} <span style={{ opacity: 0.7 }}>{s.unit}</span>
@@ -1306,6 +1292,68 @@ export default function ServicesWrapper() {
       </footer>
 
       <button className={styles.fab}>{D.fab}</button>
+
+      <CommonModal
+        open={!!selectedService}
+        onClose={() => setSelectedService(null)}
+        height="fit-content"
+      >
+        {selectedService && (
+          <div className="px-4 mt-4 mb-6">
+            <h2 className="text-xl leading-relaxed font-bold" style={{ color: "var(--text)" }}>
+              {selectedService?.title}
+            </h2>
+            {/* Service image */}
+            {selectedService.image && (
+              <img
+                src={selectedService.image}
+                alt={selectedService.title}
+                className="w-full h-48 object-cover rounded-2xl my-2"
+              />
+            )}
+            <div>
+              {/* Tag pill */}
+              <span
+                className={cx(styles.svcTagPill, styles[selectedService.tagClass])}
+                style={{ display: "inline-block", marginBottom: "0.75rem" }}
+              >
+                {selectedService.tag}
+              </span>
+
+              {/* Full description */}
+              <p className="text-sm leading-relaxed" style={{ color: "var(--ink3)" }}>
+                {selectedService.description}
+              </p>
+
+              {/* Features / Bullet points */}
+              {selectedService.features && selectedService.features.length > 0 && (
+                <div className="mt-4">
+                  <h4 className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "var(--muted)" }}>
+                    Key Highlights
+                  </h4>
+                  <ul className="space-y-1.5 list-disc list-inside text-sm" style={{ color: "var(--ink3)" }}>
+                    {selectedService.features.map((feat, idx) => (
+                      <li key={idx}>{feat}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* CTA */}
+              <div className="mt-6">
+                <Link
+                  href={`/contact?for=${selectedService?.title.replace("&", "%26")} Enquiry`}
+                  className={styles.btnCta}
+                  style={{ display: "inline-block", textDecoration: "none" }}
+                  onClick={() => setSelectedService(null)}
+                >
+                  Enquire Now →
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
+      </CommonModal>
     </div>
   );
 }

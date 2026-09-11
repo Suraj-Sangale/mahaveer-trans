@@ -509,7 +509,7 @@
 
 .svc-card:hover {
   transform: translateY(-5px);
-  box-shadow: var(--shadow-lg);
+  /* box-shadow: var(--shadow-lg); */
   border-color: transparent;
 }
 

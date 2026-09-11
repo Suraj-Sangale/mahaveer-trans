@@ -138,7 +138,13 @@ const SITE_DATA = {
         icon: "",
         title: "Factory to Foundation Logistics",
         description:
-          "We provide factory to Foundation Logistics service. Factory to foundation logistics refers to the comprehensive process of transporting industrial equipment and components from the manufacturing facility to their final installation site, often a construction or industrial project location. This type of logistics is crucial for large-scale industrial projects and involves several stages and detailed planning to ensure the safe and efficient delivery and installation of the equipment. Here are the key components and considerations involved in factory to foundation logistics:",
+          "We provide factory to Foundation Logistics service. Factory to foundation logistics refers to the comprehensive process of transporting industrial equipment and components from the manufacturing facility to their final installation site, often a construction or industrial project location. This type of logistics is crucial for large-scale industrial projects and involves several stages and detailed planning to ensure the safe and efficient delivery and installation of the equipment.",
+        features: [
+          "End-to-end site delivery & foundation placement",
+          "Route survey, obstacle & feasibility assessment",
+          "Multi-axle hydraulic trailers & heavy cranes",
+          "Turnkey project cargo management pan-India",
+        ],
         image:
           "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=600&q=80&auto=format&fit=crop",
       },
@@ -149,7 +155,13 @@ const SITE_DATA = {
         icon: "",
         title: "Full Truck Load",
         description:
-          "Dedicated trucks for businesses requiring complete vehicle capacity for secure and efficient long-distance transportation.",
+          "Dedicated trucks for businesses requiring complete vehicle capacity for secure, direct, and efficient long-distance transportation across India.",
+        features: [
+          "Dedicated point-to-point direct transit",
+          "500+ GPS-enabled commercial vehicles",
+          "Real-time tracking & route optimization",
+          "Guaranteed dispatch & zero transshipment risk",
+        ],
         image:
           "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80&auto=format&fit=crop",
       },
@@ -160,17 +172,29 @@ const SITE_DATA = {
         icon: "",
         title: "Part Load Transport",
         description:
-          "Cost-effective transportation for smaller shipments by efficiently utilizing available truck capacity.",
+          "Cost-effective transportation for smaller shipments by efficiently utilizing available truck capacity with scheduled dispatches.",
+        features: [
+          "Cost-effective shared capacity pricing",
+          "Regular scheduled departures across major corridors",
+          "Safe consolidation & careful parcel handling",
+          "Door-to-door pickup and delivery options",
+        ],
         image: "/images/vehicale/semibed.png",
       },
-{
+      {
         tag: "Support Service",
         tagClass: "tp-green",
         icon: "",
         title: "Heavy Machinery Transportation Service",
         description:
-          "Specialized transportation for heavy equipment, machinery, and oversized loads with proper safety and handling. Reliable for  heavy machinery transportation services in the Maharashtra region, specialized logistics providers manage end-to-end industrial relocations, project cargo, and over-dimensional consignments (ODC).",
-        image:"/images/gallery/img (7).jpeg",
+          "Specialized transportation for heavy equipment, industrial machinery, and oversized loads with proper safety protocols and handling across Maharashtra and pan-India.",
+        features: [
+          "ODC & over-dimensional cargo expertise",
+          "Low-bed, semi-bed, and hydraulic modular axles",
+          "Transit permissions, escort & route clearances",
+          "Experienced rigging and securing operators",
+        ],
+        image: "/images/gallery/img (7).jpeg",
       },
       {
         tag: "Support Service",
@@ -178,7 +202,13 @@ const SITE_DATA = {
         icon: "",
         title: "Warehousing & Distribution",
         description:
-          "Flexible warehousing, storage, distribution, and dispatch support to simplify your supply chain operations.",
+          "Flexible warehousing, storage, inventory distribution, and dispatch support to simplify and streamline your supply chain operations.",
+        features: [
+          "Secure, modern warehousing & storage facilities",
+          "Systematic inventory management & tracking",
+          "Fast pick, pack, labeling & order processing",
+          "Integrated local and regional dispatch network",
+        ],
         image:
           "https://images.unsplash.com/photo-1553413077-190dd305871c?w=600&q=80&auto=format&fit=crop",
       },
@@ -978,6 +1008,20 @@ export default function HomeWrapper() {
             <p className="text-sm leading-relaxed" style={{ color: "var(--ink3)" }}>
               {selectedService.description}
             </p>
+
+            {/* Features / Bullet points */}
+            {selectedService.features && selectedService.features.length > 0 && (
+              <div className="mt-4">
+                <h4 className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "var(--muted)" }}>
+                  Key Highlights
+                </h4>
+                <ul className="space-y-1.5 list-disc list-inside text-sm" style={{ color: "var(--ink3)" }}>
+                  {selectedService.features.map((feat, idx) => (
+                    <li key={idx}>{feat}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             {/* CTA */}
             <div className="mt-6">

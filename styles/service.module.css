@@ -182,8 +182,10 @@
   color: var(--accent);
 }
 .btnCta {
-  background: var(--ink);
-  color: var(--bg);
+  /* background: var(--ink); */
+  background: var(--accent);
+  /* color: var(--bg); */
+  color: #fff !important;
   padding: 0.5rem 1.3rem;
   border-radius: 8px;
   font-family: var(--font-b);

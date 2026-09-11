@@ -451,56 +451,6 @@ const PAGE = {
     btn2: `📞 ${getConstant("contact_no_display")}`,
   },
 
-  footer: {
-    logo: getConstant("company_name_short"),
-    tagline:
-      "Delivering India's goods with precision, speed, and care. Your trusted pan-India logistics partner since 1999.",
-    socials: [
-      { label: "in", url: "#" },
-      { label: "tw", url: "#" },
-      { label: "yt", url: "#" },
-      { label: "ig", url: "#" },
-    ],
-    columns: [
-      {
-        heading: "Services",
-        links: [
-          ["Factory to Foundation", "#services_cards"],
-          ["Full Truck Load (FTL)", "#services_cards"],
-          ["Part Load Transport (LTL)", "#services_cards"],
-          ["Heavy Machinery Transport", "#services_cards"],
-          ["Warehousing & Distribution", "#services_cards"],
-        ],
-      },
-      {
-        heading: "Company",
-        links: [
-          ["About Us", "#"],
-          ["Careers", "#"],
-          ["Sustainability", "#"],
-          ["Press", "#"],
-          ["Contact", "#"],
-        ],
-      },
-      {
-        heading: "Contact",
-        links: [
-          [`📍 ${getConstant("company_address")}`, "#"],
-          [
-            `📞 ${getConstant("contact_no_display")}`,
-            `tel:${getConstant("contact_no")}`,
-          ],
-          [
-            `✉️ ${getConstant("company_email")}`,
-            `mailto:${getConstant("company_email")}`,
-          ],
-          [`🌐 ${getConstant("company_website")}`, "#"],
-        ],
-      },
-    ],
-    copyright: getConstant("company_copyright"),
-    footerLinks: "Privacy · Terms · Sitemap",
-  },
 };
 
 /* Small helper: join CSS-module class names, skipping falsy values */
@@ -1258,97 +1208,133 @@ export default function ServicesWrapper() {
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className={styles.footer}>
-        <div className={styles.fTop}>
-          <div className={styles.fBrand}>
-            <span className={styles.fBrandLogo}>{D.footer.logo}</span>
-            <p>{D.footer.tagline}</p>
-            <div className={styles.fSocs}>
-              {D.footer.socials.map((s, i) => (
-                <a href={s.url} className={styles.fSoc} key={i}>
-                  {s.label}
-                </a>
-              ))}
-            </div>
-          </div>
-          {D.footer.columns.map((col) => (
-            <div className={styles.fCol} key={col.heading}>
-              <h4>{col.heading}</h4>
-              <ul className={styles.fLinksList}>
-                {col.links.map(([lbl, url]) => (
-                  <li key={lbl}>
-                    <a href={url}>{lbl}</a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-        <div className={styles.fBottom}>
-          <p>{D.footer.copyright}</p>
-          <p>{D.footer.footerLinks}</p>
-        </div>
-      </footer>
-
       <button className={styles.fab}>{D.fab}</button>
 
       <CommonModal
         open={!!selectedService}
         onClose={() => setSelectedService(null)}
         height="fit-content"
+        maxWidth="md:max-w-4xl"
       >
         {selectedService && (
-          <div className="px-4 mt-4 mb-6">
-            <h2 className="text-xl leading-relaxed font-bold" style={{ color: "var(--text)" }}>
-              {selectedService?.title}
-            </h2>
-            {/* Service image */}
-            {selectedService.image && (
-              <img
-                src={selectedService.image}
-                alt={selectedService.title}
-                className="w-full h-48 object-cover rounded-2xl my-2"
-              />
-            )}
-            <div>
-              {/* Tag pill */}
-              <span
-                className={cx(styles.svcTagPill, styles[selectedService.tagClass])}
-                style={{ display: "inline-block", marginBottom: "0.75rem" }}
-              >
-                {selectedService.tag}
-              </span>
+          <div className="p-4 sm:p-5 md:p-7">
+            <div className="flex flex-col md:grid md:grid-cols-12 md:gap-7 items-normal md:items-center ">
+              {/* Left Column - Media Card */}
+              <div className="md:col-span-5 flex flex-col mb-4 md:mb-0">
+                <div className="relative w-full h-52md:h-fit rounded-2xl overflow-hidden shadow-md group">
+                  {selectedService.image && (
+                    <img
+                      src={selectedService.image}
+                      alt={selectedService.title}
+                      className="w-full object-cover rounded-2xl h-52"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none" />
 
-              {/* Full description */}
-              <p className="text-sm leading-relaxed" style={{ color: "var(--ink3)" }}>
-                {selectedService.description}
-              </p>
+                  {/* Tag badge on top */}
+                  <div className="absolute top-3.5 left-3.5 z-10">
+                    <span
+                      className={cx(styles.svcTagPill, styles[selectedService.tagClass])}
+                      style={{
+                        display: "inline-flex",
+                        backdropFilter: "blur(10px)",
+                        boxShadow: "0 2px 10px rgba(0,0,0,0.2)",
+                      }}
+                    >
+                      {selectedService.tag}
+                    </span>
+                  </div>
 
-              {/* Features / Bullet points */}
-              {selectedService.features && selectedService.features.length > 0 && (
-                <div className="mt-4">
-                  <h4 className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "var(--muted)" }}>
-                    Key Highlights
-                  </h4>
-                  <ul className="space-y-1.5 list-disc list-inside text-sm" style={{ color: "var(--ink3)" }}>
-                    {selectedService.features.map((feat, idx) => (
-                      <li key={idx}>{feat}</li>
-                    ))}
-                  </ul>
+                  {/* Bottom overlay badge */}
+                  <div className="absolute bottom-3 left-3 right-3 z-10 hidden md:flex items-center gap-2 px-3 py-[1%] rounded-xl bg-black/40 backdrop-blur-md text-white text-xs font-medium border border-white/10">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+                    <span>Pan-India Transport & Logistics</span>
+                  </div>
                 </div>
-              )}
+              </div>
 
-              {/* CTA */}
-              <div className="mt-6">
-                <Link
-                  href={`/contact?for=${selectedService?.title.replace("&", "%26")} Enquiry`}
-                  className={styles.btnCta}
-                  style={{ display: "inline-block", textDecoration: "none" }}
-                  onClick={() => setSelectedService(null)}
+              {/* Right Column - Service Details */}
+              <div className="md:col-span-7 flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "var(--accent)" }}>
+                      Service Details
+                    </span>
+                  </div>
+
+                  <h2
+                    className="text-xl md:text-2xl lg:text-3xl font-bold leading-snug mb-3"
+                    style={{ color: "var(--ink)", fontFamily: "var(--font-d, inherit)" }}
+                  >
+                    {selectedService?.title}
+                  </h2>
+
+                  {/* Full description */}
+                  <p
+                    className="text-sm leading-relaxed mb-5"
+                    style={{ color: "var(--ink3)" }}
+                  >
+                    {selectedService.description}
+                  </p>
+
+                  {/* Features / Bullet points grid on desktop */}
+                  {selectedService.features && selectedService.features.length > 0 && (
+                    <div
+                      className="pt-4 border-t"
+                      style={{ borderColor: "var(--border)" }}
+                    >
+                      <h4
+                        className="text-xs font-semibold uppercase tracking-wider mb-3 flex items-center gap-2"
+                        style={{ color: "var(--muted)" }}
+                      >
+                        <span>Key Capabilities & Highlights</span>
+                      </h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+                        {selectedService.features.map((feat, idx) => (
+                          <div
+                            key={idx}
+                            className="flex  items-center gap-2.5 p-2.5 rounded-xl text-xs md:text-sm transition-colors"
+                            style={{
+                              background: "var(--bg3, rgba(0,0,0,0.03))",
+                              color: "var(--ink2)",
+                            }}
+                          >
+                            <span
+                              className="flex items-center justify-center w-4 h-4 rounded-full shrink-0 text-[10px] font-bold text-white mt-0.5"
+                              style={{ background: "var(--accent)" }}
+                            >
+                              ✓
+                            </span>
+                            <span className="font-medium leading-tight">{feat}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* CTA Action Bar */}
+                <div
+                  className="mt-6 pt-4 border-t flex flex-wrap sm:flex-nowrap items-center gap-3"
+                  style={{ borderColor: "var(--border)" }}
                 >
-                  Enquire Now →
-                </Link>
+                  <Link
+                    href={`/contact?for=${selectedService?.title.replace("&", "%26")} Enquiry`}
+                    className={styles.btnCta}
+                    style={{ flex: 1, textAlign: "center", textDecoration: "none" }}
+                    onClick={() => setSelectedService(null)}
+                  >
+                    Enquire Now →
+                  </Link>
+                  <Link
+                    href="/quote"
+                    className={styles.btnGhost}
+                    style={{ textAlign: "center", textDecoration: "none" }}
+                    onClick={() => setSelectedService(null)}
+                  >
+                    Get Quote
+                  </Link>
+                </div>
               </div>
             </div>
           </div>

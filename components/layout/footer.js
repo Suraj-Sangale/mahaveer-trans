@@ -31,12 +31,17 @@ export default function Footer() {
       {
         heading: "Services",
         links: [
-          { label: "Air Freight", href: "/services?service=air" },
-          { label: "Sea Freight", href: "/services?service=sea" },
-          { label: "Road Transport", href: "/services?service=road" },
-          { label: "Warehousing", href: "/services?service=wh" },
-          { label: "Cold Chain", href: "/services?service=cold" },
-          { label: "Customs", href: "/services?service=customs" },
+          // { label: "Air Freight", href: "/services?service=air" },
+          // { label: "Sea Freight", href: "/services?service=sea" },
+          // { label: "Road Transport", href: "/services?service=road" },
+          // { label: "Warehousing", href: "/services?service=wh" },
+          // { label: "Cold Chain", href: "/services?service=cold" },
+          { label: "All Services", href: "/services?service=all" },
+          { label: "Factory to Foundation Logistics", href: "/services?service=f2f" },
+          { label: "Full Truck Load", href: "/services?service=ftl" },
+          { label: "Part Load Transport", href: "/services?service=ltl" },
+          { label: "Heavy Machinery Transportation Service", href: "/services?service=heavy" },
+          { label: "Warehousing & Distribution", href: "/services?service=wh" },
         ],
       },
       {

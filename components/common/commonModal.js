@@ -6,7 +6,8 @@ export default function CommonModal({
   open,
   onClose,
   title = "",
-  height = "70vh",
+  height = "fit-content",
+  maxWidth = "md:max-w-3xl",
   children,
   footer,
 }) {
@@ -102,7 +103,7 @@ export default function CommonModal({
         onClick={onClose}
         aria-hidden="true"
         className={`
-          fixed inset-0 z-40
+          fixed inset-0 z-[9990]
           transition-opacity
           duration-[1000ms]
           ease-[cubic-bezier(0.22,1,0.36,1)]
@@ -117,7 +118,7 @@ export default function CommonModal({
       <div
         className={`
           pointer-events-none
-          fixed inset-x-0 bottom-0 z-50
+          fixed inset-x-0 bottom-0 z-[9999]
           md:inset-0
           md:flex
           md:items-center
@@ -128,7 +129,7 @@ export default function CommonModal({
         aria-modal="true"
         aria-labelledby={title ? "popup-title" : undefined}
       >
-        <div className="relative w-full md:w-auto md:max-w-lg">
+        <div className={`relative w-full md:w-auto ${maxWidth}`}>
           {/* Floating close button */}
           <button
             ref={closeButtonRef}
@@ -138,7 +139,7 @@ export default function CommonModal({
             className={`
               pointer-events-auto
               absolute
-              -top-12 left-[92%] z-10
+              -top-12 left-[92%] z-[10000]
               flex h-10 w-10
               -translate-x-1/2
               items-center justify-center
@@ -153,6 +154,7 @@ export default function CommonModal({
               background: "var(--card)",
               color: "var(--muted)",
               boxShadow: "var(--shadow)",
+              border: "1px solid var(--border)",
             }}
           >
             ✕
@@ -164,7 +166,7 @@ export default function CommonModal({
               pointer-events-auto
               flex w-full flex-col
               rounded-t-2xl
-              md:rounded-2xl
+              md:rounded-3xl
               transition-all
               duration-[1000ms]
               ease-[cubic-bezier(0.22,1,0.36,1)]
@@ -174,9 +176,10 @@ export default function CommonModal({
             `}
             style={{
               height,
-              maxHeight: "77vh",
+              maxHeight: "85vh",
               background: "var(--card)",
               boxShadow: "var(--shadow-lg)",
+              border: "1px solid var(--border)",
               willChange: "transform, opacity",
             }}
           >

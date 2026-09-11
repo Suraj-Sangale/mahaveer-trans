@@ -58,7 +58,7 @@ const SITE_DATA = {
     chip: "Since 1999",
     description:
       "End-to-end road transportation and logistics solutions designed for businesses across India. From local deliveries to long-distance movement, we ensure safe, reliable, and timely transportation.",
-    cta1: "Get a Transport Quote →",
+    cta1: "Contact Us →",
     cta2: "Explore Services",
 
     image:
@@ -599,7 +599,7 @@ export default function HomeWrapper() {
             </h1>
             <p className={cx("hero-desc")}>{d.hero.description}</p>
             <div className={cx("hero-actions")}>
-              <Link href={"/quote"} className={cx("btn-primary")}>
+              <Link href={"/contact"} className={cx("btn-primary")}>
                 {d.hero.cta1}
               </Link>
               <Link href={"/services"} className={cx("hero-outline-cta")}>

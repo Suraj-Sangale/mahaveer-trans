@@ -50,6 +50,13 @@ const CONTACT_CARDS = [
     value: "mahaveertrans.com",
     href: "https://mahaveertrans.com",
   },
+  {
+    icon: "📸",
+    iconBg: "rgba(37,211,102,0.12)",
+    label: "Instagram",
+    value: "Follow us",
+    href: "https://www.instagram.com/mahaveertrans/",
+  },
 ];
 
 const BUSINESS_HOURS = [
@@ -62,9 +69,8 @@ const BUSINESS_HOURS = [
 export default function ContactWrapper() {
   const router = useRouter();
 
-    const searchParams = useSearchParams();
-    const contactFor = searchParams.get("for") || null;
-
+  const searchParams = useSearchParams();
+  const contactFor = searchParams.get("for") || null;
 
   const [department, setDepartment] = useState(DEPARTMENTS[0].key);
   const [name, setName] = useState("");
@@ -90,7 +96,7 @@ export default function ContactWrapper() {
       document.head.appendChild(link);
     }
 
-    if(contactFor){
+    if (contactFor) {
       scrollSectionIntoView("contact-form");
       setSubject(contactFor);
       // setDepartment(contactFor);
@@ -219,28 +225,25 @@ export default function ContactWrapper() {
           {/* Contact cards */}
           <div className={styles.cardGrid}>
             {CONTACT_CARDS.map(({ icon, iconBg, label, value, href }) => (
-              <div key={label} className={styles.card}>
+              <a
+                href={href}
+                target={href.startsWith("http") ? "_blank" : undefined}
+                rel={
+                  href.startsWith("http") ? "noopener noreferrer" : undefined
+                }
+                key={label}
+                className={`${styles.card} cursor-pointer`}
+              >
                 <div className={styles.cardIcon} style={{ background: iconBg }}>
                   {icon}
                 </div>
                 <div className={styles.cardWrapper}>
                   <div className={styles.cardLabel}>{label}</div>
                   <div className={styles.cardValue}>
-                    <a
-                      href={href}
-                      className={styles.cardLink}
-                      target={href.startsWith("http") ? "_blank" : undefined}
-                      rel={
-                        href.startsWith("http")
-                          ? "noopener noreferrer"
-                          : undefined
-                      }
-                    >
-                      {value}
-                    </a>
+                    <div className={styles.cardLink}>{value}</div>
                   </div>
                 </div>
-              </div>
+              </a>
             ))}
 
             {/* Address — full width */}
@@ -258,8 +261,6 @@ export default function ContactWrapper() {
                 </div>
               </div>
             </div>
-
-           
           </div>
 
           {/* Business hours */}
@@ -272,26 +273,26 @@ export default function ContactWrapper() {
                 {open && <span className={styles.hoursOpen}>OPEN</span>}
               </div>
             ))}
-            
           </div>
-           {/* 24×7 Support — full width */}
-            <div className={`${styles.card} ${styles.cardWide} ${styles.supportCard}`}>
-              <div
-                className={styles.cardIcon}
-                style={{ background: "rgba(99,102,241,0.12)" }}
-              >
-                🛟
-              </div>
-              <div className={styles.cardWrapper}>
-                <div className={styles.cardLabel}>24 × 7 Support</div>
-                <div className={styles.cardValue}>
-                  Our team is available around the clock — day, night, weekends
-                  &amp; holidays.
-                </div>
-              </div>
-              <span className={styles.supportBadge}>Always On</span>
+          {/* 24×7 Support — full width */}
+          <div
+            className={`${styles.card} ${styles.cardWide} ${styles.supportCard}`}
+          >
+            <div
+              className={styles.cardIcon}
+              style={{ background: "rgba(99,102,241,0.12)" }}
+            >
+              🛟
             </div>
-          
+            <div className={styles.cardWrapper}>
+              <div className={styles.cardLabel}>24 × 7 Support</div>
+              <div className={styles.cardValue}>
+                Our team is available around the clock — day, night, weekends
+                &amp; holidays.
+              </div>
+            </div>
+            <span className={styles.supportBadge}>Always On</span>
+          </div>
 
           {/* Google Maps embed */}
           <div className={styles.mapWrap}>

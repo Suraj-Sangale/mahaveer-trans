@@ -574,6 +574,24 @@ export async function POST(request) {
       html,
     });
 
+    try {
+      const { recordEvent } = await import("@/utilities/analyticsStore");
+      recordEvent({
+        type: "quote_submit",
+        path: "/quote",
+        meta: {
+          reference,
+          service: data.selectedSvc,
+          origin: data.origin,
+          destination: data.destination,
+          name: data.cName,
+          company: data.cCompany,
+        },
+      });
+    } catch (e) {
+      // ignore tracking errors
+    }
+
     return Response.json({ ok: true, reference });
   } catch (err) {
     console.error("[/api/quote] Email send error:", err);

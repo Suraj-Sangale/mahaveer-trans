@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/common/ThemeProvider";
 import { constantsList } from "@/constant";
 import AiChat from "@/components/AiChat/AiChat";
 import FloatingContact from "@/components/FloatingContact/FloatingContact";
+import VisitorTracker from "@/components/analytics/VisitorTracker";
 
 // Note: Next.js metadata must be a static object (build-time), so we read
 // constantsList directly here. All runtime component code uses getConstant().
@@ -29,6 +30,7 @@ export default function RootLayout({
     >
       <body>
         <ThemeProvider>
+          <VisitorTracker />
           <Header />
           {children}
           <Footer />

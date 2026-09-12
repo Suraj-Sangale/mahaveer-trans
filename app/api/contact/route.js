@@ -112,6 +112,17 @@ export async function POST(req) {
       html: buildAutoReplyHtml({ reference, name }),
     });
 
+    try {
+      const { recordEvent } = await import("@/utilities/analyticsStore");
+      recordEvent({
+        type: "contact_submit",
+        path: "/contact",
+        meta: { reference, name, company, subject, department },
+      });
+    } catch (e) {
+      // ignore
+    }
+
     return Response.json({ ok: true, reference });
   } catch (err) {
     console.error("[/api/contact]", err);

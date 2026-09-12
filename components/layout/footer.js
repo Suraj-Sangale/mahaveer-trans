@@ -54,8 +54,9 @@ export default function Footer() {
           // { label: "Careers", href: "/careers" },
           // { label: "Sustainability", href: "/" },
           // { label: "Press", href: "/" },
-          {label:"Get A Quote", href:"/quote"},
+          { label: "Get A Quote", href: "/quote" },
           { label: "Contact", href: "/contact" },
+          { label: "Analytics", href: "/admin/analytics" },
         ],
       },
       {

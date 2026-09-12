@@ -8,7 +8,9 @@ import styles from "@/styles/analytics.module.css";
 
 function timeAgo(dateString) {
   if (!dateString) return "just now";
-  const seconds = Math.floor((new Date().getTime() - new Date(dateString).getTime()) / 1000);
+  const seconds = Math.floor(
+    (new Date().getTime() - new Date(dateString).getTime()) / 1000,
+  );
   if (seconds < 5) return "just now";
   if (seconds < 60) return `${seconds}s ago`;
   const minutes = Math.floor(seconds / 60);
@@ -22,21 +24,61 @@ function timeAgo(dateString) {
 function getEventBadge(type) {
   switch (type) {
     case "quote_submit":
-      return { label: "Quote Submitted", icon: "📝", bg: "rgba(168, 85, 247, 0.14)", border: "rgba(168, 85, 247, 0.45)", text: "#c084fc", dot: "#a855f7" };
+      return {
+        label: "Quote Submitted",
+        icon: "📝",
+        badgeClass: "badgeQuote",
+        dotClass: "badgeDotQuote",
+      };
     case "contact_submit":
-      return { label: "Contact Message", icon: "✉️", bg: "rgba(59, 130, 246, 0.14)", border: "rgba(59, 130, 246, 0.45)", text: "#60a5fa", dot: "#3b82f6" };
+      return {
+        label: "Contact Message",
+        icon: "✉️",
+        badgeClass: "badgeContact",
+        dotClass: "badgeDotContact",
+      };
     case "phone_click":
-      return { label: "Phone Call Click", icon: "📞", bg: "rgba(245, 158, 11, 0.14)", border: "rgba(245, 158, 11, 0.45)", text: "#fbbf24", dot: "#f59e0b" };
+      return {
+        label: "Phone Call Click",
+        icon: "📞",
+        badgeClass: "badgePhone",
+        dotClass: "badgeDotPhone",
+      };
     case "whatsapp_click":
-      return { label: "WhatsApp Click", icon: "💬", bg: "rgba(34, 197, 94, 0.14)", border: "rgba(34, 197, 94, 0.45)", text: "#4ade80", dot: "#22c55e" };
+      return {
+        label: "WhatsApp Click",
+        icon: "💬",
+        badgeClass: "badgeWhatsapp",
+        dotClass: "badgeDotWhatsapp",
+      };
     case "quote_intent":
-      return { label: "Quote CTA Click", icon: "🎯", bg: "rgba(236, 72, 153, 0.14)", border: "rgba(236, 72, 153, 0.45)", text: "#f472b6", dot: "#ec4899" };
+      return {
+        label: "Quote CTA Click",
+        icon: "🎯",
+        badgeClass: "badgeIntent",
+        dotClass: "badgeDotIntent",
+      };
     case "chat_open":
-      return { label: "AI Chat Opened", icon: "🤖", bg: "rgba(14, 165, 233, 0.14)", border: "rgba(14, 165, 233, 0.45)", text: "#38bdf8", dot: "#0ea5e9" };
+      return {
+        label: "AI Chat Opened",
+        icon: "🤖",
+        badgeClass: "badgeChat",
+        dotClass: "badgeDotChat",
+      };
     case "heartbeat":
-      return { label: "Active Heartbeat", icon: "💓", bg: "rgba(100, 116, 139, 0.14)", border: "rgba(100, 116, 139, 0.35)", text: "#94a3b8", dot: "#64748b" };
+      return {
+        label: "Active Heartbeat",
+        icon: "💓",
+        badgeClass: "badgeHeartbeat",
+        dotClass: "badgeDotHeartbeat",
+      };
     default:
-      return { label: "Page View", icon: "👁️", bg: "rgba(56, 189, 248, 0.10)", border: "rgba(56, 189, 248, 0.35)", text: "#0284c7", dot: "#0ea5e9" };
+      return {
+        label: "Page View",
+        icon: "👁️",
+        badgeClass: "badgePageview",
+        dotClass: "badgeDotPageview",
+      };
   }
 }
 
@@ -44,8 +86,20 @@ function getEventBadge(type) {
 function generateSparkline(data = [], color = "#38bdf8") {
   if (!data || data.length < 2) {
     return (
-      <svg width="68" height="24" viewBox="0 0 68 24" fill="none">
-        <path d="M0 12 L68 12" stroke={color} strokeWidth="2" strokeDasharray="3 3" opacity="0.4" />
+      <svg
+        width="68"
+        height="24"
+        viewBox="0 0 68 24"
+        fill="none"
+        className={styles.sparklineSvg}
+      >
+        <path
+          d="M0 12 L68 12"
+          stroke={color}
+          strokeWidth="2"
+          strokeDasharray="3 3"
+          opacity="0.4"
+        />
       </svg>
     );
   }
@@ -66,15 +120,33 @@ function generateSparkline(data = [], color = "#38bdf8") {
   const areaD = `M 0,${height} L ${points.join(" L ")} L ${width},${height} Z`;
 
   return (
-    <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} fill="none" style={{ overflow: "visible" }}>
+    <svg
+      width={width}
+      height={height}
+      viewBox={`0 0 ${width} ${height}`}
+      fill="none"
+      className={styles.sparklineSvg}
+    >
       <defs>
-        <linearGradient id={`grad-${color.replace("#", "")}`} x1="0" y1="0" x2="0" y2="1">
+        <linearGradient
+          id={`grad-${color.replace("#", "")}`}
+          x1="0"
+          y1="0"
+          x2="0"
+          y2="1"
+        >
           <stop offset="0%" stopColor={color} stopOpacity="0.28" />
           <stop offset="100%" stopColor={color} stopOpacity="0.0" />
         </linearGradient>
       </defs>
       <path d={areaD} fill={`url(#grad-${color.replace("#", "")})`} />
-      <path d={pathD} stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d={pathD}
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
@@ -103,22 +175,27 @@ function Tooltip({ content, children }) {
 
 // ── Component: KPI Card ─────────────────────────────────────────────────────────
 
-function KpiCard({ title, value, subtext, trend, sparkData, color, tooltip, isLive }) {
+function KpiCard({
+  title,
+  value,
+  subtext,
+  trend,
+  sparkData,
+  color,
+  tooltip,
+  isLive,
+}) {
+  const trendClass = trend?.startsWith("+")
+    ? styles.trendUp
+    : trend?.startsWith("-")
+      ? styles.trendDown
+      : styles.trendNeutral;
+
   return (
-    <div
-      className={styles.kpiCard}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = `${color}66`;
-        e.currentTarget.style.boxShadow = `0 8px 24px -2px ${color}20, var(--shadow)`;
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.borderColor = "var(--border, rgba(255, 255, 255, 0.07))";
-        e.currentTarget.style.boxShadow = "var(--shadow, 0 4px 20px -2px rgba(0, 0, 0, 0.35))";
-      }}
-    >
+    <div className={styles.kpiCard}>
       {/* Top row: Title and Tooltip */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+      <div className={styles.kpiTopRow}>
+        <div className={styles.kpiTitleGroup}>
           <span className={styles.kpiTitle}>{title}</span>
           {tooltip && (
             <Tooltip content={tooltip}>
@@ -128,8 +205,8 @@ function KpiCard({ title, value, subtext, trend, sparkData, color, tooltip, isLi
         </div>
 
         {isLive ? (
-          <span style={{ display: "inline-flex", alignItems: "center", gap: 5, background: "rgba(34, 197, 94, 0.16)", color: "#16a34a", padding: "2px 7px", borderRadius: "10px", fontSize: "10px", fontWeight: 800, border: "1px solid rgba(34, 197, 94, 0.35)" }}>
-            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#22c55e", boxShadow: "0 0 8px #22c55e" }} />
+          <span className={styles.kpiLiveBadge}>
+            <span className={styles.kpiLiveDot} />
             LIVE
           </span>
         ) : (
@@ -143,13 +220,9 @@ function KpiCard({ title, value, subtext, trend, sparkData, color, tooltip, isLi
       </div>
 
       {/* Subtext and Trend */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      <div className={styles.kpiBottomRow}>
         <span className={styles.kpiSubtext}>{subtext}</span>
-        {trend && (
-          <span style={{ color: trend.startsWith("+") ? "#16a34a" : trend.startsWith("-") ? "#ef4444" : "var(--muted)", fontWeight: 600, fontSize: "11px" }}>
-            {trend}
-          </span>
-        )}
+        {trend && <span className={trendClass}>{trend}</span>}
       </div>
     </div>
   );
@@ -173,6 +246,7 @@ export default function AnalyticsDashboard() {
   const [pageFilter, setPageFilter] = useState("all");
   const [isClearing, setIsClearing] = useState(false);
   const [copiedId, setCopiedId] = useState(null);
+
 
   // Authentication Check
   useEffect(() => {
@@ -216,21 +290,379 @@ export default function AnalyticsDashboard() {
     setPinInput("");
   };
 
-  const fetchData = useCallback(async (selectedRange = range, showSpinner = false) => {
-    if (showSpinner) setLoading(true);
-    try {
-      const res = await fetch(`/api/analytics/stats?range=${selectedRange}`, { cache: "no-store" });
-      const json = await res.json();
-      if (json.ok) {
-        setData(json.data);
-        setLastRefreshed(new Date());
-      }
-    } catch (err) {
-      console.error("Failed to load analytics:", err);
-    } finally {
-      setLoading(false);
+  const fetchData = useCallback(
+    async (selectedRange = range, showSpinner = false) => {
+      if (showSpinner) setLoading(true);
+      try {
+        const res = await fetch(`/api/analytics/stats?range=${selectedRange}`, {
+          cache: "no-store",
+        });
+        const json = await res.json();
+        if (json.ok) {
+        const sampl =  {
+  "isCloudStorage": true,
+  "realtimeActiveVisitors": 1,
+  "totalPageViews": 5,
+  "uniqueVisitors": 2,
+  "totalSessions": 3,
+  "avgPagesPerSession": 1.7,
+  "conversions": {
+    "quotes": 0,
+    "contacts": 0,
+    "phoneClicks": 1,
+    "whatsappClicks": 0,
+    "chatInteractions": 0,
+    "trackingLookups": 0,
+    "totalConversions": 1,
+    "conversionRate": 50
+  },
+  "cities": [
+    {
+      "name": "Mumbai",
+      "count": 9,
+      "percentage": 100
+    },
+    {
+      "name": "pune",
+      "count": 9,
+      "percentage": 101
+    },
+    {
+      "name": "Goa",
+      "count": 9,
+      "percentage": 10
+    },
+     {
+      "name": "Nashik",
+      "count": 9,
+      "percentage": 10
+    },
+  {
+      "name": "Kolkata",
+      "count": 9,
+      "percentage": 10
+    },
+  ],
+  "states": [
+    {
+      "name": "Maharashtra",
+      "count": 9,
+      "percentage": 100
     }
-  }, [range]);
+  ],
+  "countries": [
+    {
+      "name": "India",
+      "count": 9,
+      "percentage": 100
+    }
+  ],
+  "topPages": [
+    {
+      "path": "/contact",
+      "views": 3,
+      "uniqueVisitors": 2
+    },
+    {
+      "path": "/",
+      "views": 1,
+      "uniqueVisitors": 1
+    },
+    {
+      "path": "/services",
+      "views": 1,
+      "uniqueVisitors": 1
+    }
+  ],
+  "referrers": [
+    {
+      "source": "localhost",
+      "count": 4
+    },
+    {
+      "source": "Direct / Bookmark",
+      "count": 1
+    }
+  ],
+  "devices": [
+    {
+      "name": "Desktop",
+      "count": 9,
+      "percentage": 100
+    }
+  ],
+  "browsers": [
+    {
+      "name": "Chrome",
+      "count": 9,
+      "percentage": 100
+    }
+  ],
+  "operatingSystems": [
+    {
+      "name": "Windows",
+      "count": 9,
+      "percentage": 100
+    }
+  ],
+  "dailyActivity": [
+    {
+      "date": "2026-09-06",
+      "views": 1,
+      "visitors": 2,
+      "conversions": 3
+    },
+    {
+      "date": "2026-09-07",
+      "views": 0,
+      "visitors": 0,
+      "conversions": 0
+    },
+    {
+      "date": "2026-09-08",
+      "views": 0,
+      "visitors": 0,
+      "conversions": 0
+    },
+    {
+      "date": "2026-09-09",
+      "views": 20,
+      "visitors": 10,
+      "conversions": 50
+    },
+    {
+      "date": "2026-09-10",
+      "views": 0,
+      "visitors": 0,
+      "conversions": 0
+    },
+    {
+      "date": "2026-09-11",
+      "views": 0,
+      "visitors": 0,
+      "conversions": 0
+    },
+    {
+      "date": "2026-09-12",
+      "views": 5,
+      "visitors": 2,
+      "conversions": 4
+    }
+  ],
+  "recentVisits": [
+    {
+      "id": "1789234369485-s1ohk8c",
+      "type": "pageview",
+      "visitorId": "v_33rx80908mtyhyzjn",
+      "sessionId": "s_8rjh0nttjmtymlyed",
+      "path": "/",
+      "title": "MahaveerTrans — Modern Logistics",
+      "referrer": "http://localhost:3000/",
+      "browser": "Chrome",
+      "os": "Windows",
+      "device": "Desktop",
+      "ip": "127.0.0.1",
+      "country": "India",
+      "state": "Maharashtra",
+      "city": "Mumbai",
+      "screen": "1366x768",
+      "language": "en",
+      "meta": {
+        "path": "/"
+      },
+      "timestamp": "2026-09-12T17:32:49.485Z"
+    },
+    {
+      "id": "1789234360892-5gvv3aw",
+      "type": "pageview",
+      "visitorId": "v_33rx80908mtyhyzjn",
+      "sessionId": "s_azr7yk20nmtymu99m",
+      "path": "/contact",
+      "title": "Contact Us — MahaveerTrans",
+      "referrer": "http://localhost:3000/contact",
+      "browser": "Chrome",
+      "os": "Windows",
+      "device": "Desktop",
+      "ip": "127.0.0.1",
+      "country": "India",
+      "state": "Maharashtra",
+      "city": "Mumbai",
+      "screen": "1366x768",
+      "language": "en",
+      "meta": {
+        "path": "/contact"
+      },
+      "timestamp": "2026-09-12T17:32:40.892Z"
+    },
+    {
+      "id": "1789232986706-c9amapy",
+      "type": "heartbeat",
+      "visitorId": "v_ci4e4vgywmtyid4uo",
+      "sessionId": "s_drc7derdgmtyid4up",
+      "path": "/services",
+      "title": "MahaveerTrans — Modern Logistics",
+      "referrer": "http://localhost:3000/contact",
+      "browser": "Chrome",
+      "os": "Windows",
+      "device": "Desktop",
+      "ip": "127.0.0.1",
+      "country": "India",
+      "state": "Maharashtra",
+      "city": "Mumbai",
+      "screen": "1440x900",
+      "language": "en-US",
+      "meta": {
+        "path": "/services"
+      },
+      "timestamp": "2026-09-12T17:09:46.706Z"
+    },
+    {
+      "id": "1789232835761-37jupdp",
+      "type": "heartbeat",
+      "visitorId": "v_ci4e4vgywmtyid4uo",
+      "sessionId": "s_drc7derdgmtyid4up",
+      "path": "/services",
+      "title": "MahaveerTrans — Modern Logistics",
+      "referrer": "http://localhost:3000/contact",
+      "browser": "Chrome",
+      "os": "Windows",
+      "device": "Desktop",
+      "ip": "127.0.0.1",
+      "country": "India",
+      "state": "Maharashtra",
+      "city": "Mumbai",
+      "screen": "1440x900",
+      "language": "en-US",
+      "meta": {
+        "path": "/services"
+      },
+      "timestamp": "2026-09-12T17:07:15.761Z"
+    },
+    {
+      "id": "1789232685802-r89wzm1",
+      "type": "pageview",
+      "visitorId": "v_ci4e4vgywmtyid4uo",
+      "sessionId": "s_drc7derdgmtyid4up",
+      "path": "/services",
+      "title": "",
+      "referrer": "http://localhost:3000/contact",
+      "browser": "Chrome",
+      "os": "Windows",
+      "device": "Desktop",
+      "ip": "127.0.0.1",
+      "country": "India",
+      "state": "Maharashtra",
+      "city": "Mumbai",
+      "screen": "1440x900",
+      "language": "en-US",
+      "meta": {
+        "path": "/services"
+      },
+      "timestamp": "2026-09-12T17:04:45.803Z"
+    },
+    {
+      "id": "1789232683627-4j45zfl",
+      "type": "pageview",
+      "visitorId": "v_ci4e4vgywmtyid4uo",
+      "sessionId": "s_drc7derdgmtyid4up",
+      "path": "/contact",
+      "title": "Contact Us — MahaveerTrans",
+      "referrer": "http://localhost:3000/contact",
+      "browser": "Chrome",
+      "os": "Windows",
+      "device": "Desktop",
+      "ip": "127.0.0.1",
+      "country": "India",
+      "state": "Maharashtra",
+      "city": "Mumbai",
+      "screen": "1440x900",
+      "language": "en-US",
+      "meta": {
+        "path": "/contact"
+      },
+      "timestamp": "2026-09-12T17:04:43.627Z"
+    },
+    {
+      "id": "1789232680190-cq3zpb5",
+      "type": "heartbeat",
+      "visitorId": "v_33rx80908mtyhyzjn",
+      "sessionId": "s_azr7yk20nmtymu99m",
+      "path": "/contact",
+      "title": "Contact Us — MahaveerTrans",
+      "referrer": "",
+      "browser": "Chrome",
+      "os": "Windows",
+      "device": "Desktop",
+      "ip": "127.0.0.1",
+      "country": "India",
+      "state": "Maharashtra",
+      "city": "Mumbai",
+      "screen": "1366x768",
+      "language": "en",
+      "meta": {
+        "path": "/contact"
+      },
+      "timestamp": "2026-09-12T17:04:40.190Z"
+    },
+    {
+      "id": "1789232530188-qqcedfd",
+      "type": "pageview",
+      "visitorId": "v_33rx80908mtyhyzjn",
+      "sessionId": "s_azr7yk20nmtymu99m",
+      "path": "/contact",
+      "title": "",
+      "referrer": "",
+      "browser": "Chrome",
+      "os": "Windows",
+      "device": "Desktop",
+      "ip": "127.0.0.1",
+      "country": "India",
+      "state": "Maharashtra",
+      "city": "Mumbai",
+      "screen": "1366x768",
+      "language": "en",
+      "meta": {
+        "path": "/contact"
+      },
+      "timestamp": "2026-09-12T17:02:10.188Z"
+    },
+    {
+      "id": "1789232205391-s81vm0p",
+      "type": "phone_click",
+      "visitorId": "v_33rx80908mtyhyzjn",
+      "sessionId": "s_8rjh0nttjmtymlyed",
+      "path": "/",
+      "title": "MahaveerTrans — Modern Logistics",
+      "referrer": "",
+      "browser": "Chrome",
+      "os": "Windows",
+      "device": "Desktop",
+      "ip": "127.0.0.1",
+      "country": "India",
+      "state": "Maharashtra",
+      "city": "Mumbai",
+      "screen": "1366x768",
+      "language": "en",
+      "meta": {
+        "href": "tel:+917039529129",
+        "label": "Call"
+      },
+      "timestamp": "2026-09-12T16:56:45.391Z"
+    }
+  ]
+}
+          setData(sampl);
+          // setData(json.data);
+          setLastRefreshed(new Date());
+        }
+      } catch (err) {
+        console.error("Failed to load analytics:", err);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [range],
+  );
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -248,7 +680,11 @@ export default function AnalyticsDashboard() {
   }, [isAuthenticated, autoRefresh, range, fetchData]);
 
   const handleClearData = async () => {
-    if (!window.confirm("Are you sure you want to reset all analytics tracking records? This cannot be undone.")) {
+    if (
+      !window.confirm(
+        "Are you sure you want to reset all analytics tracking records? This cannot be undone.",
+      )
+    ) {
       return;
     }
     setIsClearing(true);
@@ -279,7 +715,16 @@ export default function AnalyticsDashboard() {
     return data.recentVisits.filter((v) => {
       if (eventTypeFilter !== "all") {
         if (eventTypeFilter === "conversions") {
-          if (!["quote_submit", "contact_submit", "phone_click", "whatsapp_click", "quote_intent"].includes(v.type)) return false;
+          if (
+            ![
+              "quote_submit",
+              "contact_submit",
+              "phone_click",
+              "whatsapp_click",
+              "quote_intent",
+            ].includes(v.type)
+          )
+            return false;
         } else if (v.type !== eventTypeFilter) {
           return false;
         }
@@ -323,9 +768,9 @@ export default function AnalyticsDashboard() {
 
   if (isCheckingAuth) {
     return (
-      <div className={styles.dashboardWrapper} style={{ display: "flex", alignItems: "center", justifyContent: "center", color: "var(--accent)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 14, fontWeight: 600 }}>
-          <span style={{ width: 12, height: 12, borderRadius: "50%", background: "var(--accent)", animation: "ping 1s infinite" }} />
+      <div className={`${styles.dashboardWrapper} ${styles.authCenterWrapper}`}>
+        <div className={styles.authLoadingBox}>
+          <span className={styles.authLoadingDot} />
           Verifying security access...
         </div>
       </div>
@@ -334,23 +779,20 @@ export default function AnalyticsDashboard() {
 
   if (!isAuthenticated) {
     return (
-      <div className={styles.dashboardWrapper} style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
-        <div className={styles.panelCard} style={{ maxWidth: 420, width: "100%", padding: "36px 32px", textAlign: "center" }}>
-          <div style={{ width: 56, height: 56, borderRadius: "14px", background: "linear-gradient(135deg, var(--accent), var(--accent-dk))", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 18px", fontSize: 24, boxShadow: "0 0 24px rgba(14, 165, 233, 0.35)", color: "#fff" }}>
-            🔐
-          </div>
-          <h2 style={{ margin: "0 0 6px", fontSize: 22, fontWeight: 800, color: "var(--ink)" }}>
-            MahaveerTrans Analytics
-          </h2>
-          <div className={styles.proBadge} style={{ display: "inline-block", marginBottom: 18 }}>
+      <div className={`${styles.dashboardWrapper} ${styles.authCenterWrapper}`}>
+        <div className={`${styles.panelCard} ${styles.authCard}`}>
+          <div className={styles.authIcon}>🔐</div>
+          <h2 className={styles.authTitle}>MahaveerTrans Analytics</h2>
+          <div className={`${styles.proBadge} ${styles.authProBadge}`}>
             ENTERPRISE PRO
           </div>
-          <p style={{ margin: "0 0 22px", fontSize: 13, color: "var(--muted)", lineHeight: 1.5 }}>
-            Enter your Admin PIN to unlock the live visitor tracking dashboard and fleet telemetry metrics.
+          <p className={styles.authDesc}>
+            Enter your Admin PIN to unlock the live visitor tracking dashboard
+            and fleet telemetry metrics.
           </p>
 
           <form onSubmit={handlePinSubmit}>
-            <div style={{ marginBottom: 16 }}>
+            <div className={styles.authInputGroup}>
               <input
                 type="password"
                 placeholder="Enter PIN (Default: 1234)"
@@ -358,44 +800,24 @@ export default function AnalyticsDashboard() {
                 onChange={(e) => setPinInput(e.target.value)}
                 autoFocus
                 maxLength={12}
-                className={styles.textInput}
-                style={{
-                  width: "100%",
-                  padding: "12px 16px",
-                  fontSize: 18,
-                  textAlign: "center",
-                  letterSpacing: "4px",
-                }}
+                className={`${styles.textInput} ${styles.pinInput}`}
               />
-              {pinError && (
-                <div style={{ color: "#ef4444", fontSize: 12, marginTop: 8, fontWeight: 600 }}>
-                  ⚠️ {pinError}
-                </div>
-              )}
+              {pinError && <div className={styles.pinError}>⚠️ {pinError}</div>}
             </div>
 
             <button
               type="submit"
-              className={styles.rangeBtnActive}
-              style={{
-                width: "100%",
-                padding: "12px",
-                borderRadius: "10px",
-                fontSize: 14,
-                fontWeight: 700,
-                border: "none",
-                cursor: "pointer",
-              }}
+              className={`${styles.rangeBtnActive} ${styles.authSubmitBtn}`}
             >
               Unlock Analytics Dashboard →
             </button>
           </form>
 
-          <div style={{ marginTop: 22, paddingTop: 16, borderTop: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 12 }}>
-            <Link href="/" style={{ color: "var(--accent)", textDecoration: "none", fontWeight: 600 }}>
+          <div className={styles.authFooter}>
+            <Link href="/" className={styles.authBackLink}>
               ← Return to Website
             </Link>
-            <span style={{ color: "var(--muted)" }}>Default PIN: 1234</span>
+            <span className={styles.authFooterText}>Default PIN: 1234</span>
           </div>
         </div>
       </div>
@@ -404,7 +826,14 @@ export default function AnalyticsDashboard() {
 
   // ── Authenticated View ────────────────────────────────────────────────────────
 
-  const conv = data?.conversions || { quotes: 0, contacts: 0, phoneClicks: 0, whatsappClicks: 0, totalConversions: 0, conversionRate: 0 };
+  const conv = data?.conversions || {
+    quotes: 0,
+    contacts: 0,
+    phoneClicks: 0,
+    whatsappClicks: 0,
+    totalConversions: 0,
+    conversionRate: 0,
+  };
   const uniqueVisitors = data?.uniqueVisitors || 0;
   const totalPageViews = data?.totalPageViews || 0;
   const totalSessions = data?.totalSessions || 0;
@@ -417,42 +846,66 @@ export default function AnalyticsDashboard() {
       <header className={styles.header}>
         <div className={styles.headerInner}>
           {/* Brand & Status */}
-          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+          <div className={styles.headerBrandSection}>
             <Link href="/" className={styles.backBtn}>
               <span>← Main Site</span>
             </Link>
 
-            <span style={{ color: "var(--border)" }}>|</span>
+            <span className={styles.headerDivider}>|</span>
 
             <div>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--accent)", boxShadow: "0 0 10px var(--accent)" }} />
-                <h1 className={styles.brandTitle}>
-                  MahaveerTrans Analytics
-                </h1>
+              <div className={styles.headerBrandRow}>
+                <div className={styles.brandDot} />
+                <h1 className={styles.brandTitle}>MahaveerTrans Analytics</h1>
                 <span className={styles.proBadge}>PRO</span>
                 {data?.isCloudStorage ? (
                   <span className={styles.cloudBadge}>☁️ Cloud Synced</span>
                 ) : (
-                  <span className={styles.serverlessBadge} title="Add Upstash Redis in .env to persist across Vercel deployments">
+                  <span
+                    className={styles.serverlessBadge}
+                    title="Add Upstash Redis in .env to persist across Vercel deployments"
+                  >
                     ⚡ Serverless Mode
                   </span>
                 )}
               </div>
 
               <div className={styles.statusSubtext}>
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 5 }}>
-                  <span style={{ width: 7, height: 7, borderRadius: "50%", background: autoRefresh ? "#22c55e" : "#94a3b8", display: "inline-block" }} />
-                  <span style={{ color: autoRefresh ? "#16a34a" : "var(--muted)", fontWeight: 600 }}>{autoRefresh ? "Live Tracking Active" : "Auto-Refresh Paused"}</span>
+                <span className={styles.liveStatusBadge}>
+                  <span
+                    className={
+                      autoRefresh
+                        ? styles.statusIndicatorDot
+                        : styles.statusIndicatorDotInactive
+                    }
+                  />
+                  <span
+                    className={
+                      autoRefresh
+                        ? styles.statusIndicatorText
+                        : styles.statusIndicatorTextInactive
+                    }
+                  >
+                    {autoRefresh
+                      ? "Live Tracking Active"
+                      : "Auto-Refresh Paused"}
+                  </span>
                 </span>
                 <span>•</span>
-                <span>Updated: {lastRefreshed.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}</span>
+                <span>
+                  Updated:{" "}
+                  {lastRefreshed.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                  })}
+                </span>
               </div>
             </div>
           </div>
 
           {/* Action Toolbar */}
-          <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+          <div className={styles.headerActions}>
             {/* Date Range Selector */}
             <div className={styles.rangeContainer}>
               {[
@@ -474,8 +927,7 @@ export default function AnalyticsDashboard() {
             {/* Live Toggle */}
             <button
               onClick={() => setAutoRefresh(!autoRefresh)}
-              className={styles.actionBtn}
-              style={{ color: autoRefresh ? "#16a34a" : "var(--muted)" }}
+              className={`${styles.actionBtn} ${autoRefresh ? styles.liveToggleBtnActive : styles.liveToggleBtnInactive}`}
             >
               🔄 {autoRefresh ? "Live ON" : "Live OFF"}
             </button>
@@ -521,19 +973,27 @@ export default function AnalyticsDashboard() {
       {/* ── MAIN CONTENT CONTAINER ───────────────────────────────────────────── */}
       <main className={styles.mainContent}>
         {/* ── 1. EXECUTIVE OVERVIEW (10 KPI CARDS GRID) ──────────────────────── */}
-        <section style={{ marginBottom: 28 }}>
+        <section className={styles.executiveSection}>
           <div className={styles.sectionHeader}>
             <div>
               <h2 className={styles.sectionTitle}>
                 Executive Performance Overview
               </h2>
               <p className={styles.sectionSubtitle}>
-                Key conversion metrics and high-intent customer actions ({range === "today" ? "Today" : range === "7d" ? "Past 7 Days" : range === "30d" ? "Past 30 Days" : "All Time"})
+                Key conversion metrics and high-intent customer actions (
+                {range === "today"
+                  ? "Today"
+                  : range === "7d"
+                    ? "Past 7 Days"
+                    : range === "30d"
+                      ? "Past 30 Days"
+                      : "All Time"}
+                )
               </p>
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 6, background: "rgba(14, 165, 233, 0.1)", padding: "4px 10px", borderRadius: "8px", border: "1px solid rgba(14, 165, 233, 0.25)" }}>
-              <span style={{ fontSize: 11, color: "var(--accent)", fontWeight: 700 }}>Conversion Rate:</span>
-              <span style={{ fontSize: 13, color: "var(--ink)", fontWeight: 800 }}>{conv.conversionRate}%</span>
+            <div className={styles.crPill}>
+              <span className={styles.crPillLabel}>Conversion Rate:</span>
+              <span className={styles.crPillValue}>{conv.conversionRate}%</span>
             </div>
           </div>
 
@@ -552,7 +1012,9 @@ export default function AnalyticsDashboard() {
               title="Contact Messages"
               value={conv.contacts}
               subtext="Direct customer inquiries"
-              trend={conv.contacts > 0 ? `+${conv.contacts} new` : "0 in period"}
+              trend={
+                conv.contacts > 0 ? `+${conv.contacts} new` : "0 in period"
+              }
               sparkData={sparkConversions}
               color="#3b82f6"
               tooltip="Total submissions through the contact form"
@@ -562,7 +1024,11 @@ export default function AnalyticsDashboard() {
               title="Phone Call Clicks"
               value={conv.phoneClicks}
               subtext="Direct call actions"
-              trend={conv.phoneClicks > 0 ? `+${conv.phoneClicks} calls` : "0 in period"}
+              trend={
+                conv.phoneClicks > 0
+                  ? `+${conv.phoneClicks} calls`
+                  : "0 in period"
+              }
               sparkData={sparkConversions}
               color="#f59e0b"
               tooltip="Total times visitors clicked the telephone number to call"
@@ -572,7 +1038,11 @@ export default function AnalyticsDashboard() {
               title="WhatsApp Clicks"
               value={conv.whatsappClicks}
               subtext="Instant chat initiates"
-              trend={conv.whatsappClicks > 0 ? `+${conv.whatsappClicks} chats` : "0 in period"}
+              trend={
+                conv.whatsappClicks > 0
+                  ? `+${conv.whatsappClicks} chats`
+                  : "0 in period"
+              }
               sparkData={sparkConversions}
               color="#10b981"
               tooltip="Total clicks on WhatsApp chat buttons and floating contact links"
@@ -582,7 +1052,11 @@ export default function AnalyticsDashboard() {
               title="Total Inquiries"
               value={conv.totalConversions}
               subtext="All combined leads"
-              trend={conv.totalConversions > 0 ? `${conv.conversionRate}% CR` : "0% CR"}
+              trend={
+                conv.totalConversions > 0
+                  ? `${conv.conversionRate}% CR`
+                  : "0% CR"
+              }
               sparkData={sparkConversions}
               color="#06b6d4"
               tooltip="Aggregate sum of Quotes, Contacts, Phone Calls, and WhatsApp inquiries"
@@ -623,7 +1097,9 @@ export default function AnalyticsDashboard() {
               title="Browsing Sessions"
               value={totalSessions.toLocaleString()}
               subtext="Visits initiated"
-              trend={totalSessions > 0 ? `${totalSessions} sessions` : "0 sessions"}
+              trend={
+                totalSessions > 0 ? `${totalSessions} sessions` : "0 sessions"
+              }
               sparkData={sparkVisitors}
               color="#fb923c"
               tooltip="Total browsing sessions initiated by visitors"
@@ -642,133 +1118,161 @@ export default function AnalyticsDashboard() {
         </section>
 
         {/* ── 2. GEOGRAPHIC & DEVICE ANALYTICS (3-COLUMN SECTION) ─────────────── */}
-        <section style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 16, marginBottom: 28 }}>
+        <section className={styles.geoGrid}>
           {/* Card 1: Top Visitor Cities */}
           <div className={styles.panelCard}>
             <div className={styles.cardHeader}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ width: 26, height: 26, borderRadius: "6px", background: "rgba(14, 165, 233, 0.15)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 13 }}>
-                  🏙️
-                </span>
+              <div className={styles.cardHeaderTitle}>
+                <span className={styles.cardIconBlue}>🏙️</span>
                 <h3 className={styles.cardTitle}>Top Visitor Cities</h3>
               </div>
               <span className={styles.cardSubtitle}>By Transport Demand</span>
             </div>
 
             {data?.cities && data.cities.length > 0 ? (
-              <div style={{ display: "flex", flexDirection: "column", gap: 11, maxHeight: 220, overflowY: "auto", paddingRight: 4 }}>
+              <div className={styles.scrollList}>
                 {data.cities.map((city) => (
-                  <div key={city.name} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12 }}>
-                      <span style={{ color: "var(--ink2)", fontWeight: 600 }}>{city.name}</span>
-                      <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                        <span style={{ color: "var(--muted)", fontSize: 11 }}>{city.count} visits</span>
-                        <span style={{ color: "var(--accent)", fontWeight: 700 }}>{city.percentage}%</span>
+                  <div key={city.name} className={styles.listItem}>
+                    <div className={styles.listItemHeader}>
+                      <span className={styles.listItemName}>{city.name}</span>
+                      <div className={styles.listItemMeta}>
+                        <span className={styles.listItemCount}>
+                          {city.count} visits
+                        </span>
+                        <span className={styles.cityPct}>
+                          {city.percentage}%
+                        </span>
                       </div>
                     </div>
                     <div className={styles.progressBarBg}>
-                      <div style={{ width: `${city.percentage}%`, height: "100%", background: "linear-gradient(90deg, var(--accent-dk), var(--accent))", borderRadius: 3 }} />
+                      <div
+                        className={styles.progressBarFillCity}
+                        style={{ width: `${city.percentage}%` }}
+                      />
                     </div>
                   </div>
                 ))}
               </div>
             ) : (
-              <div style={{ padding: "32px 0", color: "var(--muted)", textAlign: "center", fontSize: 12 }}>No city metrics recorded yet.</div>
+              <div className={styles.emptyState}>
+                No city metrics recorded yet.
+              </div>
             )}
           </div>
 
           {/* Card 2: Top States & Regions */}
           <div className={styles.panelCard}>
             <div className={styles.cardHeader}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ width: 26, height: 26, borderRadius: "6px", background: "rgba(168, 85, 247, 0.15)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 13 }}>
-                  🗺️
-                </span>
+              <div className={styles.cardHeaderTitle}>
+                <span className={styles.cardIconPurple}>🗺️</span>
                 <h3 className={styles.cardTitle}>Top States & Regions</h3>
               </div>
               <span className={styles.cardSubtitle}>Geographic Origin</span>
             </div>
 
             {data?.states && data.states.length > 0 ? (
-              <div style={{ display: "flex", flexDirection: "column", gap: 11, maxHeight: 220, overflowY: "auto", paddingRight: 4 }}>
+              <div className={styles.scrollList}>
                 {data.states.map((st) => (
-                  <div key={st.name} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12 }}>
-                      <span style={{ color: "var(--ink2)", fontWeight: 600 }}>{st.name}</span>
-                      <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                        <span style={{ color: "var(--muted)", fontSize: 11 }}>{st.count} visits</span>
-                        <span style={{ color: "#a855f7", fontWeight: 700 }}>{st.percentage}%</span>
+                  <div key={st.name} className={styles.listItem}>
+                    <div className={styles.listItemHeader}>
+                      <span className={styles.listItemName}>{st.name}</span>
+                      <div className={styles.listItemMeta}>
+                        <span className={styles.listItemCount}>
+                          {st.count} visits
+                        </span>
+                        <span className={styles.statePct}>
+                          {st.percentage}%
+                        </span>
                       </div>
                     </div>
                     <div className={styles.progressBarBg}>
-                      <div style={{ width: `${st.percentage}%`, height: "100%", background: "linear-gradient(90deg, #7c3aed, #a855f7)", borderRadius: 3 }} />
+                      <div
+                        className={styles.progressBarFillState}
+                        style={{ width: `${st.percentage}%` }}
+                      />
                     </div>
                   </div>
                 ))}
               </div>
             ) : (
-              <div style={{ padding: "32px 0", color: "var(--muted)", textAlign: "center", fontSize: 12 }}>No state metrics recorded yet.</div>
+              <div className={styles.emptyState}>
+                No state metrics recorded yet.
+              </div>
             )}
           </div>
 
           {/* Card 3: Device & Country Share */}
           <div className={styles.panelCard}>
             <div className={styles.cardHeader}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ width: 26, height: 26, borderRadius: "6px", background: "rgba(16, 185, 129, 0.15)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 13 }}>
-                  📱
-                </span>
+              <div className={styles.cardHeaderTitle}>
+                <span className={styles.cardIconGreen}>📱</span>
                 <h3 className={styles.cardTitle}>Device & Country Share</h3>
               </div>
               <span className={styles.cardSubtitle}>Distribution</span>
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
+            <div className={styles.deviceCountryGrid}>
               {/* Devices */}
               <div>
-                <div style={{ fontSize: 11, color: "var(--muted)", fontWeight: 700, textTransform: "uppercase", marginBottom: 10, letterSpacing: "0.04em" }}>
-                  Device Type
-                </div>
+                <div className={styles.subSectionTitle}>Device Type</div>
                 {data?.devices && data.devices.length > 0 ? (
-                  <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                  <div className={styles.subSectionList}>
                     {data.devices.map((dev) => (
-                      <div key={dev.name} style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12 }}>
-                          <span style={{ color: "var(--ink2)" }}>{dev.name === "Desktop" ? "💻 Desktop" : "📱 Mobile"}</span>
-                          <span style={{ color: "var(--accent)", fontWeight: 700 }}>{dev.percentage}%</span>
+                      <div key={dev.name} className={styles.subSectionItem}>
+                        <div className={styles.subSectionItemHeader}>
+                          <span className={styles.subSectionLabel}>
+                            {dev.name === "Desktop"
+                              ? "💻 Desktop"
+                              : "📱 Mobile"}
+                          </span>
+                          <span className={styles.cityPct}>
+                            {dev.percentage}%
+                          </span>
                         </div>
                         <div className={styles.progressBarBg}>
-                          <div style={{ width: `${dev.percentage}%`, height: "100%", background: dev.name === "Desktop" ? "var(--accent)" : "#10b981", borderRadius: 2 }} />
+                          <div
+                            className={
+                              dev.name === "Desktop"
+                                ? styles.progressBarFillDesktop
+                                : styles.progressBarFillMobile
+                            }
+                            style={{ width: `${dev.percentage}%` }}
+                          />
                         </div>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <span style={{ fontSize: 11, color: "var(--muted)" }}>No device data</span>
+                  <span className={styles.directText}>No device data</span>
                 )}
               </div>
 
               {/* Countries */}
               <div>
-                <div style={{ fontSize: 11, color: "var(--muted)", fontWeight: 700, textTransform: "uppercase", marginBottom: 10, letterSpacing: "0.04em" }}>
-                  Country
-                </div>
+                <div className={styles.subSectionTitle}>Country</div>
                 {data?.countries && data.countries.length > 0 ? (
-                  <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                  <div className={styles.subSectionList}>
                     {data.countries.slice(0, 4).map((co) => (
-                      <div key={co.name} style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12 }}>
-                          <span style={{ color: "var(--ink2)" }}>🇮🇳 {co.name}</span>
-                          <span style={{ color: "#8b5cf6", fontWeight: 700 }}>{co.percentage}%</span>
+                      <div key={co.name} className={styles.subSectionItem}>
+                        <div className={styles.subSectionItemHeader}>
+                          <span className={styles.subSectionLabel}>
+                            🇮🇳 {co.name}
+                          </span>
+                          <span className={styles.countryPct}>
+                            {co.percentage}%
+                          </span>
                         </div>
                         <div className={styles.progressBarBg}>
-                          <div style={{ width: `${co.percentage}%`, height: "100%", background: "#8b5cf6", borderRadius: 2 }} />
+                          <div
+                            className={styles.progressBarFillCountry}
+                            style={{ width: `${co.percentage}%` }}
+                          />
                         </div>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <span style={{ fontSize: 11, color: "var(--muted)" }}>No country data</span>
+                  <span className={styles.directText}>No country data</span>
                 )}
               </div>
             </div>
@@ -776,74 +1280,116 @@ export default function AnalyticsDashboard() {
         </section>
 
         {/* ── 3. ANALYTICS SECTION (2-COLUMN: CHART + TOP PAGES) ──────────────── */}
-        <section style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(460px, 1fr))", gap: 16, marginBottom: 28 }}>
+        <section className={styles.trendsGrid}>
           {/* Column 1: Daily Views & Conversions Trend */}
           <div className={styles.panelCard}>
-            <div className={styles.cardHeader} style={{ marginBottom: 18 }}>
+            <div className={`${styles.cardHeader} ${styles.chartHeader}`}>
               <div>
-                <h3 className={styles.cardTitle}>Daily Views & Conversions Trend</h3>
-                <p className={styles.cardSubtitle}>Page views (Bars) with overlay of customer inquiries (Line)</p>
+                <h3 className={styles.cardTitle}>
+                  {range === "today"
+                    ? "🕒 Today's Hourly Views & Conversions"
+                    : range === "7d"
+                      ? "📅 7-Day Views & Conversions Trend"
+                      : range === "30d"
+                        ? "📅 30-Day Views & Conversions Trend"
+                        : "📅 Overall Views & Conversions Trend"}
+                </h3>
+                <p className={styles.cardSubtitle}>
+                  {range === "today"
+                    ? "24-hour activity distribution across today"
+                    : "Page views (Bars) with overlay of customer inquiries (Line)"}
+                </p>
               </div>
 
-              <div style={{ display: "flex", gap: 12, fontSize: 11 }}>
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 4, color: "var(--accent)", fontWeight: 600 }}>
-                  <span style={{ width: 8, height: 8, background: "var(--accent)", borderRadius: "2px" }} /> Page Views
+              <div className={styles.chartLegend}>
+                <span className={styles.legendViews}>
+                  <span className={styles.legendViewsDot} /> Views
                 </span>
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 4, color: "#16a34a", fontWeight: 600 }}>
-                  <span style={{ width: 8, height: 8, background: "#16a34a", borderRadius: "50%" }} /> Conversions
+                <span className={styles.legendConversions}>
+                  <span className={styles.legendConversionsDot} /> Conversions
                 </span>
               </div>
             </div>
 
             {dailyData && dailyData.length > 0 ? (
-              <div style={{ display: "flex", alignItems: "flex-end", gap: 10, height: 180, paddingTop: 24, paddingBottom: 6 }}>
+              <div
+                className={styles.chartContainer}
+                style={{
+                  gap:
+                    dailyData.length > 20 ? 4 : dailyData.length > 10 ? 8 : 12,
+                }}
+              >
                 {dailyData.map((d, index) => {
                   const isLatest = index === dailyData.length - 1;
-                  const viewHeight = Math.max(8, Math.round((d.views / maxDailyViews) * 100));
+                  const viewHeight = Math.max(
+                    8,
+                    Math.round((d.views / maxDailyViews) * 100),
+                  );
+
+                  // Determine label display interval
+                  let showLabel = true;
+                  if (dailyData.length >= 24) {
+                    // For 24h or 30d, show label every 4 or 5 intervals
+                    const step = dailyData.length === 24 ? 4 : 5;
+                    showLabel = index % step === 0 || isLatest;
+                  }
+
+                  const barMaxWidth =
+                    dailyData.length > 20
+                      ? 14
+                      : dailyData.length > 10
+                        ? 22
+                        : 36;
+                  const isVisibleValue =
+                    dailyData.length <= 10 || (isLatest && d.views > 0);
 
                   return (
                     <Tooltip
                       key={d.date}
-                      content={`${d.date}: ${d.views} Page Views • ${d.visitors} Visitors • ${d.conversions || 0} Inquiries`}
+                      content={`${d.date} • ${d.views} Views • ${d.visitors} Visitors • ${d.conversions || 0} Inquiries`}
                     >
-                      <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", height: "100%", justifyContent: "flex-end", cursor: "pointer" }}>
-                        <div style={{ fontSize: 10, color: isLatest ? "var(--accent)" : "var(--muted)", fontWeight: isLatest ? 700 : 500, marginBottom: 4 }}>
+                      <div className={styles.chartBarColumn}>
+                        {/* Number above bar (only for compact ranges or non-zero latest) */}
+                        <div
+                          className={`${isLatest ? styles.chartValueLabelLatest : styles.chartValueLabel} ${
+                            isVisibleValue ? "" : styles.chartValueHidden
+                          }`}
+                        >
                           {d.views}
                         </div>
 
-                        <div style={{ width: "100%", maxWidth: 32, position: "relative", height: `${viewHeight}%` }}>
+                        {/* Bar + Conversion dot */}
+                        <div
+                          className={styles.chartBarWrapper}
+                          style={{
+                            maxWidth: barMaxWidth,
+                            height: `${viewHeight}%`,
+                          }}
+                        >
                           <div
-                            style={{
-                              width: "100%",
-                              height: "100%",
-                              background: isLatest
-                                ? "linear-gradient(to top, var(--accent-dk), var(--accent))"
-                                : "linear-gradient(to top, rgba(2, 132, 199, 0.4), rgba(56, 189, 248, 0.6))",
-                              borderRadius: "4px 4px 0 0",
-                              transition: "all 0.2s ease",
-                            }}
+                            className={
+                              isLatest ? styles.chartBarLatest : styles.chartBar
+                            }
                           />
 
                           {d.conversions > 0 && (
                             <div
-                              style={{
-                                position: "absolute",
-                                top: -8,
-                                left: "50%",
-                                transform: "translateX(-50%)",
-                                width: 10,
-                                height: 10,
-                                borderRadius: "50%",
-                                background: "#10b981",
-                                border: "2px solid var(--card)",
-                                boxShadow: "0 0 8px #10b981",
-                              }}
+                              className={
+                                dailyData.length > 20
+                                  ? styles.chartConversionDotSmall
+                                  : styles.chartConversionDot
+                              }
                             />
                           )}
                         </div>
 
-                        <div style={{ fontSize: 10, color: isLatest ? "var(--accent)" : "var(--muted)", marginTop: 6, fontWeight: isLatest ? 700 : 400 }}>
-                          {d.date.slice(5)}
+                        {/* Date / Hour Label */}
+                        <div
+                          className={`${isLatest ? styles.chartDateLabelLatest : styles.chartDateLabel} ${
+                            showLabel ? "" : styles.chartDateHidden
+                          }`}
+                        >
+                          {d.date.length > 5 ? d.date.slice(5) : d.date}
                         </div>
                       </div>
                     </Tooltip>
@@ -851,7 +1397,7 @@ export default function AnalyticsDashboard() {
                 })}
               </div>
             ) : (
-              <div style={{ height: 180, display: "flex", alignItems: "center", justifyContent: "center", color: "var(--muted)", fontSize: 12 }}>
+              <div className={styles.emptyState}>
                 No traffic data recorded in this period.
               </div>
             )}
@@ -862,14 +1408,15 @@ export default function AnalyticsDashboard() {
             <div className={styles.cardHeader}>
               <div>
                 <h3 className={styles.cardTitle}>Top Visited Pages</h3>
-                <p className={styles.cardSubtitle}>Ranked by total page views and visitor engagement</p>
+                <p className={styles.cardSubtitle}>
+                  Ranked by total page views and visitor engagement
+                </p>
               </div>
 
               <select
                 value={pageFilter}
                 onChange={(e) => setPageFilter(e.target.value)}
-                className={styles.selectInput}
-                style={{ padding: "4px 8px", fontSize: "11px" }}
+                className={`${styles.selectInput} ${styles.selectInputSmall}`}
               >
                 <option value="all">All Pages</option>
                 {data?.topPages?.map((p) => (
@@ -881,70 +1428,75 @@ export default function AnalyticsDashboard() {
             </div>
 
             {data?.topPages && data.topPages.length > 0 ? (
-              <div style={{ display: "flex", flexDirection: "column", gap: 11, maxHeight: 200, overflowY: "auto", paddingRight: 4 }}>
+              <div className={styles.scrollListPage}>
                 {data.topPages.map((page, idx) => {
                   const total = totalPageViews || 1;
                   const pct = Math.round((page.views / total) * 100);
 
                   return (
-                    <div key={page.path} style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 12 }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: 8, overflow: "hidden" }}>
-                          <span style={{ fontSize: 11, color: idx === 0 ? "var(--accent)" : "var(--muted)", fontWeight: 700, width: 20 }}>
+                    <div key={page.path} className={styles.pageRow}>
+                      <div className={styles.pageRowHeader}>
+                        <div className={styles.pageInfo}>
+                          <span
+                            className={
+                              idx === 0 ? styles.pageRankTop : styles.pageRank
+                            }
+                          >
                             #{idx + 1}
                           </span>
-                          <span style={{ fontSize: 12 }}>📄</span>
+                          <span className={styles.pageIcon}>📄</span>
                           <Link
                             href={page.path}
                             target="_blank"
-                            style={{
-                              color: "var(--accent)",
-                              textDecoration: "none",
-                              fontWeight: 600,
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              whiteSpace: "nowrap",
-                              maxWidth: "220px",
-                            }}
+                            className={styles.pageLink}
                           >
                             {page.path === "/" ? "/ (Homepage)" : page.path}
                           </Link>
                         </div>
 
-                        <div style={{ display: "flex", gap: 10, alignItems: "center", whiteSpace: "nowrap" }}>
-                          <span style={{ fontWeight: 700, color: "var(--ink)" }}>{page.views} views</span>
-                          <span style={{ color: "var(--muted)", fontSize: 11 }}>({page.uniqueVisitors} unique)</span>
+                        <div className={styles.pageStats}>
+                          <span className={styles.pageViewsCount}>
+                            {page.views} views
+                          </span>
+                          <span className={styles.pageUniqueCount}>
+                            ({page.uniqueVisitors} unique)
+                          </span>
                         </div>
                       </div>
 
                       <div className={styles.progressBarBg}>
-                        <div style={{ width: `${pct}%`, height: "100%", background: "linear-gradient(90deg, var(--accent-dk), var(--accent))", borderRadius: 3 }} />
+                        <div
+                          className={styles.progressBarFillCity}
+                          style={{ width: `${pct}%` }}
+                        />
                       </div>
                     </div>
                   );
                 })}
               </div>
             ) : (
-              <div style={{ padding: "32px 0", color: "var(--muted)", textAlign: "center", fontSize: 12 }}>No page views recorded yet.</div>
+              <div className={styles.emptyState}>
+                No page views recorded yet.
+              </div>
             )}
           </div>
         </section>
 
         {/* ── 4. REAL-TIME ACTIVITY & LEAD STREAM (DETAILED BOTTOM TABLE) ──────── */}
-        <section className={styles.panelCard} style={{ padding: "22px" }}>
+        <section className={`${styles.panelCard} ${styles.leadStreamPanel}`}>
           {/* Header Controls */}
-          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: 14, marginBottom: 18 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <h3 className={styles.cardTitle} style={{ fontSize: 16 }}>
+          <div className={styles.streamHeader}>
+            <div className={styles.streamTitleGroup}>
+              <h3 className={`${styles.cardTitle} ${styles.streamTitle}`}>
                 Real-Time Activity & Lead Stream
               </h3>
-              <span style={{ background: "rgba(34, 197, 94, 0.16)", color: "#16a34a", border: "1px solid rgba(34, 197, 94, 0.35)", padding: "2px 8px", borderRadius: "10px", fontSize: "10px", fontWeight: 800 }}>
-                ● LIVE STREAM
+              <span className={styles.streamLiveBadge}>● LIVE STREAM</span>
+              <span className={styles.streamCount}>
+                ({filteredVisits.length} events)
               </span>
-              <span style={{ fontSize: 12, color: "var(--muted)" }}>({filteredVisits.length} events)</span>
             </div>
 
-            <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+            <div className={styles.streamControls}>
               <select
                 value={eventTypeFilter}
                 onChange={(e) => setEventTypeFilter(e.target.value)}
@@ -964,8 +1516,7 @@ export default function AnalyticsDashboard() {
                 placeholder="Search city, IP, page, OS, referrer..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className={styles.textInput}
-                style={{ width: 240 }}
+                className={`${styles.textInput} ${styles.searchInput}`}
               />
 
               <a
@@ -986,12 +1537,18 @@ export default function AnalyticsDashboard() {
                     <th className={styles.tableHeaderCell}>Time</th>
                     <th className={styles.tableHeaderCell}>Event Type</th>
                     <th className={styles.tableHeaderCell}>Page / Details</th>
-                    <th className={styles.tableHeaderCell}>Location (City/State)</th>
+                    <th className={styles.tableHeaderCell}>
+                      Location (City/State)
+                    </th>
                     <th className={styles.tableHeaderCell}>IP Address</th>
                     <th className={styles.tableHeaderCell}>Device</th>
                     <th className={styles.tableHeaderCell}>Browser / OS</th>
                     <th className={styles.tableHeaderCell}>Referrer</th>
-                    <th className={styles.tableHeaderCell} style={{ textAlign: "right" }}>Actions</th>
+                    <th
+                      className={`${styles.tableHeaderCell} ${styles.thRight}`}
+                    >
+                      Actions
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -1001,82 +1558,120 @@ export default function AnalyticsDashboard() {
 
                     return (
                       <tr key={visit.id} className={styles.tableRow}>
-                        <td className={styles.tableCell} style={{ whiteSpace: "nowrap" }}>
-                          <div style={{ color: "var(--accent)", fontWeight: 700 }}>{timeAgo(visit.timestamp)}</div>
-                          <div style={{ fontSize: "10px", color: "var(--muted)", marginTop: 2 }}>
-                            {new Date(visit.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
+                        <td
+                          className={`${styles.tableCell} ${styles.cellNowrap}`}
+                        >
+                          <div className={styles.timeAgoText}>
+                            {timeAgo(visit.timestamp)}
+                          </div>
+                          <div className={styles.timeExactText}>
+                            {new Date(visit.timestamp).toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              second: "2-digit",
+                            })}
                           </div>
                         </td>
 
-                        <td className={styles.tableCell} style={{ whiteSpace: "nowrap" }}>
+                        <td
+                          className={`${styles.tableCell} ${styles.cellNowrap}`}
+                        >
                           <span
-                            style={{
-                              background: badge.bg,
-                              border: `1px solid ${badge.border}`,
-                              color: badge.text,
-                              padding: "4px 9px",
-                              borderRadius: "6px",
-                              fontSize: "11px",
-                              fontWeight: 700,
-                              display: "inline-flex",
-                              alignItems: "center",
-                              gap: 5,
-                            }}
+                            className={`${styles.eventBadge} ${styles[badge.badgeClass] || ""}`}
                           >
-                            <span style={{ width: 6, height: 6, borderRadius: "50%", background: badge.dot }} />
+                            <span
+                              className={`${styles.eventBadgeDot} ${styles[badge.dotClass] || ""}`}
+                            />
                             {badge.icon} {badge.label}
                           </span>
                         </td>
 
-                        <td className={styles.tableCell} style={{ color: "var(--ink)", fontWeight: 600 }}>
-                          <Link href={visit.path || "/"} target="_blank" style={{ color: "var(--accent)", textDecoration: "none" }}>
+                        <td
+                          className={`${styles.tableCell} ${styles.pageCell}`}
+                        >
+                          <Link
+                            href={visit.path || "/"}
+                            target="_blank"
+                            className={styles.tableLink}
+                          >
                             {visit.path || "/"}
                           </Link>
                           {visit.meta && Object.keys(visit.meta).length > 0 && (
-                            <div style={{ fontSize: 11, color: "#16a34a", marginTop: 3, fontWeight: 500 }}>
-                              {visit.meta.reference ? `Ref: ${visit.meta.reference}` : ""}
-                              {visit.meta.service ? ` • ${visit.meta.service}` : ""}
+                            <div className={styles.metaText}>
+                              {visit.meta.reference
+                                ? `Ref: ${visit.meta.reference}`
+                                : ""}
+                              {visit.meta.service
+                                ? ` • ${visit.meta.service}`
+                                : ""}
                               {visit.meta.name ? ` • ${visit.meta.name}` : ""}
                             </div>
                           )}
                         </td>
 
-                        <td className={styles.tableCell} style={{ whiteSpace: "nowrap" }}>
-                          <div style={{ color: "var(--ink2)", fontWeight: 600 }}>
-                            📍 {visit.city ? `${visit.city}, ` : ""}{visit.state || "Maharashtra"}
+                        <td
+                          className={`${styles.tableCell} ${styles.cellNowrap}`}
+                        >
+                          <div className={styles.locationPrimary}>
+                            📍 {visit.city ? `${visit.city}, ` : ""}
+                            {visit.state || "Maharashtra"}
                           </div>
-                          <div style={{ fontSize: "10px", color: "var(--muted)" }}>{visit.country || "India"}</div>
+                          <div className={styles.locationCountry}>
+                            {visit.country || "India"}
+                          </div>
                         </td>
 
-                        <td className={styles.tableCell} style={{ whiteSpace: "nowrap", fontFamily: "monospace", fontSize: "11px", color: "var(--muted)" }}>
+                        <td className={`${styles.tableCell} ${styles.ipCell}`}>
                           {visit.ip || "127.0.0.1"}
                         </td>
 
-                        <td className={styles.tableCell} style={{ whiteSpace: "nowrap" }}>
-                          <span style={{ background: "var(--bg2)", border: "1px solid var(--border)", padding: "2px 7px", borderRadius: "4px", fontSize: "11px", color: "var(--ink2)" }}>
-                            {visit.device === "Mobile" ? "📱 Mobile" : visit.device === "Tablet" ? "📟 Tablet" : "💻 Desktop"}
+                        <td
+                          className={`${styles.tableCell} ${styles.cellNowrap}`}
+                        >
+                          <span className={styles.deviceBadge}>
+                            {visit.device === "Mobile"
+                              ? "📱 Mobile"
+                              : visit.device === "Tablet"
+                                ? "📟 Tablet"
+                                : "💻 Desktop"}
                           </span>
                         </td>
 
-                        <td className={styles.tableCell} style={{ whiteSpace: "nowrap", color: "var(--muted)" }}>
-                          <span style={{ color: "var(--ink2)", fontWeight: 500 }}>{visit.browser}</span> / {visit.os}
+                        <td
+                          className={`${styles.tableCell} ${styles.browserCell}`}
+                        >
+                          <span className={styles.browserName}>
+                            {visit.browser}
+                          </span>{" "}
+                          / {visit.os}
                         </td>
 
-                        <td className={styles.tableCell} style={{ color: "var(--muted)", maxWidth: 160, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                        <td
+                          className={`${styles.tableCell} ${styles.referrerCell}`}
+                        >
                           {visit.referrer ? (
-                            <span title={visit.referrer} style={{ color: "var(--ink2)" }}>
+                            <span
+                              title={visit.referrer}
+                              className={styles.referrerText}
+                            >
                               {visit.referrer}
                             </span>
                           ) : (
-                            <span style={{ color: "var(--muted)" }}>Direct</span>
+                            <span className={styles.directText}>Direct</span>
                           )}
                         </td>
 
-                        <td className={styles.tableCell} style={{ textAlign: "right", whiteSpace: "nowrap" }}>
+                        <td
+                          className={`${styles.tableCell} ${styles.actionCell}`}
+                        >
                           <button
-                            onClick={() => copyToClipboard(JSON.stringify(visit, null, 2), visit.id)}
-                            className={styles.actionBtn}
-                            style={{ padding: "3px 8px", fontSize: "10px", color: isCopied ? "#16a34a" : "var(--muted)" }}
+                            onClick={() =>
+                              copyToClipboard(
+                                JSON.stringify(visit, null, 2),
+                                visit.id,
+                              )
+                            }
+                            className={`${styles.actionBtn} ${isCopied ? styles.copyJsonBtnCopied : styles.copyJsonBtn}`}
                           >
                             {isCopied ? "✓ Copied" : "Copy JSON"}
                           </button>
@@ -1088,7 +1683,7 @@ export default function AnalyticsDashboard() {
               </table>
             </div>
           ) : (
-            <div style={{ padding: "40px 0", textAlign: "center", color: "var(--muted)", fontSize: 13 }}>
+            <div className={styles.tableEmptyState}>
               {searchTerm || eventTypeFilter !== "all" || pageFilter !== "all"
                 ? "No visits matching your filter criteria."
                 : "No events recorded yet. Open your website pages to begin tracking!"}

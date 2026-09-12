@@ -354,35 +354,68 @@ export async function getAnalyticsSummary(timeRange = "7d") {
   const browsers = toPercentageList(browserMap);
   const operatingSystems = toPercentageList(osMap);
 
-  // Daily Activity
-  const dailyMap = {};
-  const daysToShow = timeRange === "today" ? 1 : timeRange === "7d" ? 7 : timeRange === "30d" ? 30 : 14;
+  // Daily / Hourly Activity
+  let dailyActivity = [];
 
-  for (let i = daysToShow - 1; i >= 0; i--) {
-    const d = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
-    const key = d.toISOString().split("T")[0];
-    dailyMap[key] = { views: 0, visitors: new Set(), conversions: 0 };
-  }
+  if (timeRange === "today") {
+    // 24 Hourly Buckets for Today
+    const hourlyMap = {};
+    for (let h = 0; h < 24; h++) {
+      const label = `${h.toString().padStart(2, "0")}:00`;
+      hourlyMap[label] = { views: 0, visitors: new Set(), conversions: 0 };
+    }
 
-  events.forEach((e) => {
-    const key = e.timestamp.split("T")[0];
-    if (!dailyMap[key]) {
+    events.forEach((e) => {
+      const d = new Date(e.timestamp);
+      const h = d.getHours();
+      const label = `${h.toString().padStart(2, "0")}:00`;
+      if (hourlyMap[label]) {
+        if (!e.type || e.type === "pageview") {
+          hourlyMap[label].views += 1;
+        } else {
+          hourlyMap[label].conversions += 1;
+        }
+        if (e.visitorId) hourlyMap[label].visitors.add(e.visitorId);
+      }
+    });
+
+    dailyActivity = Object.entries(hourlyMap).map(([date, d]) => ({
+      date,
+      views: d.views,
+      visitors: d.visitors.size,
+      conversions: d.conversions,
+    }));
+  } else {
+    // Daily Activity for 7d, 30d, all
+    const dailyMap = {};
+    const daysToShow = timeRange === "7d" ? 7 : timeRange === "30d" ? 30 : 30;
+
+    for (let i = daysToShow - 1; i >= 0; i--) {
+      const d = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
+      const key = d.toISOString().split("T")[0];
       dailyMap[key] = { views: 0, visitors: new Set(), conversions: 0 };
     }
-    if (e.type === "pageview" || !e.type) {
-      dailyMap[key].views += 1;
-    } else {
-      dailyMap[key].conversions += 1;
-    }
-    if (e.visitorId) dailyMap[key].visitors.add(e.visitorId);
-  });
 
-  const dailyActivity = Object.entries(dailyMap).map(([date, d]) => ({
-    date,
-    views: d.views,
-    visitors: d.visitors.size,
-    conversions: d.conversions,
-  }));
+    events.forEach((e) => {
+      const key = e.timestamp.split("T")[0];
+      if (!dailyMap[key]) {
+        dailyMap[key] = { views: 0, visitors: new Set(), conversions: 0 };
+      }
+      if (!e.type || e.type === "pageview") {
+        dailyMap[key].views += 1;
+      } else {
+        dailyMap[key].conversions += 1;
+      }
+      if (e.visitorId) dailyMap[key].visitors.add(e.visitorId);
+    });
+
+    dailyActivity = Object.entries(dailyMap).map(([date, d]) => ({
+      date,
+      views: d.views,
+      visitors: d.visitors.size,
+      conversions: d.conversions,
+    }));
+  }
 
   const recentVisits = [...events]
     .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())

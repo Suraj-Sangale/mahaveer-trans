@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import Link from "next/link";
+import styles from "@/styles/analytics.module.css";
 
 // ── Utility Functions ──────────────────────────────────────────────────────────
 
@@ -35,7 +36,7 @@ function getEventBadge(type) {
     case "heartbeat":
       return { label: "Active Heartbeat", icon: "💓", bg: "rgba(100, 116, 139, 0.14)", border: "rgba(100, 116, 139, 0.35)", text: "#94a3b8", dot: "#64748b" };
     default:
-      return { label: "Page View", icon: "👁️", bg: "rgba(56, 189, 248, 0.10)", border: "rgba(56, 189, 248, 0.35)", text: "#7dd3fc", dot: "#0ea5e9" };
+      return { label: "Page View", icon: "👁️", bg: "rgba(56, 189, 248, 0.10)", border: "rgba(56, 189, 248, 0.35)", text: "#0284c7", dot: "#0ea5e9" };
   }
 }
 
@@ -85,48 +86,15 @@ function Tooltip({ content, children }) {
 
   return (
     <div
-      style={{ position: "relative", display: "inline-flex", alignItems: "center" }}
+      className={styles.tooltipWrapper}
       onMouseEnter={() => setVisible(true)}
       onMouseLeave={() => setVisible(false)}
     >
       {children}
       {visible && (
-        <div
-          style={{
-            position: "absolute",
-            bottom: "calc(100% + 10px)",
-            left: "50%",
-            transform: "translateX(-50%)",
-            background: "#0f172a",
-            color: "#f8fafc",
-            padding: "8px 12px",
-            borderRadius: "8px",
-            fontSize: "11px",
-            fontWeight: 500,
-            lineHeight: 1.45,
-            width: "max-content",
-            maxWidth: "230px",
-            textAlign: "center",
-            boxShadow: "0 12px 30px -4px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.15)",
-            zIndex: 9999,
-            pointerEvents: "none",
-            animation: "fadeIn 0.15s cubic-bezier(0.16, 1, 0.3, 1)",
-          }}
-        >
+        <div className={styles.tooltipBox}>
           {content}
-          <div
-            style={{
-              position: "absolute",
-              top: "100%",
-              left: "50%",
-              transform: "translateX(-50%)",
-              width: 0,
-              height: 0,
-              borderLeft: "5px solid transparent",
-              borderRight: "5px solid transparent",
-              borderTop: "5px solid #0f172a",
-            }}
-          />
+          <div className={styles.tooltipArrow} />
         </div>
       )}
     </div>
@@ -135,77 +103,32 @@ function Tooltip({ content, children }) {
 
 // ── Component: KPI Card ─────────────────────────────────────────────────────────
 
-function KpiCard({ icon, title, value, subtext, trend, sparkData, color, tooltip, isLive }) {
+function KpiCard({ title, value, subtext, trend, sparkData, color, tooltip, isLive }) {
   return (
     <div
-      style={{
-        background: "linear-gradient(145deg, rgba(15, 23, 42, 0.85), rgba(11, 18, 33, 0.95))",
-        border: `1px solid rgba(255, 255, 255, 0.07)`,
-        borderRadius: "14px",
-        padding: "14px 16px",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        boxShadow: "0 4px 20px -2px rgba(0, 0, 0, 0.35)",
-        transition: "transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, z-index 0.2s ease",
-        position: "relative",
-        overflow: "visible",
-      }}
+      className={styles.kpiCard}
       onMouseEnter={(e) => {
-        e.currentTarget.style.transform = "translateY(-2px)";
-        e.currentTarget.style.borderColor = `${color}55`;
-        e.currentTarget.style.boxShadow = `0 10px 28px -4px rgba(0, 0, 0, 0.5), 0 0 18px -4px ${color}25`;
-        e.currentTarget.style.zIndex = "30";
+        e.currentTarget.style.borderColor = `${color}66`;
+        e.currentTarget.style.boxShadow = `0 8px 24px -2px ${color}20, var(--shadow)`;
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.transform = "translateY(0)";
-        e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.07)";
-        e.currentTarget.style.boxShadow = "0 4px 20px -2px rgba(0, 0, 0, 0.35)";
-        e.currentTarget.style.zIndex = "1";
+        e.currentTarget.style.borderColor = "var(--border, rgba(255, 255, 255, 0.07))";
+        e.currentTarget.style.boxShadow = "var(--shadow, 0 4px 20px -2px rgba(0, 0, 0, 0.35))";
       }}
     >
       {/* Top row: Title and Tooltip */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <span style={{ fontSize: "12px", fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.04em" }}>
-            {title}
-          </span>
+          <span className={styles.kpiTitle}>{title}</span>
           {tooltip && (
             <Tooltip content={tooltip}>
-              <span
-                style={{
-                  cursor: "pointer",
-                  color: "#94a3b8",
-                  fontSize: "11px",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: "16px",
-                  height: "16px",
-                  borderRadius: "50%",
-                  background: "rgba(255, 255, 255, 0.08)",
-                  border: "1px solid rgba(255, 255, 255, 0.15)",
-                  transition: "all 0.15s ease",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = "rgba(14, 165, 233, 0.25)";
-                  e.currentTarget.style.color = "#38bdf8";
-                  e.currentTarget.style.borderColor = "#0ea5e9";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = "rgba(255, 255, 255, 0.08)";
-                  e.currentTarget.style.color = "#94a3b8";
-                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.15)";
-                }}
-              >
-                ?
-              </span>
+              <span className={styles.tooltipTrigger}>?</span>
             </Tooltip>
           )}
         </div>
 
         {isLive ? (
-          <span style={{ display: "inline-flex", alignItems: "center", gap: 5, background: "rgba(34, 197, 94, 0.16)", color: "#4ade80", padding: "2px 7px", borderRadius: "10px", fontSize: "10px", fontWeight: 800, border: "1px solid rgba(34, 197, 94, 0.35)" }}>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 5, background: "rgba(34, 197, 94, 0.16)", color: "#16a34a", padding: "2px 7px", borderRadius: "10px", fontSize: "10px", fontWeight: 800, border: "1px solid rgba(34, 197, 94, 0.35)" }}>
             <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#22c55e", boxShadow: "0 0 8px #22c55e" }} />
             LIVE
           </span>
@@ -214,18 +137,16 @@ function KpiCard({ icon, title, value, subtext, trend, sparkData, color, tooltip
         )}
       </div>
 
-      {/* Middle row: Large formatted value */}
-      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", margin: "4px 0 6px" }}>
-        <div style={{ fontSize: "28px", fontWeight: 800, color: "#ffffff", letterSpacing: "-0.03em", fontFamily: "system-ui, -apple-system, sans-serif" }}>
-          {value !== undefined && value !== null ? value : "—"}
-        </div>
+      {/* Primary Value */}
+      <div className={styles.kpiValue}>
+        {value !== undefined && value !== null ? value : "—"}
       </div>
 
-      {/* Bottom row: Subtext and comparison trend */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: "11px", color: "#64748b" }}>
-        <span>{subtext}</span>
+      {/* Subtext and Trend */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <span className={styles.kpiSubtext}>{subtext}</span>
         {trend && (
-          <span style={{ color: trend.startsWith("+") ? "#34d399" : trend.startsWith("-") ? "#f87171" : "#94a3b8", fontWeight: 600 }}>
+          <span style={{ color: trend.startsWith("+") ? "#16a34a" : trend.startsWith("-") ? "#ef4444" : "var(--muted)", fontWeight: 600, fontSize: "11px" }}>
             {trend}
           </span>
         )}
@@ -356,7 +277,6 @@ export default function AnalyticsDashboard() {
   const filteredVisits = useMemo(() => {
     if (!data?.recentVisits) return [];
     return data.recentVisits.filter((v) => {
-      // Event filter
       if (eventTypeFilter !== "all") {
         if (eventTypeFilter === "conversions") {
           if (!["quote_submit", "contact_submit", "phone_click", "whatsapp_click", "quote_intent"].includes(v.type)) return false;
@@ -365,12 +285,10 @@ export default function AnalyticsDashboard() {
         }
       }
 
-      // Page filter
       if (pageFilter !== "all" && v.path !== pageFilter) {
         return false;
       }
 
-      // Search term filter
       if (!searchTerm.trim()) return true;
       const q = searchTerm.toLowerCase();
       return (
@@ -396,50 +314,43 @@ export default function AnalyticsDashboard() {
     return Math.max(...dailyData.map((d) => d.views), 1);
   }, [dailyData]);
 
-  const maxDailyConversions = useMemo(() => {
-    if (!dailyData.length) return 1;
-    return Math.max(...dailyData.map((d) => d.conversions || 0), 1);
-  }, [dailyData]);
-
   // Sparkline arrays
   const sparkViews = dailyData.map((d) => d.views);
   const sparkVisitors = dailyData.map((d) => d.visitors);
   const sparkConversions = dailyData.map((d) => d.conversions || 0);
 
-  // ── Authentication Loading State ─────────────────────────────────────────────
+  // ── PIN Screen ───────────────────────────────────────────────────────────────
 
   if (isCheckingAuth) {
     return (
-      <div style={{ minHeight: "100vh", background: "#070b14", display: "flex", alignItems: "center", justifyContent: "center", color: "#38bdf8", fontFamily: "system-ui, sans-serif" }}>
+      <div className={styles.dashboardWrapper} style={{ display: "flex", alignItems: "center", justifyContent: "center", color: "var(--accent)" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 14, fontWeight: 600 }}>
-          <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#0ea5e9", animation: "ping 1s infinite" }} />
+          <span style={{ width: 12, height: 12, borderRadius: "50%", background: "var(--accent)", animation: "ping 1s infinite" }} />
           Verifying security access...
         </div>
       </div>
     );
   }
 
-  // ── PIN Screen ───────────────────────────────────────────────────────────────
-
   if (!isAuthenticated) {
     return (
-      <div style={{ minHeight: "100vh", background: "radial-gradient(ellipse at top, #0f172a 0%, #070b14 100%)", display: "flex", alignItems: "center", justifyContent: "center", padding: 20, fontFamily: "system-ui, -apple-system, sans-serif" }}>
-        <div style={{ background: "rgba(15, 23, 42, 0.75)", backdropFilter: "blur(20px)", border: "1px solid rgba(255, 255, 255, 0.1)", borderRadius: 20, padding: "40px 36px", width: "100%", maxWidth: 420, boxShadow: "0 25px 60px -10px rgba(0, 0, 0, 0.7)", textAlign: "center" }}>
-          <div style={{ width: 62, height: 62, borderRadius: "16px", background: "linear-gradient(135deg, #0ea5e9, #6366f1)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px", fontSize: 26, boxShadow: "0 0 30px rgba(14, 165, 233, 0.35)" }}>
+      <div className={styles.dashboardWrapper} style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
+        <div className={styles.panelCard} style={{ maxWidth: 420, width: "100%", padding: "36px 32px", textAlign: "center" }}>
+          <div style={{ width: 56, height: 56, borderRadius: "14px", background: "linear-gradient(135deg, var(--accent), var(--accent-dk))", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 18px", fontSize: 24, boxShadow: "0 0 24px rgba(14, 165, 233, 0.35)", color: "#fff" }}>
             🔐
           </div>
-          <h2 style={{ margin: "0 0 6px", fontSize: 22, fontWeight: 800, color: "#ffffff", letterSpacing: "-0.03em" }}>
+          <h2 style={{ margin: "0 0 6px", fontSize: 22, fontWeight: 800, color: "var(--ink)" }}>
             MahaveerTrans Analytics
           </h2>
-          <div style={{ display: "inline-block", background: "rgba(14, 165, 233, 0.15)", border: "1px solid rgba(14, 165, 233, 0.35)", borderRadius: "6px", padding: "2px 10px", fontSize: "11px", fontWeight: 700, color: "#38bdf8", marginBottom: 20 }}>
+          <div className={styles.proBadge} style={{ display: "inline-block", marginBottom: 18 }}>
             ENTERPRISE PRO
           </div>
-          <p style={{ margin: "0 0 24px", fontSize: 13, color: "#94a3b8", lineHeight: 1.5 }}>
+          <p style={{ margin: "0 0 22px", fontSize: 13, color: "var(--muted)", lineHeight: 1.5 }}>
             Enter your Admin PIN to unlock the live visitor tracking dashboard and fleet telemetry metrics.
           </p>
 
           <form onSubmit={handlePinSubmit}>
-            <div style={{ marginBottom: 18 }}>
+            <div style={{ marginBottom: 16 }}>
               <input
                 type="password"
                 placeholder="Enter PIN (Default: 1234)"
@@ -447,22 +358,17 @@ export default function AnalyticsDashboard() {
                 onChange={(e) => setPinInput(e.target.value)}
                 autoFocus
                 maxLength={12}
+                className={styles.textInput}
                 style={{
                   width: "100%",
-                  padding: "14px 16px",
-                  borderRadius: 12,
-                  background: "#070b14",
-                  border: pinError ? "1px solid #ef4444" : "1px solid rgba(255, 255, 255, 0.15)",
-                  color: "#ffffff",
-                  fontSize: 20,
+                  padding: "12px 16px",
+                  fontSize: 18,
                   textAlign: "center",
-                  letterSpacing: "5px",
-                  outline: "none",
-                  transition: "all 0.2s ease",
+                  letterSpacing: "4px",
                 }}
               />
               {pinError && (
-                <div style={{ color: "#f87171", fontSize: 12, marginTop: 8, fontWeight: 600 }}>
+                <div style={{ color: "#ef4444", fontSize: 12, marginTop: 8, fontWeight: 600 }}>
                   ⚠️ {pinError}
                 </div>
               )}
@@ -470,29 +376,26 @@ export default function AnalyticsDashboard() {
 
             <button
               type="submit"
+              className={styles.rangeBtnActive}
               style={{
                 width: "100%",
-                padding: "13px",
-                borderRadius: 12,
-                background: "linear-gradient(135deg, #0ea5e9, #0284c7)",
-                border: "none",
-                color: "#ffffff",
+                padding: "12px",
+                borderRadius: "10px",
                 fontSize: 14,
                 fontWeight: 700,
+                border: "none",
                 cursor: "pointer",
-                boxShadow: "0 4px 18px rgba(14, 165, 233, 0.35)",
-                transition: "transform 0.15s ease",
               }}
             >
               Unlock Analytics Dashboard →
             </button>
           </form>
 
-          <div style={{ marginTop: 24, paddingTop: 18, borderTop: "1px solid rgba(255, 255, 255, 0.08)", display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 12 }}>
-            <Link href="/" style={{ color: "#38bdf8", textDecoration: "none", fontWeight: 600 }}>
+          <div style={{ marginTop: 22, paddingTop: 16, borderTop: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 12 }}>
+            <Link href="/" style={{ color: "var(--accent)", textDecoration: "none", fontWeight: 600 }}>
               ← Return to Website
             </Link>
-            <span style={{ color: "#64748b" }}>Default PIN: 1234</span>
+            <span style={{ color: "var(--muted)" }}>Default PIN: 1234</span>
           </div>
         </div>
       </div>
@@ -509,75 +412,38 @@ export default function AnalyticsDashboard() {
   const realtimeActive = data?.realtimeActiveVisitors || 0;
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background: "#070b14",
-        color: "#f1f5f9",
-        fontFamily: "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-      }}
-    >
+    <div className={styles.dashboardWrapper}>
       {/* ── TOP HEADER ──────────────────────────────────────────────────────── */}
-      <header
-        style={{
-          borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
-          background: "rgba(11, 18, 33, 0.90)",
-          backdropFilter: "blur(16px)",
-          position: "sticky",
-          top: 0,
-          zIndex: 50,
-          padding: "12px 28px",
-        }}
-      >
-        <div style={{ maxWidth: 1540, margin: "0 auto", display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: 14 }}>
+      <header className={styles.header}>
+        <div className={styles.headerInner}>
           {/* Brand & Status */}
-          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-            <Link
-              href="/"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 6,
-                textDecoration: "none",
-                color: "#38bdf8",
-                fontWeight: 600,
-                fontSize: 13,
-                background: "rgba(15, 23, 42, 0.8)",
-                padding: "6px 12px",
-                borderRadius: "8px",
-                border: "1px solid rgba(255, 255, 255, 0.1)",
-                transition: "all 0.15s ease",
-              }}
-            >
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            <Link href="/" className={styles.backBtn}>
               <span>← Main Site</span>
             </Link>
 
-            <span style={{ color: "rgba(255, 255, 255, 0.15)" }}>|</span>
+            <span style={{ color: "var(--border)" }}>|</span>
 
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#0ea5e9", boxShadow: "0 0 10px #0ea5e9" }} />
-                <h1 style={{ margin: 0, fontSize: 18, fontWeight: 800, color: "#ffffff", letterSpacing: "-0.03em" }}>
+                <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--accent)", boxShadow: "0 0 10px var(--accent)" }} />
+                <h1 className={styles.brandTitle}>
                   MahaveerTrans Analytics
                 </h1>
-                <span style={{ background: "linear-gradient(135deg, rgba(14, 165, 233, 0.25), rgba(99, 102, 241, 0.25))", color: "#38bdf8", border: "1px solid rgba(14, 165, 233, 0.5)", fontSize: "10px", fontWeight: 800, padding: "2px 8px", borderRadius: "6px", letterSpacing: "0.06em" }}>
-                  PRO
-                </span>
+                <span className={styles.proBadge}>PRO</span>
                 {data?.isCloudStorage ? (
-                  <span style={{ background: "rgba(34, 197, 94, 0.15)", color: "#4ade80", border: "1px solid rgba(34, 197, 94, 0.4)", fontSize: "10px", fontWeight: 700, padding: "2px 8px", borderRadius: "6px" }}>
-                    ☁️ Cloud Synced
-                  </span>
+                  <span className={styles.cloudBadge}>☁️ Cloud Synced</span>
                 ) : (
-                  <span title="Add Upstash Redis in .env to persist across Vercel deployments" style={{ background: "rgba(245, 158, 11, 0.12)", color: "#fbbf24", border: "1px solid rgba(245, 158, 11, 0.35)", fontSize: "10px", fontWeight: 600, padding: "2px 8px", borderRadius: "6px" }}>
+                  <span className={styles.serverlessBadge} title="Add Upstash Redis in .env to persist across Vercel deployments">
                     ⚡ Serverless Mode
                   </span>
                 )}
               </div>
 
-              <div style={{ fontSize: "11px", color: "#94a3b8", display: "flex", alignItems: "center", gap: 8, marginTop: 2 }}>
+              <div className={styles.statusSubtext}>
                 <span style={{ display: "inline-flex", alignItems: "center", gap: 5 }}>
-                  <span style={{ width: 7, height: 7, borderRadius: "50%", background: autoRefresh ? "#22c55e" : "#64748b", display: "inline-block", boxShadow: autoRefresh ? "0 0 8px #22c55e" : "none" }} />
-                  <span style={{ color: autoRefresh ? "#34d399" : "#64748b", fontWeight: 600 }}>{autoRefresh ? "Live Tracking Active" : "Auto-Refresh Paused"}</span>
+                  <span style={{ width: 7, height: 7, borderRadius: "50%", background: autoRefresh ? "#22c55e" : "#94a3b8", display: "inline-block" }} />
+                  <span style={{ color: autoRefresh ? "#16a34a" : "var(--muted)", fontWeight: 600 }}>{autoRefresh ? "Live Tracking Active" : "Auto-Refresh Paused"}</span>
                 </span>
                 <span>•</span>
                 <span>Updated: {lastRefreshed.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}</span>
@@ -588,7 +454,7 @@ export default function AnalyticsDashboard() {
           {/* Action Toolbar */}
           <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
             {/* Date Range Selector */}
-            <div style={{ display: "flex", background: "rgba(15, 23, 42, 0.9)", borderRadius: "8px", padding: "3px", border: "1px solid rgba(255, 255, 255, 0.08)" }}>
+            <div className={styles.rangeContainer}>
               {[
                 { id: "today", label: "Today" },
                 { id: "7d", label: "Last 7 Days" },
@@ -598,18 +464,7 @@ export default function AnalyticsDashboard() {
                 <button
                   key={r.id}
                   onClick={() => setRange(r.id)}
-                  style={{
-                    border: "none",
-                    background: range === r.id ? "linear-gradient(135deg, #0ea5e9, #0284c7)" : "transparent",
-                    color: range === r.id ? "#ffffff" : "#94a3b8",
-                    padding: "5px 12px",
-                    borderRadius: "6px",
-                    fontSize: "12px",
-                    fontWeight: 600,
-                    cursor: "pointer",
-                    transition: "all 0.15s ease",
-                    boxShadow: range === r.id ? "0 2px 8px rgba(14, 165, 233, 0.35)" : "none",
-                  }}
+                  className={`${styles.rangeBtn} ${range === r.id ? styles.rangeBtnActive : ""}`}
                 >
                   {r.label}
                 </button>
@@ -619,19 +474,8 @@ export default function AnalyticsDashboard() {
             {/* Live Toggle */}
             <button
               onClick={() => setAutoRefresh(!autoRefresh)}
-              style={{
-                background: autoRefresh ? "rgba(6, 78, 59, 0.5)" : "rgba(15, 23, 42, 0.8)",
-                border: `1px solid ${autoRefresh ? "rgba(34, 197, 94, 0.5)" : "rgba(255, 255, 255, 0.1)"}`,
-                color: autoRefresh ? "#34d399" : "#94a3b8",
-                padding: "6px 11px",
-                borderRadius: "8px",
-                fontSize: "12px",
-                fontWeight: 600,
-                cursor: "pointer",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 5,
-              }}
+              className={styles.actionBtn}
+              style={{ color: autoRefresh ? "#16a34a" : "var(--muted)" }}
             >
               🔄 {autoRefresh ? "Live ON" : "Live OFF"}
             </button>
@@ -640,16 +484,7 @@ export default function AnalyticsDashboard() {
             <button
               onClick={() => fetchData(range, true)}
               disabled={loading}
-              style={{
-                background: "rgba(15, 23, 42, 0.8)",
-                border: "1px solid rgba(255, 255, 255, 0.1)",
-                color: "#e2e8f0",
-                padding: "6px 12px",
-                borderRadius: "8px",
-                fontSize: "12px",
-                fontWeight: 600,
-                cursor: "pointer",
-              }}
+              className={styles.actionBtn}
             >
               {loading ? "..." : "Refresh"}
             </button>
@@ -657,19 +492,7 @@ export default function AnalyticsDashboard() {
             {/* CSV Export */}
             <a
               href="/api/analytics/stats?export=csv"
-              style={{
-                background: "linear-gradient(135deg, #0284c7, #0369a1)",
-                color: "#ffffff",
-                padding: "6px 12px",
-                borderRadius: "8px",
-                fontSize: "12px",
-                fontWeight: 600,
-                textDecoration: "none",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 5,
-                border: "1px solid rgba(255, 255, 255, 0.15)",
-              }}
+              className={`${styles.actionBtn} ${styles.exportBtn}`}
             >
               📥 Export CSV
             </a>
@@ -678,16 +501,7 @@ export default function AnalyticsDashboard() {
             <button
               onClick={handleClearData}
               disabled={isClearing}
-              style={{
-                background: "rgba(127, 29, 29, 0.4)",
-                border: "1px solid rgba(239, 68, 68, 0.35)",
-                color: "#fca5a5",
-                padding: "6px 10px",
-                borderRadius: "8px",
-                fontSize: "12px",
-                fontWeight: 600,
-                cursor: "pointer",
-              }}
+              className={`${styles.actionBtn} ${styles.resetBtn}`}
             >
               Reset
             </button>
@@ -696,16 +510,7 @@ export default function AnalyticsDashboard() {
             <button
               onClick={handleLogout}
               title="Lock Dashboard"
-              style={{
-                background: "rgba(51, 65, 85, 0.4)",
-                border: "1px solid rgba(255, 255, 255, 0.1)",
-                color: "#cbd5e1",
-                padding: "6px 10px",
-                borderRadius: "8px",
-                fontSize: "12px",
-                fontWeight: 600,
-                cursor: "pointer",
-              }}
+              className={styles.actionBtn}
             >
               🔒 Lock
             </button>
@@ -714,28 +519,26 @@ export default function AnalyticsDashboard() {
       </header>
 
       {/* ── MAIN CONTENT CONTAINER ───────────────────────────────────────────── */}
-      <main style={{ maxWidth: 1540, margin: "0 auto", padding: "24px 28px 60px" }}>
+      <main className={styles.mainContent}>
         {/* ── 1. EXECUTIVE OVERVIEW (10 KPI CARDS GRID) ──────────────────────── */}
         <section style={{ marginBottom: 28 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+          <div className={styles.sectionHeader}>
             <div>
-              <h2 style={{ margin: 0, fontSize: 16, fontWeight: 800, color: "#ffffff", letterSpacing: "-0.02em" }}>
+              <h2 className={styles.sectionTitle}>
                 Executive Performance Overview
               </h2>
-              <p style={{ margin: "2px 0 0", fontSize: 12, color: "#64748b" }}>
+              <p className={styles.sectionSubtitle}>
                 Key conversion metrics and high-intent customer actions ({range === "today" ? "Today" : range === "7d" ? "Past 7 Days" : range === "30d" ? "Past 30 Days" : "All Time"})
               </p>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 6, background: "rgba(14, 165, 233, 0.1)", padding: "4px 10px", borderRadius: "8px", border: "1px solid rgba(14, 165, 233, 0.25)" }}>
-              <span style={{ fontSize: 11, color: "#38bdf8", fontWeight: 700 }}>Conversion Rate:</span>
-              <span style={{ fontSize: 13, color: "#ffffff", fontWeight: 800 }}>{conv.conversionRate}%</span>
+              <span style={{ fontSize: 11, color: "var(--accent)", fontWeight: 700 }}>Conversion Rate:</span>
+              <span style={{ fontSize: 13, color: "var(--ink)", fontWeight: 800 }}>{conv.conversionRate}%</span>
             </div>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))", gap: 14 }}>
-            {/* 1. Quotes Submitted */}
+          <div className={styles.kpiGrid}>
             <KpiCard
-              icon="📝"
               title="Quotes Submitted"
               value={conv.quotes}
               subtext="Full freight inquiries"
@@ -745,9 +548,7 @@ export default function AnalyticsDashboard() {
               tooltip="Total detailed freight quote requests submitted by potential clients"
             />
 
-            {/* 2. Contact Messages */}
             <KpiCard
-              icon="✉️"
               title="Contact Messages"
               value={conv.contacts}
               subtext="Direct customer inquiries"
@@ -757,9 +558,7 @@ export default function AnalyticsDashboard() {
               tooltip="Total submissions through the contact form"
             />
 
-            {/* 3. Phone Call Clicks */}
             <KpiCard
-              icon="📞"
               title="Phone Call Clicks"
               value={conv.phoneClicks}
               subtext="Direct call actions"
@@ -769,9 +568,7 @@ export default function AnalyticsDashboard() {
               tooltip="Total times visitors clicked the telephone number to call"
             />
 
-            {/* 4. WhatsApp Clicks */}
             <KpiCard
-              icon="💬"
               title="WhatsApp Clicks"
               value={conv.whatsappClicks}
               subtext="Instant chat initiates"
@@ -781,9 +578,7 @@ export default function AnalyticsDashboard() {
               tooltip="Total clicks on WhatsApp chat buttons and floating contact links"
             />
 
-            {/* 5. Total Inquiries */}
             <KpiCard
-              icon="⚡"
               title="Total Inquiries"
               value={conv.totalConversions}
               subtext="All combined leads"
@@ -793,9 +588,7 @@ export default function AnalyticsDashboard() {
               tooltip="Aggregate sum of Quotes, Contacts, Phone Calls, and WhatsApp inquiries"
             />
 
-            {/* 6. Active Visitors Now */}
             <KpiCard
-              icon="🟢"
               title="Active Visitors"
               value={realtimeActive}
               subtext="Active in last 5 min"
@@ -806,9 +599,7 @@ export default function AnalyticsDashboard() {
               isLive={true}
             />
 
-            {/* 7. Total Page Views */}
             <KpiCard
-              icon="👁️"
               title="Total Page Views"
               value={totalPageViews.toLocaleString()}
               subtext="Total page impressions"
@@ -818,9 +609,7 @@ export default function AnalyticsDashboard() {
               tooltip="Total volume of pages served across all visitor sessions"
             />
 
-            {/* 8. Unique Visitors */}
             <KpiCard
-              icon="👥"
               title="Unique Visitors"
               value={uniqueVisitors.toLocaleString()}
               subtext="Distinct devices/clients"
@@ -830,9 +619,7 @@ export default function AnalyticsDashboard() {
               tooltip="Number of distinct individuals or browsers that visited the site"
             />
 
-            {/* 9. Browsing Sessions */}
             <KpiCard
-              icon="🔄"
               title="Browsing Sessions"
               value={totalSessions.toLocaleString()}
               subtext="Visits initiated"
@@ -842,9 +629,7 @@ export default function AnalyticsDashboard() {
               tooltip="Total browsing sessions initiated by visitors"
             />
 
-            {/* 10. Pages / Session */}
             <KpiCard
-              icon="📑"
               title="Pages / Session"
               value={avgPagesPerSession}
               subtext="Average depth per visit"
@@ -859,23 +644,15 @@ export default function AnalyticsDashboard() {
         {/* ── 2. GEOGRAPHIC & DEVICE ANALYTICS (3-COLUMN SECTION) ─────────────── */}
         <section style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 16, marginBottom: 28 }}>
           {/* Card 1: Top Visitor Cities */}
-          <div
-            style={{
-              background: "linear-gradient(145deg, rgba(15, 23, 42, 0.85), rgba(11, 18, 33, 0.95))",
-              border: "1px solid rgba(255, 255, 255, 0.08)",
-              borderRadius: "14px",
-              padding: "20px",
-              boxShadow: "0 4px 20px -2px rgba(0, 0, 0, 0.35)",
-            }}
-          >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+          <div className={styles.panelCard}>
+            <div className={styles.cardHeader}>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <span style={{ width: 26, height: 26, borderRadius: "6px", background: "rgba(14, 165, 233, 0.15)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 13 }}>
                   🏙️
                 </span>
-                <h3 style={{ margin: 0, fontSize: 14, fontWeight: 700, color: "#ffffff" }}>Top Visitor Cities</h3>
+                <h3 className={styles.cardTitle}>Top Visitor Cities</h3>
               </div>
-              <span style={{ fontSize: 11, color: "#64748b" }}>By Transport Demand</span>
+              <span className={styles.cardSubtitle}>By Transport Demand</span>
             </div>
 
             {data?.cities && data.cities.length > 0 ? (
@@ -883,41 +660,33 @@ export default function AnalyticsDashboard() {
                 {data.cities.map((city) => (
                   <div key={city.name} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
                     <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12 }}>
-                      <span style={{ color: "#e2e8f0", fontWeight: 600 }}>{city.name}</span>
+                      <span style={{ color: "var(--ink2)", fontWeight: 600 }}>{city.name}</span>
                       <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                        <span style={{ color: "#94a3b8", fontSize: 11 }}>{city.count} visits</span>
-                        <span style={{ color: "#38bdf8", fontWeight: 700 }}>{city.percentage}%</span>
+                        <span style={{ color: "var(--muted)", fontSize: 11 }}>{city.count} visits</span>
+                        <span style={{ color: "var(--accent)", fontWeight: 700 }}>{city.percentage}%</span>
                       </div>
                     </div>
-                    <div style={{ width: "100%", height: 5, background: "rgba(255, 255, 255, 0.06)", borderRadius: 3, overflow: "hidden" }}>
-                      <div style={{ width: `${city.percentage}%`, height: "100%", background: "linear-gradient(90deg, #0284c7, #38bdf8)", borderRadius: 3 }} />
+                    <div className={styles.progressBarBg}>
+                      <div style={{ width: `${city.percentage}%`, height: "100%", background: "linear-gradient(90deg, var(--accent-dk), var(--accent))", borderRadius: 3 }} />
                     </div>
                   </div>
                 ))}
               </div>
             ) : (
-              <div style={{ padding: "32px 0", color: "#64748b", textAlign: "center", fontSize: 12 }}>No city metrics recorded yet.</div>
+              <div style={{ padding: "32px 0", color: "var(--muted)", textAlign: "center", fontSize: 12 }}>No city metrics recorded yet.</div>
             )}
           </div>
 
           {/* Card 2: Top States & Regions */}
-          <div
-            style={{
-              background: "linear-gradient(145deg, rgba(15, 23, 42, 0.85), rgba(11, 18, 33, 0.95))",
-              border: "1px solid rgba(255, 255, 255, 0.08)",
-              borderRadius: "14px",
-              padding: "20px",
-              boxShadow: "0 4px 20px -2px rgba(0, 0, 0, 0.35)",
-            }}
-          >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+          <div className={styles.panelCard}>
+            <div className={styles.cardHeader}>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <span style={{ width: 26, height: 26, borderRadius: "6px", background: "rgba(168, 85, 247, 0.15)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 13 }}>
                   🗺️
                 </span>
-                <h3 style={{ margin: 0, fontSize: 14, fontWeight: 700, color: "#ffffff" }}>Top States & Regions</h3>
+                <h3 className={styles.cardTitle}>Top States & Regions</h3>
               </div>
-              <span style={{ fontSize: 11, color: "#64748b" }}>Geographic Origin</span>
+              <span className={styles.cardSubtitle}>Geographic Origin</span>
             </div>
 
             {data?.states && data.states.length > 0 ? (
@@ -925,47 +694,39 @@ export default function AnalyticsDashboard() {
                 {data.states.map((st) => (
                   <div key={st.name} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
                     <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12 }}>
-                      <span style={{ color: "#e2e8f0", fontWeight: 600 }}>{st.name}</span>
+                      <span style={{ color: "var(--ink2)", fontWeight: 600 }}>{st.name}</span>
                       <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                        <span style={{ color: "#94a3b8", fontSize: 11 }}>{st.count} visits</span>
-                        <span style={{ color: "#c084fc", fontWeight: 700 }}>{st.percentage}%</span>
+                        <span style={{ color: "var(--muted)", fontSize: 11 }}>{st.count} visits</span>
+                        <span style={{ color: "#a855f7", fontWeight: 700 }}>{st.percentage}%</span>
                       </div>
                     </div>
-                    <div style={{ width: "100%", height: 5, background: "rgba(255, 255, 255, 0.06)", borderRadius: 3, overflow: "hidden" }}>
+                    <div className={styles.progressBarBg}>
                       <div style={{ width: `${st.percentage}%`, height: "100%", background: "linear-gradient(90deg, #7c3aed, #a855f7)", borderRadius: 3 }} />
                     </div>
                   </div>
                 ))}
               </div>
             ) : (
-              <div style={{ padding: "32px 0", color: "#64748b", textAlign: "center", fontSize: 12 }}>No state metrics recorded yet.</div>
+              <div style={{ padding: "32px 0", color: "var(--muted)", textAlign: "center", fontSize: 12 }}>No state metrics recorded yet.</div>
             )}
           </div>
 
           {/* Card 3: Device & Country Share */}
-          <div
-            style={{
-              background: "linear-gradient(145deg, rgba(15, 23, 42, 0.85), rgba(11, 18, 33, 0.95))",
-              border: "1px solid rgba(255, 255, 255, 0.08)",
-              borderRadius: "14px",
-              padding: "20px",
-              boxShadow: "0 4px 20px -2px rgba(0, 0, 0, 0.35)",
-            }}
-          >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+          <div className={styles.panelCard}>
+            <div className={styles.cardHeader}>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <span style={{ width: 26, height: 26, borderRadius: "6px", background: "rgba(16, 185, 129, 0.15)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 13 }}>
                   📱
                 </span>
-                <h3 style={{ margin: 0, fontSize: 14, fontWeight: 700, color: "#ffffff" }}>Device & Country Share</h3>
+                <h3 className={styles.cardTitle}>Device & Country Share</h3>
               </div>
-              <span style={{ fontSize: 11, color: "#64748b" }}>Distribution</span>
+              <span className={styles.cardSubtitle}>Distribution</span>
             </div>
 
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
               {/* Devices */}
               <div>
-                <div style={{ fontSize: 11, color: "#64748b", fontWeight: 700, textTransform: "uppercase", marginBottom: 10, letterSpacing: "0.04em" }}>
+                <div style={{ fontSize: 11, color: "var(--muted)", fontWeight: 700, textTransform: "uppercase", marginBottom: 10, letterSpacing: "0.04em" }}>
                   Device Type
                 </div>
                 {data?.devices && data.devices.length > 0 ? (
@@ -973,23 +734,23 @@ export default function AnalyticsDashboard() {
                     {data.devices.map((dev) => (
                       <div key={dev.name} style={{ display: "flex", flexDirection: "column", gap: 3 }}>
                         <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12 }}>
-                          <span style={{ color: "#e2e8f0" }}>{dev.name === "Desktop" ? "💻 Desktop" : "📱 Mobile"}</span>
-                          <span style={{ color: "#38bdf8", fontWeight: 700 }}>{dev.percentage}%</span>
+                          <span style={{ color: "var(--ink2)" }}>{dev.name === "Desktop" ? "💻 Desktop" : "📱 Mobile"}</span>
+                          <span style={{ color: "var(--accent)", fontWeight: 700 }}>{dev.percentage}%</span>
                         </div>
-                        <div style={{ width: "100%", height: 4, background: "rgba(255, 255, 255, 0.06)", borderRadius: 2 }}>
-                          <div style={{ width: `${dev.percentage}%`, height: "100%", background: dev.name === "Desktop" ? "#0ea5e9" : "#10b981", borderRadius: 2 }} />
+                        <div className={styles.progressBarBg}>
+                          <div style={{ width: `${dev.percentage}%`, height: "100%", background: dev.name === "Desktop" ? "var(--accent)" : "#10b981", borderRadius: 2 }} />
                         </div>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <span style={{ fontSize: 11, color: "#64748b" }}>No device data</span>
+                  <span style={{ fontSize: 11, color: "var(--muted)" }}>No device data</span>
                 )}
               </div>
 
               {/* Countries */}
               <div>
-                <div style={{ fontSize: 11, color: "#64748b", fontWeight: 700, textTransform: "uppercase", marginBottom: 10, letterSpacing: "0.04em" }}>
+                <div style={{ fontSize: 11, color: "var(--muted)", fontWeight: 700, textTransform: "uppercase", marginBottom: 10, letterSpacing: "0.04em" }}>
                   Country
                 </div>
                 {data?.countries && data.countries.length > 0 ? (
@@ -997,17 +758,17 @@ export default function AnalyticsDashboard() {
                     {data.countries.slice(0, 4).map((co) => (
                       <div key={co.name} style={{ display: "flex", flexDirection: "column", gap: 3 }}>
                         <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12 }}>
-                          <span style={{ color: "#e2e8f0" }}>🇮🇳 {co.name}</span>
-                          <span style={{ color: "#a855f7", fontWeight: 700 }}>{co.percentage}%</span>
+                          <span style={{ color: "var(--ink2)" }}>🇮🇳 {co.name}</span>
+                          <span style={{ color: "#8b5cf6", fontWeight: 700 }}>{co.percentage}%</span>
                         </div>
-                        <div style={{ width: "100%", height: 4, background: "rgba(255, 255, 255, 0.06)", borderRadius: 2 }}>
+                        <div className={styles.progressBarBg}>
                           <div style={{ width: `${co.percentage}%`, height: "100%", background: "#8b5cf6", borderRadius: 2 }} />
                         </div>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <span style={{ fontSize: 11, color: "#64748b" }}>No country data</span>
+                  <span style={{ fontSize: 11, color: "var(--muted)" }}>No country data</span>
                 )}
               </div>
             </div>
@@ -1017,31 +778,19 @@ export default function AnalyticsDashboard() {
         {/* ── 3. ANALYTICS SECTION (2-COLUMN: CHART + TOP PAGES) ──────────────── */}
         <section style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(460px, 1fr))", gap: 16, marginBottom: 28 }}>
           {/* Column 1: Daily Views & Conversions Trend */}
-          <div
-            style={{
-              background: "linear-gradient(145deg, rgba(15, 23, 42, 0.85), rgba(11, 18, 33, 0.95))",
-              border: "1px solid rgba(255, 255, 255, 0.08)",
-              borderRadius: "14px",
-              padding: "20px",
-              boxShadow: "0 4px 20px -2px rgba(0, 0, 0, 0.35)",
-            }}
-          >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
+          <div className={styles.panelCard}>
+            <div className={styles.cardHeader} style={{ marginBottom: 18 }}>
               <div>
-                <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: "#ffffff" }}>
-                  Daily Views & Conversions Trend
-                </h3>
-                <p style={{ margin: "2px 0 0", fontSize: 11, color: "#64748b" }}>
-                  Page views (Bars) with overlay of customer inquiries (Line)
-                </p>
+                <h3 className={styles.cardTitle}>Daily Views & Conversions Trend</h3>
+                <p className={styles.cardSubtitle}>Page views (Bars) with overlay of customer inquiries (Line)</p>
               </div>
 
               <div style={{ display: "flex", gap: 12, fontSize: 11 }}>
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 4, color: "#38bdf8", fontWeight: 600 }}>
-                  <span style={{ width: 8, height: 8, background: "#0ea5e9", borderRadius: "2px" }} /> Page Views
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 4, color: "var(--accent)", fontWeight: 600 }}>
+                  <span style={{ width: 8, height: 8, background: "var(--accent)", borderRadius: "2px" }} /> Page Views
                 </span>
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 4, color: "#34d399", fontWeight: 600 }}>
-                  <span style={{ width: 8, height: 8, background: "#10b981", borderRadius: "50%" }} /> Conversions
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 4, color: "#16a34a", fontWeight: 600 }}>
+                  <span style={{ width: 8, height: 8, background: "#16a34a", borderRadius: "50%" }} /> Conversions
                 </span>
               </div>
             </div>
@@ -1058,26 +807,23 @@ export default function AnalyticsDashboard() {
                       content={`${d.date}: ${d.views} Page Views • ${d.visitors} Visitors • ${d.conversions || 0} Inquiries`}
                     >
                       <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", height: "100%", justifyContent: "flex-end", cursor: "pointer" }}>
-                        {/* Value count above bar */}
-                        <div style={{ fontSize: 10, color: isLatest ? "#38bdf8" : "#64748b", fontWeight: isLatest ? 700 : 500, marginBottom: 4 }}>
+                        <div style={{ fontSize: 10, color: isLatest ? "var(--accent)" : "var(--muted)", fontWeight: isLatest ? 700 : 500, marginBottom: 4 }}>
                           {d.views}
                         </div>
 
-                        {/* Combined Bar + Conversion Point */}
                         <div style={{ width: "100%", maxWidth: 32, position: "relative", height: `${viewHeight}%` }}>
                           <div
                             style={{
                               width: "100%",
                               height: "100%",
                               background: isLatest
-                                ? "linear-gradient(to top, #0284c7, #38bdf8)"
-                                : "linear-gradient(to top, rgba(2, 132, 199, 0.5), rgba(56, 189, 248, 0.7))",
+                                ? "linear-gradient(to top, var(--accent-dk), var(--accent))"
+                                : "linear-gradient(to top, rgba(2, 132, 199, 0.4), rgba(56, 189, 248, 0.6))",
                               borderRadius: "4px 4px 0 0",
                               transition: "all 0.2s ease",
                             }}
                           />
 
-                          {/* Conversion overlay dot */}
                           {d.conversions > 0 && (
                             <div
                               style={{
@@ -1089,15 +835,14 @@ export default function AnalyticsDashboard() {
                                 height: 10,
                                 borderRadius: "50%",
                                 background: "#10b981",
-                                border: "2px solid #0f172a",
+                                border: "2px solid var(--card)",
                                 boxShadow: "0 0 8px #10b981",
                               }}
                             />
                           )}
                         </div>
 
-                        {/* Date label */}
-                        <div style={{ fontSize: 10, color: isLatest ? "#38bdf8" : "#64748b", marginTop: 6, fontWeight: isLatest ? 700 : 400 }}>
+                        <div style={{ fontSize: 10, color: isLatest ? "var(--accent)" : "var(--muted)", marginTop: 6, fontWeight: isLatest ? 700 : 400 }}>
                           {d.date.slice(5)}
                         </div>
                       </div>
@@ -1106,41 +851,25 @@ export default function AnalyticsDashboard() {
                 })}
               </div>
             ) : (
-              <div style={{ height: 180, display: "flex", alignItems: "center", justifyContent: "center", color: "#64748b", fontSize: 12 }}>
+              <div style={{ height: 180, display: "flex", alignItems: "center", justifyContent: "center", color: "var(--muted)", fontSize: 12 }}>
                 No traffic data recorded in this period.
               </div>
             )}
           </div>
 
           {/* Column 2: Top Visited Pages */}
-          <div
-            style={{
-              background: "linear-gradient(145deg, rgba(15, 23, 42, 0.85), rgba(11, 18, 33, 0.95))",
-              border: "1px solid rgba(255, 255, 255, 0.08)",
-              borderRadius: "14px",
-              padding: "20px",
-              boxShadow: "0 4px 20px -2px rgba(0, 0, 0, 0.35)",
-            }}
-          >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+          <div className={styles.panelCard}>
+            <div className={styles.cardHeader}>
               <div>
-                <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: "#ffffff" }}>Top Visited Pages</h3>
-                <p style={{ margin: "2px 0 0", fontSize: 11, color: "#64748b" }}>Ranked by total page views and visitor engagement</p>
+                <h3 className={styles.cardTitle}>Top Visited Pages</h3>
+                <p className={styles.cardSubtitle}>Ranked by total page views and visitor engagement</p>
               </div>
 
-              {/* Page Filter Dropdown */}
               <select
                 value={pageFilter}
                 onChange={(e) => setPageFilter(e.target.value)}
-                style={{
-                  background: "#070b14",
-                  border: "1px solid rgba(255, 255, 255, 0.12)",
-                  borderRadius: "6px",
-                  padding: "4px 8px",
-                  color: "#e2e8f0",
-                  fontSize: "11px",
-                  outline: "none",
-                }}
+                className={styles.selectInput}
+                style={{ padding: "4px 8px", fontSize: "11px" }}
               >
                 <option value="all">All Pages</option>
                 {data?.topPages?.map((p) => (
@@ -1161,7 +890,7 @@ export default function AnalyticsDashboard() {
                     <div key={page.path} style={{ display: "flex", flexDirection: "column", gap: 3 }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 12 }}>
                         <div style={{ display: "flex", alignItems: "center", gap: 8, overflow: "hidden" }}>
-                          <span style={{ fontSize: 11, color: idx === 0 ? "#38bdf8" : "#64748b", fontWeight: 700, width: 20 }}>
+                          <span style={{ fontSize: 11, color: idx === 0 ? "var(--accent)" : "var(--muted)", fontWeight: 700, width: 20 }}>
                             #{idx + 1}
                           </span>
                           <span style={{ fontSize: 12 }}>📄</span>
@@ -1169,7 +898,7 @@ export default function AnalyticsDashboard() {
                             href={page.path}
                             target="_blank"
                             style={{
-                              color: "#38bdf8",
+                              color: "var(--accent)",
                               textDecoration: "none",
                               fontWeight: 600,
                               overflow: "hidden",
@@ -1183,60 +912,43 @@ export default function AnalyticsDashboard() {
                         </div>
 
                         <div style={{ display: "flex", gap: 10, alignItems: "center", whiteSpace: "nowrap" }}>
-                          <span style={{ fontWeight: 700, color: "#ffffff" }}>{page.views} views</span>
-                          <span style={{ color: "#94a3b8", fontSize: 11 }}>({page.uniqueVisitors} unique)</span>
+                          <span style={{ fontWeight: 700, color: "var(--ink)" }}>{page.views} views</span>
+                          <span style={{ color: "var(--muted)", fontSize: 11 }}>({page.uniqueVisitors} unique)</span>
                         </div>
                       </div>
 
-                      <div style={{ width: "100%", height: 5, background: "rgba(255, 255, 255, 0.06)", borderRadius: 3, overflow: "hidden" }}>
-                        <div style={{ width: `${pct}%`, height: "100%", background: "linear-gradient(90deg, #0ea5e9, #38bdf8)", borderRadius: 3 }} />
+                      <div className={styles.progressBarBg}>
+                        <div style={{ width: `${pct}%`, height: "100%", background: "linear-gradient(90deg, var(--accent-dk), var(--accent))", borderRadius: 3 }} />
                       </div>
                     </div>
                   );
                 })}
               </div>
             ) : (
-              <div style={{ padding: "32px 0", color: "#64748b", textAlign: "center", fontSize: 12 }}>No page views recorded yet.</div>
+              <div style={{ padding: "32px 0", color: "var(--muted)", textAlign: "center", fontSize: 12 }}>No page views recorded yet.</div>
             )}
           </div>
         </section>
 
         {/* ── 4. REAL-TIME ACTIVITY & LEAD STREAM (DETAILED BOTTOM TABLE) ──────── */}
-        <section
-          style={{
-            background: "linear-gradient(145deg, rgba(15, 23, 42, 0.85), rgba(11, 18, 33, 0.95))",
-            border: "1px solid rgba(255, 255, 255, 0.08)",
-            borderRadius: "14px",
-            padding: "22px",
-            boxShadow: "0 4px 24px -2px rgba(0, 0, 0, 0.4)",
-          }}
-        >
+        <section className={styles.panelCard} style={{ padding: "22px" }}>
           {/* Header Controls */}
           <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: 14, marginBottom: 18 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <h3 style={{ margin: 0, fontSize: 16, fontWeight: 800, color: "#ffffff", letterSpacing: "-0.02em" }}>
+              <h3 className={styles.cardTitle} style={{ fontSize: 16 }}>
                 Real-Time Activity & Lead Stream
               </h3>
-              <span style={{ background: "rgba(34, 197, 94, 0.16)", color: "#4ade80", border: "1px solid rgba(34, 197, 94, 0.35)", padding: "2px 8px", borderRadius: "10px", fontSize: "10px", fontWeight: 800 }}>
+              <span style={{ background: "rgba(34, 197, 94, 0.16)", color: "#16a34a", border: "1px solid rgba(34, 197, 94, 0.35)", padding: "2px 8px", borderRadius: "10px", fontSize: "10px", fontWeight: 800 }}>
                 ● LIVE STREAM
               </span>
-              <span style={{ fontSize: 12, color: "#64748b" }}>({filteredVisits.length} events matching filter)</span>
+              <span style={{ fontSize: 12, color: "var(--muted)" }}>({filteredVisits.length} events)</span>
             </div>
 
             <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
-              {/* Event Filter */}
               <select
                 value={eventTypeFilter}
                 onChange={(e) => setEventTypeFilter(e.target.value)}
-                style={{
-                  background: "#070b14",
-                  border: "1px solid rgba(255, 255, 255, 0.12)",
-                  borderRadius: "8px",
-                  padding: "7px 12px",
-                  color: "#ffffff",
-                  fontSize: 12,
-                  outline: "none",
-                }}
+                className={styles.selectInput}
               >
                 <option value="all">All Events</option>
                 <option value="conversions">🎯 Leads & Inquiries Only</option>
@@ -1247,40 +959,18 @@ export default function AnalyticsDashboard() {
                 <option value="pageview">👁️ Page Views</option>
               </select>
 
-              {/* Search input */}
               <input
                 type="text"
                 placeholder="Search city, IP, page, OS, referrer..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                style={{
-                  background: "#070b14",
-                  border: "1px solid rgba(255, 255, 255, 0.12)",
-                  borderRadius: "8px",
-                  padding: "7px 14px",
-                  color: "#ffffff",
-                  fontSize: 12,
-                  outline: "none",
-                  width: 240,
-                }}
+                className={styles.textInput}
+                style={{ width: 240 }}
               />
 
-              {/* Quick CSV Export */}
               <a
                 href="/api/analytics/stats?export=csv"
-                style={{
-                  background: "rgba(15, 23, 42, 0.9)",
-                  border: "1px solid rgba(255, 255, 255, 0.12)",
-                  color: "#e2e8f0",
-                  padding: "7px 12px",
-                  borderRadius: "8px",
-                  fontSize: 12,
-                  fontWeight: 600,
-                  textDecoration: "none",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 5,
-                }}
+                className={styles.actionBtn}
               >
                 📥 Export Log
               </a>
@@ -1289,19 +979,19 @@ export default function AnalyticsDashboard() {
 
           {/* Table */}
           {filteredVisits.length > 0 ? (
-            <div style={{ overflowX: "auto" }}>
-              <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: 12 }}>
+            <div className={styles.tableWrapper}>
+              <table className={styles.dataTable}>
                 <thead>
-                  <tr style={{ borderBottom: "1px solid rgba(255, 255, 255, 0.08)", color: "#64748b", fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-                    <th style={{ padding: "10px 14px" }}>Time</th>
-                    <th style={{ padding: "10px 14px" }}>Event Type</th>
-                    <th style={{ padding: "10px 14px" }}>Page / Details</th>
-                    <th style={{ padding: "10px 14px" }}>Location (City/State)</th>
-                    <th style={{ padding: "10px 14px" }}>IP Address</th>
-                    <th style={{ padding: "10px 14px" }}>Device</th>
-                    <th style={{ padding: "10px 14px" }}>Browser / OS</th>
-                    <th style={{ padding: "10px 14px" }}>Referrer</th>
-                    <th style={{ padding: "10px 14px", textAlign: "right" }}>Actions</th>
+                  <tr className={styles.tableHeaderRow}>
+                    <th className={styles.tableHeaderCell}>Time</th>
+                    <th className={styles.tableHeaderCell}>Event Type</th>
+                    <th className={styles.tableHeaderCell}>Page / Details</th>
+                    <th className={styles.tableHeaderCell}>Location (City/State)</th>
+                    <th className={styles.tableHeaderCell}>IP Address</th>
+                    <th className={styles.tableHeaderCell}>Device</th>
+                    <th className={styles.tableHeaderCell}>Browser / OS</th>
+                    <th className={styles.tableHeaderCell}>Referrer</th>
+                    <th className={styles.tableHeaderCell} style={{ textAlign: "right" }}>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -1310,25 +1000,15 @@ export default function AnalyticsDashboard() {
                     const isCopied = copiedId === visit.id;
 
                     return (
-                      <tr
-                        key={visit.id}
-                        style={{
-                          borderBottom: "1px solid rgba(255, 255, 255, 0.04)",
-                          transition: "background 0.15s ease",
-                        }}
-                        onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255, 255, 255, 0.02)")}
-                        onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
-                      >
-                        {/* Time */}
-                        <td style={{ padding: "12px 14px", whiteSpace: "nowrap" }}>
-                          <div style={{ color: "#38bdf8", fontWeight: 700 }}>{timeAgo(visit.timestamp)}</div>
-                          <div style={{ fontSize: "10px", color: "#64748b", marginTop: 2 }}>
+                      <tr key={visit.id} className={styles.tableRow}>
+                        <td className={styles.tableCell} style={{ whiteSpace: "nowrap" }}>
+                          <div style={{ color: "var(--accent)", fontWeight: 700 }}>{timeAgo(visit.timestamp)}</div>
+                          <div style={{ fontSize: "10px", color: "var(--muted)", marginTop: 2 }}>
                             {new Date(visit.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
                           </div>
                         </td>
 
-                        {/* Event Type Badge */}
-                        <td style={{ padding: "12px 14px", whiteSpace: "nowrap" }}>
+                        <td className={styles.tableCell} style={{ whiteSpace: "nowrap" }}>
                           <span
                             style={{
                               background: badge.bg,
@@ -1348,13 +1028,12 @@ export default function AnalyticsDashboard() {
                           </span>
                         </td>
 
-                        {/* Page / Meta Details */}
-                        <td style={{ padding: "12px 14px", color: "#ffffff", fontWeight: 600 }}>
-                          <Link href={visit.path || "/"} target="_blank" style={{ color: "#38bdf8", textDecoration: "none" }}>
+                        <td className={styles.tableCell} style={{ color: "var(--ink)", fontWeight: 600 }}>
+                          <Link href={visit.path || "/"} target="_blank" style={{ color: "var(--accent)", textDecoration: "none" }}>
                             {visit.path || "/"}
                           </Link>
                           {visit.meta && Object.keys(visit.meta).length > 0 && (
-                            <div style={{ fontSize: 11, color: "#34d399", marginTop: 3, fontWeight: 500 }}>
+                            <div style={{ fontSize: 11, color: "#16a34a", marginTop: 3, fontWeight: 500 }}>
                               {visit.meta.reference ? `Ref: ${visit.meta.reference}` : ""}
                               {visit.meta.service ? ` • ${visit.meta.service}` : ""}
                               {visit.meta.name ? ` • ${visit.meta.name}` : ""}
@@ -1362,56 +1041,42 @@ export default function AnalyticsDashboard() {
                           )}
                         </td>
 
-                        {/* Location */}
-                        <td style={{ padding: "12px 14px", whiteSpace: "nowrap" }}>
-                          <div style={{ color: "#e2e8f0", fontWeight: 600 }}>
+                        <td className={styles.tableCell} style={{ whiteSpace: "nowrap" }}>
+                          <div style={{ color: "var(--ink2)", fontWeight: 600 }}>
                             📍 {visit.city ? `${visit.city}, ` : ""}{visit.state || "Maharashtra"}
                           </div>
-                          <div style={{ fontSize: "10px", color: "#64748b" }}>{visit.country || "India"}</div>
+                          <div style={{ fontSize: "10px", color: "var(--muted)" }}>{visit.country || "India"}</div>
                         </td>
 
-                        {/* IP Address */}
-                        <td style={{ padding: "12px 14px", whiteSpace: "nowrap", fontFamily: "monospace", fontSize: "11px", color: "#94a3b8" }}>
+                        <td className={styles.tableCell} style={{ whiteSpace: "nowrap", fontFamily: "monospace", fontSize: "11px", color: "var(--muted)" }}>
                           {visit.ip || "127.0.0.1"}
                         </td>
 
-                        {/* Device */}
-                        <td style={{ padding: "12px 14px", whiteSpace: "nowrap" }}>
-                          <span style={{ background: "rgba(255, 255, 255, 0.05)", border: "1px solid rgba(255, 255, 255, 0.1)", padding: "2px 7px", borderRadius: "4px", fontSize: "11px", color: "#cbd5e1" }}>
+                        <td className={styles.tableCell} style={{ whiteSpace: "nowrap" }}>
+                          <span style={{ background: "var(--bg2)", border: "1px solid var(--border)", padding: "2px 7px", borderRadius: "4px", fontSize: "11px", color: "var(--ink2)" }}>
                             {visit.device === "Mobile" ? "📱 Mobile" : visit.device === "Tablet" ? "📟 Tablet" : "💻 Desktop"}
                           </span>
                         </td>
 
-                        {/* Browser / OS */}
-                        <td style={{ padding: "12px 14px", whiteSpace: "nowrap", color: "#94a3b8" }}>
-                          <span style={{ color: "#e2e8f0", fontWeight: 500 }}>{visit.browser}</span> / {visit.os}
+                        <td className={styles.tableCell} style={{ whiteSpace: "nowrap", color: "var(--muted)" }}>
+                          <span style={{ color: "var(--ink2)", fontWeight: 500 }}>{visit.browser}</span> / {visit.os}
                         </td>
 
-                        {/* Referrer */}
-                        <td style={{ padding: "12px 14px", color: "#94a3b8", maxWidth: 160, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                        <td className={styles.tableCell} style={{ color: "var(--muted)", maxWidth: 160, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                           {visit.referrer ? (
-                            <span title={visit.referrer} style={{ color: "#cbd5e1" }}>
+                            <span title={visit.referrer} style={{ color: "var(--ink2)" }}>
                               {visit.referrer}
                             </span>
                           ) : (
-                            <span style={{ color: "#475569" }}>Direct</span>
+                            <span style={{ color: "var(--muted)" }}>Direct</span>
                           )}
                         </td>
 
-                        {/* Actions */}
-                        <td style={{ padding: "12px 14px", textAlign: "right", whiteSpace: "nowrap" }}>
+                        <td className={styles.tableCell} style={{ textAlign: "right", whiteSpace: "nowrap" }}>
                           <button
                             onClick={() => copyToClipboard(JSON.stringify(visit, null, 2), visit.id)}
-                            style={{
-                              background: "rgba(255, 255, 255, 0.05)",
-                              border: "1px solid rgba(255, 255, 255, 0.1)",
-                              borderRadius: "5px",
-                              padding: "3px 8px",
-                              fontSize: "10px",
-                              color: isCopied ? "#34d399" : "#94a3b8",
-                              cursor: "pointer",
-                              transition: "all 0.15s ease",
-                            }}
+                            className={styles.actionBtn}
+                            style={{ padding: "3px 8px", fontSize: "10px", color: isCopied ? "#16a34a" : "var(--muted)" }}
                           >
                             {isCopied ? "✓ Copied" : "Copy JSON"}
                           </button>
@@ -1423,7 +1088,7 @@ export default function AnalyticsDashboard() {
               </table>
             </div>
           ) : (
-            <div style={{ padding: "40px 0", textAlign: "center", color: "#64748b", fontSize: 13 }}>
+            <div style={{ padding: "40px 0", textAlign: "center", color: "var(--muted)", fontSize: 13 }}>
               {searchTerm || eventTypeFilter !== "all" || pageFilter !== "all"
                 ? "No visits matching your filter criteria."
                 : "No events recorded yet. Open your website pages to begin tracking!"}

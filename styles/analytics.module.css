@@ -1,0 +1,417 @@
+/* ── MahaveerTrans Analytics Dashboard Styles (Light & Dark Theme Compatible) ── */
+
+.dashboardWrapper {
+  min-height: 100vh;
+  background-color: var(--bg, #0d1117);
+  color: var(--ink, #f1f5f9);
+  font-family: var(--font-b, 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  padding-top: 4rem;
+}
+
+/* ── Header ────────────────────────────────────────────── */
+
+.header {
+  border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  background: var(--card, rgba(15, 23, 42, 0.90));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding: 12px 28px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.headerInner {
+  max-width: 1540px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+}
+
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: var(--accent, #38bdf8);
+  font-weight: 600;
+  font-size: 13px;
+  background: var(--bg2, rgba(15, 23, 42, 0.8));
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+  transition: all 0.2s ease;
+}
+
+.backBtn:hover {
+  background: var(--bg3, rgba(30, 41, 59, 0.8));
+  border-color: var(--accent, #0ea5e9);
+  color: var(--accent-dk, #0284c7);
+}
+
+.brandTitle {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--ink, #ffffff);
+  letter-spacing: -0.03em;
+}
+
+.proBadge {
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(99, 102, 241, 0.2));
+  color: var(--accent, #38bdf8);
+  border: 1px solid rgba(14, 165, 233, 0.4);
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.06em;
+}
+
+.cloudBadge {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.serverlessBadge {
+  background: rgba(245, 158, 11, 0.12);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.statusSubtext {
+  font-size: 11px;
+  color: var(--muted, #94a3b8);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+/* ── Range Selector & Action Buttons ─────────────────── */
+
+.rangeContainer {
+  display: flex;
+  background: var(--bg2, rgba(15, 23, 42, 0.9));
+  border-radius: 8px;
+  padding: 3px;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+}
+
+.rangeBtn {
+  border: none;
+  background: transparent;
+  color: var(--muted, #94a3b8);
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.rangeBtnActive {
+  background: linear-gradient(135deg, var(--accent, #0ea5e9), var(--accent-dk, #0284c7));
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(14, 165, 233, 0.35);
+}
+
+.actionBtn {
+  background: var(--bg2, rgba(15, 23, 42, 0.8));
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+  color: var(--ink2, #e2e8f0);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+
+.actionBtn:hover {
+  background: var(--bg3, rgba(30, 41, 59, 0.9));
+  border-color: var(--border2, #334155);
+}
+
+.exportBtn {
+  background: linear-gradient(135deg, var(--accent-dk, #0284c7), #0369a1);
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.exportBtn:hover {
+  background: linear-gradient(135deg, var(--accent, #0ea5e9), var(--accent-dk, #0284c7));
+}
+
+.resetBtn {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #ef4444;
+}
+
+.resetBtn:hover {
+  background: rgba(239, 68, 68, 0.22);
+}
+
+/* ── Main Container ──────────────────────────────────── */
+
+.mainContent {
+  max-width: 1540px;
+  margin: 0 auto;
+  padding: 24px 28px 60px;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--ink, #ffffff);
+  letter-spacing: -0.02em;
+}
+
+.sectionSubtitle {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--muted, #64748b);
+}
+
+/* ── KPI Grid & Cards ────────────────────────────────── */
+
+.kpiGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.kpiCard {
+  background: var(--card, #141c2b);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.07));
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: var(--shadow, 0 4px 20px -2px rgba(0, 0, 0, 0.35));
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  overflow: visible;
+}
+
+.kpiCard:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg, 0 10px 28px -4px rgba(0, 0, 0, 0.5));
+  z-index: 30;
+}
+
+.kpiTitle {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted, #94a3b8);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.kpiValue {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--ink, #ffffff);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin: 4px 0 6px;
+}
+
+.kpiSubtext {
+  font-size: 11px;
+  color: var(--muted, #64748b);
+}
+
+/* ── Themed Tooltip ──────────────────────────────────── */
+
+.tooltipWrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.tooltipTrigger {
+  cursor: pointer;
+  color: var(--muted, #94a3b8);
+  font-size: 11px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--bg2, rgba(255, 255, 255, 0.08));
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.15));
+  transition: all 0.15s ease;
+}
+
+.tooltipTrigger:hover {
+  background: rgba(14, 165, 233, 0.2);
+  color: var(--accent, #0ea5e9);
+  border-color: var(--accent, #0ea5e9);
+}
+
+.tooltipBox {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--dark-bar, #0f172a);
+  color: #f8fafc;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.45;
+  width: max-content;
+  max-width: 230px;
+  text-align: center;
+  box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.15);
+  z-index: 9999;
+  pointer-events: none;
+  animation: fadeIn 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tooltipArrow {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid var(--dark-bar, #0f172a);
+}
+
+/* ── Content Card & Sections ─────────────────────────── */
+
+.panelCard {
+  background: var(--card, #141c2b);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: var(--shadow, 0 4px 20px -2px rgba(0, 0, 0, 0.35));
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink, #ffffff);
+}
+
+.cardSubtitle {
+  margin: 2px 0 0;
+  font-size: 11px;
+  color: var(--muted, #64748b);
+}
+
+/* ── Tables & Lists ──────────────────────────────────── */
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.dataTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 12px;
+}
+
+.tableHeaderRow {
+  border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  color: var(--muted, #64748b);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tableHeaderCell {
+  padding: 10px 14px;
+}
+
+.tableRow {
+  border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.04));
+  transition: background-color 0.15s ease;
+}
+
+.tableRow:hover {
+  background-color: var(--bg2, rgba(255, 255, 255, 0.02));
+}
+
+.tableCell {
+  padding: 12px 14px;
+}
+
+.selectInput, .textInput {
+  background: var(--bg2, #070b14);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.12));
+  border-radius: 8px;
+  padding: 7px 12px;
+  color: var(--ink, #ffffff);
+  font-size: 12px;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.selectInput:focus, .textInput:focus {
+  border-color: var(--accent, #0ea5e9);
+}
+
+.progressBarBg {
+  width: 100%;
+  height: 5px;
+  background: var(--bg3, rgba(255, 255, 255, 0.06));
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 4px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}

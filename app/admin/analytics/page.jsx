@@ -228,6 +228,337 @@ function KpiCard({
   );
 }
 
+// ── Component: Activity Chart (High Precision SVG with Overlays) ───────────────
+
+function formatChartDate(dateStr) {
+  if (!dateStr) return "";
+  if (dateStr.includes(":")) return dateStr;
+  try {
+    const parts = dateStr.split("-");
+    if (parts.length === 3) {
+      const monthNames = [
+        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+      ];
+      const m = parseInt(parts[1], 10) - 1;
+      const d = parseInt(parts[2], 10);
+      return `${monthNames[m] || parts[1]} ${d}`;
+    }
+  } catch (e) {
+    // fallback
+  }
+  return dateStr;
+}
+
+function createSmoothPath(points) {
+  if (!points || points.length === 0) return "";
+  if (points.length === 1) return `M ${points[0].x},${points[0].y}`;
+
+  let d = `M ${points[0].x.toFixed(1)},${points[0].y.toFixed(1)}`;
+  for (let i = 0; i < points.length - 1; i++) {
+    const p0 = points[Math.max(0, i - 1)];
+    const p1 = points[i];
+    const p2 = points[i + 1];
+    const p3 = points[Math.min(points.length - 1, i + 2)];
+
+    const cp1x = p1.x + (p2.x - p0.x) / 6;
+    const cp1y = p1.y + (p2.y - p0.y) / 6;
+    const cp2x = p2.x - (p3.x - p1.x) / 6;
+    const cp2y = p2.y - (p3.y - p1.y) / 6;
+
+    d += ` C ${cp1x.toFixed(1)},${cp1y.toFixed(1)} ${cp2x.toFixed(1)},${cp2y.toFixed(1)} ${p2.x.toFixed(1)},${p2.y.toFixed(1)}`;
+  }
+  return d;
+}
+
+function ActivityChart({ dailyData = [] }) {
+  const [hoveredIdx, setHoveredIdx] = useState(null);
+
+  if (!dailyData || dailyData.length === 0) {
+    return (
+      <div className={styles.emptyState}>
+        No traffic data recorded in this period.
+      </div>
+    );
+  }
+
+  // Dimensions
+  const svgWidth = 650;
+  const svgHeight = 220;
+  const padLeft = 40;
+  const padRight = 25;
+  const padTop = 30;
+  const padBottom = 35;
+
+  const plotWidth = svgWidth - padLeft - padRight;
+  const plotHeight = svgHeight - padTop - padBottom;
+  const zeroY = padTop + plotHeight;
+
+  // Max scale calculation
+  const maxRaw = Math.max(
+    ...dailyData.map((d) =>
+      Math.max(d.views || 0, d.conversions || 0, d.visitors || 0),
+    ),
+    1,
+  );
+  // Round up to nice number for grid
+  const maxVal =
+    maxRaw <= 5 ? 5 : maxRaw <= 10 ? 10 : Math.ceil(maxRaw / 10) * 10;
+
+  const numPoints = dailyData.length;
+  const stepX = plotWidth / Math.max(numPoints, 1);
+  const barWidth = Math.max(8, Math.min(32, stepX * 0.52));
+
+  // Compute coordinates
+  const items = dailyData.map((d, i) => {
+    const cx = padLeft + i * stepX + stepX / 2;
+    const views = d.views || 0;
+    const conversions = d.conversions || 0;
+
+    const barH = Math.max((views / maxVal) * plotHeight, views > 0 ? 4 : 0);
+    const barY = zeroY - barH;
+    const barX = cx - barWidth / 2;
+
+    const lineY = zeroY - (conversions / maxVal) * plotHeight;
+
+    return {
+      ...d,
+      cx,
+      barX,
+      barY,
+      barH,
+      lineX: cx,
+      lineY,
+    };
+  });
+
+  const linePoints = items.map((it) => ({ x: it.lineX, y: it.lineY }));
+  const linePathD = createSmoothPath(linePoints);
+  const areaPathD =
+    linePoints.length > 0
+      ? `${linePathD} L ${linePoints[linePoints.length - 1].x.toFixed(1)},${zeroY} L ${linePoints[0].x.toFixed(1)},${zeroY} Z`
+      : "";
+
+  // Grid steps (0%, 50%, 100%)
+  const gridLevels = [
+    { label: maxVal, y: padTop },
+    { label: Math.round(maxVal / 2), y: padTop + plotHeight / 2 },
+    { label: 0, y: zeroY },
+  ];
+
+  // X axis labels skip logic
+  const shouldShowLabel = (idx) => {
+    if (numPoints <= 12) return true;
+    if (numPoints <= 24) return idx % 2 === 0 || idx === numPoints - 1;
+    return idx % 5 === 0 || idx === numPoints - 1;
+  };
+
+  const hoveredItem = hoveredIdx !== null ? items[hoveredIdx] : null;
+
+  return (
+    <div className={styles.chartSvgWrapper}>
+      <svg
+        viewBox={`0 0 ${svgWidth} ${svgHeight}`}
+        className={styles.chartSvg}
+        preserveAspectRatio="xMidYMid meet"
+      >
+        <defs>
+          {/* View Bars Gradient */}
+          <linearGradient id="viewBarGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.85" />
+            <stop offset="100%" stopColor="#0284c7" stopOpacity="0.3" />
+          </linearGradient>
+
+          <linearGradient id="viewBarGradActive" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#7dd3fc" stopOpacity="1" />
+            <stop offset="100%" stopColor="#0284c7" stopOpacity="0.6" />
+          </linearGradient>
+
+          {/* Conversion Line Area Gradient */}
+          <linearGradient id="conversionGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#10b981" stopOpacity="0.25" />
+            <stop offset="100%" stopColor="#10b981" stopOpacity="0.0" />
+          </linearGradient>
+        </defs>
+
+        {/* Horizontal Gridlines & Y-Axis Labels */}
+        {gridLevels.map((lvl) => (
+          <g key={lvl.label}>
+            <line
+              x1={padLeft}
+              y1={lvl.y}
+              x2={svgWidth - padRight}
+              y2={lvl.y}
+              className={styles.chartGridLine}
+            />
+            <text
+              x={padLeft - 8}
+              y={lvl.y + 3}
+              textAnchor="end"
+              className={styles.chartAxisText}
+            >
+              {lvl.label}
+            </text>
+          </g>
+        ))}
+
+        {/* Conversion Area Fill */}
+        {areaPathD && (
+          <path d={areaPathD} className={styles.chartAreaConversions} />
+        )}
+
+        {/* View Bars */}
+        {items.map((it, idx) => {
+          const isHovered = hoveredIdx === idx;
+          const isDimmed = hoveredIdx !== null && !isHovered;
+
+          return (
+            <g key={it.date}>
+              {it.barH > 0 && (
+                <rect
+                  x={it.barX}
+                  y={it.barY}
+                  width={barWidth}
+                  height={it.barH}
+                  rx="3"
+                  className={
+                    isHovered
+                      ? styles.chartBarActive
+                      : isDimmed
+                        ? styles.chartBarDimmed
+                        : styles.chartBarNormal
+                  }
+                />
+              )}
+
+              {/* Number above bar if hovered or compact */}
+              {(isHovered || (numPoints <= 8 && it.views > 0)) && (
+                <text
+                  x={it.cx}
+                  y={it.barY - 6}
+                  className={styles.chartValueTop}
+                >
+                  {it.views}
+                </text>
+              )}
+            </g>
+          );
+        })}
+
+        {/* Conversion Line */}
+        {linePathD && (
+          <path d={linePathD} className={styles.chartLineConversions} />
+        )}
+
+        {/* Conversion Dots */}
+        {items.map((it, idx) => {
+          const isHovered = hoveredIdx === idx;
+          return (
+            <circle
+              key={`dot-${it.date}`}
+              cx={it.lineX}
+              cy={it.lineY}
+              r={isHovered ? 5.5 : it.conversions > 0 ? 3.5 : 2}
+              className={
+                isHovered
+                  ? styles.chartPointConversionActive
+                  : styles.chartPointConversion
+              }
+            />
+          );
+        })}
+
+        {/* Vertical Hover Indicator Line */}
+        {hoveredItem && (
+          <line
+            x1={hoveredItem.cx}
+            y1={padTop}
+            x2={hoveredItem.cx}
+            y2={zeroY}
+            className={styles.chartHoverLine}
+          />
+        )}
+
+        {/* X-Axis Date Labels */}
+        {items.map((it, idx) => {
+          const isHovered = hoveredIdx === idx;
+          if (!shouldShowLabel(idx) && !isHovered) return null;
+
+          return (
+            <text
+              key={`x-${it.date}`}
+              x={it.cx}
+              y={zeroY + 18}
+              className={
+                isHovered
+                  ? styles.chartAxisTextXActive
+                  : styles.chartAxisTextX
+              }
+            >
+              {formatChartDate(it.date)}
+            </text>
+          );
+        })}
+
+        {/* Transparent Interactive Hit Columns */}
+        {items.map((it, idx) => {
+          const hitX = padLeft + idx * stepX;
+          return (
+            <rect
+              key={`hit-${it.date}`}
+              x={hitX}
+              y={padTop}
+              width={stepX}
+              height={plotHeight}
+              fill="transparent"
+              style={{ cursor: "pointer" }}
+              onMouseEnter={() => setHoveredIdx(idx)}
+              onMouseLeave={() => setHoveredIdx(null)}
+            />
+          );
+        })}
+      </svg>
+
+      {/* Floating Rich Tooltip */}
+      {hoveredItem && (
+        <div
+          className={styles.chartFloatingTooltip}
+          style={{
+            left: `${Math.max(14, Math.min(86, (hoveredItem.cx / svgWidth) * 100))}%`,
+          }}
+        >
+          <div className={styles.chartTooltipTitle}>
+            {formatChartDate(hoveredItem.date)}
+          </div>
+          <div className={styles.chartTooltipRow}>
+            <span>
+              <span className={styles.chartTooltipDotViews} />
+              Views:
+            </span>
+            <strong>{hoveredItem.views}</strong>
+          </div>
+          <div className={styles.chartTooltipRow}>
+            <span>
+              <span className={styles.chartTooltipDotVisitors} />
+              Visitors:
+            </span>
+            <strong>{hoveredItem.visitors || 0}</strong>
+          </div>
+          <div className={styles.chartTooltipRow}>
+            <span>
+              <span className={styles.chartTooltipDotConversions} />
+              Inquiries:
+            </span>
+            <strong style={{ color: "#10b981" }}>
+              {hoveredItem.conversions || 0}
+            </strong>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── Main Dashboard Component ───────────────────────────────────────────────────
 
 export default function AnalyticsDashboard() {
@@ -651,8 +982,8 @@ export default function AnalyticsDashboard() {
     }
   ]
 }
-          setData(sampl);
-          // setData(json.data);
+          // setData(sampl);
+          setData(json.data);
           setLastRefreshed(new Date());
         }
       } catch (err) {
@@ -1311,96 +1642,7 @@ export default function AnalyticsDashboard() {
               </div>
             </div>
 
-            {dailyData && dailyData.length > 0 ? (
-              <div
-                className={styles.chartContainer}
-                style={{
-                  gap:
-                    dailyData.length > 20 ? 4 : dailyData.length > 10 ? 8 : 12,
-                }}
-              >
-                {dailyData.map((d, index) => {
-                  const isLatest = index === dailyData.length - 1;
-                  const viewHeight = Math.max(
-                    8,
-                    Math.round((d.views / maxDailyViews) * 100),
-                  );
-
-                  // Determine label display interval
-                  let showLabel = true;
-                  if (dailyData.length >= 24) {
-                    // For 24h or 30d, show label every 4 or 5 intervals
-                    const step = dailyData.length === 24 ? 4 : 5;
-                    showLabel = index % step === 0 || isLatest;
-                  }
-
-                  const barMaxWidth =
-                    dailyData.length > 20
-                      ? 14
-                      : dailyData.length > 10
-                        ? 22
-                        : 36;
-                  const isVisibleValue =
-                    dailyData.length <= 10 || (isLatest && d.views > 0);
-
-                  return (
-                    <Tooltip
-                      key={d.date}
-                      content={`${d.date} • ${d.views} Views • ${d.visitors} Visitors • ${d.conversions || 0} Inquiries`}
-                    >
-                      <div className={styles.chartBarColumn}>
-                        {/* Number above bar (only for compact ranges or non-zero latest) */}
-                        <div
-                          className={`${isLatest ? styles.chartValueLabelLatest : styles.chartValueLabel} ${
-                            isVisibleValue ? "" : styles.chartValueHidden
-                          }`}
-                        >
-                          {d.views}
-                        </div>
-
-                        {/* Bar + Conversion dot */}
-                        <div
-                          className={styles.chartBarWrapper}
-                          style={{
-                            maxWidth: barMaxWidth,
-                            height: `${viewHeight}%`,
-                          }}
-                        >
-                          <div
-                            className={
-                              isLatest ? styles.chartBarLatest : styles.chartBar
-                            }
-                          />
-
-                          {d.conversions > 0 && (
-                            <div
-                              className={
-                                dailyData.length > 20
-                                  ? styles.chartConversionDotSmall
-                                  : styles.chartConversionDot
-                              }
-                            />
-                          )}
-                        </div>
-
-                        {/* Date / Hour Label */}
-                        <div
-                          className={`${isLatest ? styles.chartDateLabelLatest : styles.chartDateLabel} ${
-                            showLabel ? "" : styles.chartDateHidden
-                          }`}
-                        >
-                          {d.date.length > 5 ? d.date.slice(5) : d.date}
-                        </div>
-                      </div>
-                    </Tooltip>
-                  );
-                })}
-              </div>
-            ) : (
-              <div className={styles.emptyState}>
-                No traffic data recorded in this period.
-              </div>
-            )}
+            <ActivityChart dailyData={dailyData} />
           </div>
 
           {/* Column 2: Top Visited Pages */}

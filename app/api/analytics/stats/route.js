@@ -11,7 +11,6 @@ export async function GET(req) {
     const exportFormat = searchParams.get("export");
     const pin = searchParams.get("pin");
 
-    // Optional PIN verification check via query/header
     const authHeader = req.headers.get("x-admin-pin");
     const providedPin = pin || authHeader;
 
@@ -20,7 +19,7 @@ export async function GET(req) {
     }
 
     if (exportFormat === "csv") {
-      const events = getEvents();
+      const events = await getEvents();
       const headers = [
         "ID",
         "Type",
@@ -68,7 +67,7 @@ export async function GET(req) {
       });
     }
 
-    const summary = getAnalyticsSummary(range);
+    const summary = await getAnalyticsSummary(range);
     return Response.json({ ok: true, data: summary });
   } catch (error) {
     console.error("[/api/analytics/stats] Error:", error);
@@ -97,7 +96,7 @@ export async function POST(req) {
 
 export async function DELETE(req) {
   try {
-    clearAnalyticsData();
+    await clearAnalyticsData();
     return Response.json({ ok: true, message: "Analytics data cleared successfully" });
   } catch (error) {
     console.error("[/api/analytics/stats] Delete error:", error);

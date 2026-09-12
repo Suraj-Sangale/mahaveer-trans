@@ -70,5 +70,139 @@
     "os": "Windows",
     "device": "Desktop",
     "timestamp": "2026-09-12T14:57:40.246Z"
+  },
+  {
+    "id": "1789227521174-mwmwxki",
+    "type": "pageview",
+    "visitorId": "v_33rx80908mtyhyzjn",
+    "sessionId": "s_9ti84j81mmtyhyzjn",
+    "path": "/fleet",
+    "title": "MahaveerTrans — Modern Logistics",
+    "referrer": "http://localhost:3000/",
+    "browser": "Chrome",
+    "os": "Windows",
+    "device": "Desktop",
+    "ip": "127.0.0.1",
+    "country": "India",
+    "state": "Maharashtra",
+    "city": "Mumbai (Local)",
+    "screen": "1366x768",
+    "language": "en",
+    "meta": {
+      "path": "/fleet"
+    },
+    "timestamp": "2026-09-12T15:38:41.174Z"
+  },
+  {
+    "id": "1789227567953-qh9zaf1",
+    "type": "pageview",
+    "visitorId": "v_ci4e4vgywmtyid4uo",
+    "sessionId": "s_drc7derdgmtyid4up",
+    "path": "/contact",
+    "title": "Contact Us — MahaveerTrans",
+    "referrer": "http://localhost:3000/",
+    "browser": "Chrome",
+    "os": "Windows",
+    "device": "Desktop",
+    "ip": "127.0.0.1",
+    "country": "India",
+    "state": "Maharashtra",
+    "city": "Mumbai (Local)",
+    "screen": "1440x900",
+    "language": "en-US",
+    "meta": {
+      "path": "/contact"
+    },
+    "timestamp": "2026-09-12T15:39:27.953Z"
+  },
+  {
+    "id": "1789227578662-sgd7a2z",
+    "type": "phone_click",
+    "visitorId": "v_ci4e4vgywmtyid4uo",
+    "sessionId": "s_drc7derdgmtyid4up",
+    "path": "/contact",
+    "title": "Contact Us — MahaveerTrans",
+    "referrer": "http://localhost:3000/",
+    "browser": "Chrome",
+    "os": "Windows",
+    "device": "Desktop",
+    "ip": "127.0.0.1",
+    "country": "India",
+    "state": "Maharashtra",
+    "city": "Mumbai (Local)",
+    "screen": "1440x900",
+    "language": "en-US",
+    "meta": {
+      "href": "tel:+917039529129",
+      "label": "📞\nFREIGHT QUOTES & SALES\n+91 70395 29129"
+    },
+    "timestamp": "2026-09-12T15:39:38.662Z"
+  },
+  {
+    "id": "1789227602448-2b1gnv3",
+    "type": "whatsapp_click",
+    "visitorId": "v_ci4e4vgywmtyid4uo",
+    "sessionId": "s_drc7derdgmtyid4up",
+    "path": "/contact",
+    "title": "Contact Us — MahaveerTrans",
+    "referrer": "http://localhost:3000/",
+    "browser": "Chrome",
+    "os": "Windows",
+    "device": "Desktop",
+    "ip": "127.0.0.1",
+    "country": "India",
+    "state": "Maharashtra",
+    "city": "Mumbai (Local)",
+    "screen": "1440x900",
+    "language": "en-US",
+    "meta": {
+      "href": "https://wa.me/+917039529129",
+      "label": "💬\nWHATSAPP\nChat with us"
+    },
+    "timestamp": "2026-09-12T15:40:02.448Z"
+  },
+  {
+    "id": "1789227881467-15aggsg",
+    "type": "pageview",
+    "visitorId": "v_ci4e4vgywmtyid4uo",
+    "sessionId": "s_drc7derdgmtyid4up",
+    "path": "/contact",
+    "title": "Contact Us — MahaveerTrans",
+    "referrer": "http://localhost:3000/contact",
+    "browser": "Chrome",
+    "os": "Windows",
+    "device": "Desktop",
+    "ip": "127.0.0.1",
+    "country": "India",
+    "state": "Maharashtra",
+    "city": "Mumbai",
+    "screen": "1440x900",
+    "language": "en-US",
+    "meta": {
+      "path": "/contact"
+    },
+    "timestamp": "2026-09-12T15:44:41.468Z"
+  },
+  {
+    "id": "1789227884915-jn17x4w",
+    "type": "pageview",
+    "visitorId": "v_33rx80908mtyhyzjn",
+    "sessionId": "s_9ti84j81mmtyhyzjn",
+    "path": "/fleet",
+    "title": "MahaveerTrans — Modern Logistics",
+    "referrer": "http://localhost:3000/fleet",
+    "browser": "Chrome",
+    "os": "Windows",
+    "device": "Desktop",
+    "ip": "127.0.0.1",
+    "country": "India",
+    "state": "Maharashtra",
+    "city": "Mumbai",
+    "screen": "1366x768",
+    "language": "en",
+    "meta": {
+      "path": "/fleet"
+    },
+    "timestamp": "2026-09-12T15:44:44.915Z"
   }
 ]

@@ -1,13 +1,44 @@
 import fs from "fs";
 import path from "path";
+import os from "os";
 
-const DATA_DIR = path.join(process.cwd(), "data");
+// Detect if running on Vercel / Serverless
+const IS_VERCEL = process.env.VERCEL === "1" || process.env.NOW_REGION !== undefined;
+const DATA_DIR = IS_VERCEL ? path.join(os.tmpdir(), "mahaveer_analytics") : path.join(process.cwd(), "data");
 const EVENTS_FILE = path.join(DATA_DIR, "analytics_events.json");
 const MAX_STORED_EVENTS = 30000;
 
+// Upstash Redis / Vercel KV REST config (if provided in environment variables)
+const REDIS_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
+const REDIS_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+const REDIS_KEY = "mahaveer_analytics_events";
+
 function ensureDataDir() {
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
+  try {
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+  } catch (e) {
+    // ignore
+  }
+}
+
+// ── Upstash / Vercel KV REST Helper ──
+async function redisRequest(command, ...args) {
+  if (!REDIS_URL || !REDIS_TOKEN) return null;
+  try {
+    const res = await fetch(`${REDIS_URL}/${command}/${args.map(encodeURIComponent).join("/")}`, {
+      headers: {
+        Authorization: `Bearer ${REDIS_TOKEN}`,
+      },
+      cache: "no-store",
+    });
+    if (!res.ok) return null;
+    const json = await res.json();
+    return json.result;
+  } catch (err) {
+    console.error("[analyticsStore Redis Error]:", err);
+    return null;
   }
 }
 
@@ -37,12 +68,11 @@ export function parseUserAgent(ua = "") {
   return { browser, os, device };
 }
 
-// In-memory cache for IP geo lookups to avoid rate limits and latency
 const geoCache = new Map();
 
 export async function lookupGeo(ip) {
   if (!ip || ip === "127.0.0.1" || ip === "::1" || ip.startsWith("192.168.") || ip.startsWith("10.")) {
-    return { country: "India", state: "Maharashtra", city: "Mumbai (Local)" };
+    return { country: "India", state: "Maharashtra", city: "Mumbai" };
   }
 
   if (geoCache.has(ip)) {
@@ -60,30 +90,28 @@ export async function lookupGeo(ip) {
       const data = await res.json();
       if (data.status === "success") {
         const geo = {
-          country: data.country || "Unknown",
-          state: data.regionName || "Unknown",
-          city: data.city || "Unknown",
+          country: data.country || "India",
+          state: data.regionName || "Maharashtra",
+          city: data.city || "Mumbai",
         };
         geoCache.set(ip, geo);
         return geo;
       }
     }
   } catch (err) {
-    // silently fallback
+    // fallback
   }
 
-  const fallback = { country: "Unknown", state: "Unknown", city: "Unknown" };
+  const fallback = { country: "India", state: "Maharashtra", city: "Mumbai" };
   geoCache.set(ip, fallback);
   return fallback;
 }
 
-export function recordEvent(eventData) {
-  ensureDataDir();
-
+export async function recordEvent(eventData) {
   const { browser, os, device } = parseUserAgent(eventData.userAgent || "");
   const event = {
     id: `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
-    type: eventData.type || "pageview", // "pageview", "phone_click", "whatsapp_click", "quote_submit", "contact_submit", "chat_open", "track_lookup"
+    type: eventData.type || "pageview",
     visitorId: eventData.visitorId || "anonymous",
     sessionId: eventData.sessionId || `s_${Date.now()}`,
     path: eventData.path || "/",
@@ -102,7 +130,20 @@ export function recordEvent(eventData) {
     timestamp: new Date().toISOString(),
   };
 
+  // 1. If Redis / Vercel KV is configured, store in cloud Redis
+  if (REDIS_URL && REDIS_TOKEN) {
+    try {
+      await redisRequest("lpush", REDIS_KEY, JSON.stringify(event));
+      await redisRequest("ltrim", REDIS_KEY, 0, MAX_STORED_EVENTS - 1);
+      return event;
+    } catch (err) {
+      console.error("[analyticsStore] Cloud storage failed, falling back to local:", err);
+    }
+  }
+
+  // 2. Fallback to file storage (local or /tmp on Vercel)
   try {
+    ensureDataDir();
     let events = [];
     if (fs.existsSync(EVENTS_FILE)) {
       try {
@@ -122,18 +163,31 @@ export function recordEvent(eventData) {
 
     fs.writeFileSync(EVENTS_FILE, JSON.stringify(events, null, 2), "utf8");
   } catch (err) {
-    console.error("[analyticsStore] Error saving event:", err);
+    console.error("[analyticsStore] Error saving event to file:", err);
   }
 
   return event;
 }
 
-export function getEvents() {
-  ensureDataDir();
-  if (!fs.existsSync(EVENTS_FILE)) {
-    return [];
+export async function getEvents() {
+  // 1. If Redis / Vercel KV is configured, fetch from cloud
+  if (REDIS_URL && REDIS_TOKEN) {
+    try {
+      const items = await redisRequest("lrange", REDIS_KEY, 0, -1);
+      if (Array.isArray(items)) {
+        return items.map((it) => (typeof it === "string" ? JSON.parse(it) : it));
+      }
+    } catch (err) {
+      console.error("[analyticsStore] Redis fetch error:", err);
+    }
   }
+
+  // 2. Fallback to file storage
   try {
+    ensureDataDir();
+    if (!fs.existsSync(EVENTS_FILE)) {
+      return [];
+    }
     const raw = fs.readFileSync(EVENTS_FILE, "utf8");
     const parsed = JSON.parse(raw);
     return Array.isArray(parsed) ? parsed : [];
@@ -142,17 +196,25 @@ export function getEvents() {
   }
 }
 
-export function clearAnalyticsData() {
-  ensureDataDir();
+export async function clearAnalyticsData() {
+  if (REDIS_URL && REDIS_TOKEN) {
+    try {
+      await redisRequest("del", REDIS_KEY);
+    } catch (e) {
+      console.error("[analyticsStore] Clear redis error:", e);
+    }
+  }
+
   try {
+    ensureDataDir();
     fs.writeFileSync(EVENTS_FILE, JSON.stringify([], null, 2), "utf8");
   } catch (err) {
     console.error("[analyticsStore] Error clearing data:", err);
   }
 }
 
-export function getAnalyticsSummary(timeRange = "7d") {
-  const allEvents = getEvents();
+export async function getAnalyticsSummary(timeRange = "7d") {
+  const allEvents = await getEvents();
   const now = new Date();
 
   let cutoff = new Date(0);
@@ -180,7 +242,7 @@ export function getAnalyticsSummary(timeRange = "7d") {
   const totalSessions = new Set(events.map((e) => e.sessionId).filter(Boolean)).size || (events.length > 0 ? 1 : 0);
   const avgPagesPerSession = totalSessions > 0 ? Number((totalPageViews / totalSessions).toFixed(1)) : 0;
 
-  // Conversions & Click Tracking
+  // Conversions
   const conversions = {
     quotes: events.filter((e) => e.type === "quote_submit").length,
     contacts: events.filter((e) => e.type === "contact_submit").length,
@@ -217,7 +279,7 @@ export function getAnalyticsSummary(timeRange = "7d") {
     .sort((a, b) => b.views - a.views)
     .slice(0, 15);
 
-  // Geographic Breakdown: Cities, States, Countries
+  // Geographic Breakdown
   const cityMap = {};
   const stateMap = {};
   const countryMap = {};
@@ -322,12 +384,12 @@ export function getAnalyticsSummary(timeRange = "7d") {
     conversions: d.conversions,
   }));
 
-  // Recent Visits / Actions (latest 60)
   const recentVisits = [...events]
     .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
     .slice(0, 60);
 
   return {
+    isCloudStorage: !!(REDIS_URL && REDIS_TOKEN),
     realtimeActiveVisitors: activeSessions.size,
     totalPageViews,
     uniqueVisitors,

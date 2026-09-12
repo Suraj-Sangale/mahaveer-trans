@@ -1,10 +1,12 @@
 import { recordEvent, lookupGeo } from "@/utilities/analyticsStore";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req) {
   try {
     const body = await req.json();
     const {
-      type = "pageview", // "pageview", "phone_click", "whatsapp_click", "quote_submit", "contact_submit", "chat_open", "track_lookup"
+      type = "pageview",
       visitorId,
       sessionId,
       path,
@@ -29,20 +31,26 @@ export async function POST(req) {
     let ip = (forwarded ? forwarded.split(",")[0].trim() : (realIp || cfIp || "127.0.0.1"));
     if (ip === "::1" || ip === "::ffff:127.0.0.1") ip = "127.0.0.1";
 
-    // Cloudflare / Vercel Geo headers if available
+    // Vercel Geolocation headers
     let country = req.headers.get("x-vercel-ip-country") || req.headers.get("cf-ipcountry");
     let state = req.headers.get("x-vercel-ip-country-region") || req.headers.get("cf-region");
     let city = req.headers.get("x-vercel-ip-city") || req.headers.get("cf-ipcity");
 
-    // Fallback to IP lookup
-    if (!city || !country || country === "Unknown") {
-      const geo = await lookupGeo(ip);
-      country = geo.country || "India";
-      state = geo.state || "Maharashtra";
-      city = geo.city || "Mumbai";
+    if (city) {
+      try {
+        city = decodeURIComponent(city);
+      } catch (e) {}
     }
 
-    const event = recordEvent({
+    // Fallback to IP lookup if no headers
+    if (!city || !country || country === "Unknown") {
+      const geo = await lookupGeo(ip);
+      country = country || geo.country || "India";
+      state = state || geo.state || "Maharashtra";
+      city = city || geo.city || "Mumbai";
+    }
+
+    const event = await recordEvent({
       type,
       visitorId: visitorId || "anonymous",
       sessionId: sessionId || `session-${Date.now()}`,

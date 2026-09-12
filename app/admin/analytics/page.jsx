@@ -285,6 +285,15 @@ export default function AnalyticsDashboard() {
                 <span style={{ background: "rgba(14, 165, 233, 0.2)", color: "#38bdf8", border: "1px solid #0ea5e9", fontSize: 11, fontWeight: 700, padding: "2px 8px", borderRadius: 10 }}>
                   PRO
                 </span>
+                {data?.isCloudStorage ? (
+                  <span style={{ background: "rgba(34, 197, 94, 0.2)", color: "#4ade80", border: "1px solid #16a34a", fontSize: 11, fontWeight: 700, padding: "2px 8px", borderRadius: 10 }}>
+                    ☁️ Cloud Synced
+                  </span>
+                ) : (
+                  <span title="To persist analytics forever across Vercel serverless instances, add free Upstash Redis in .env" style={{ background: "rgba(245, 158, 11, 0.15)", color: "#fbbf24", border: "1px solid rgba(245, 158, 11, 0.4)", fontSize: 11, fontWeight: 600, padding: "2px 8px", borderRadius: 10 }}>
+                    ⚡ Serverless Mode
+                  </span>
+                )}
               </div>
               <div style={{ fontSize: 12, color: "#94a3b8", display: "flex", alignItems: "center", gap: 6, marginTop: 3 }}>
                 <span style={{ width: 8, height: 8, borderRadius: "50%", background: autoRefresh ? "#22c55e" : "#64748b", display: "inline-block", boxShadow: autoRefresh ? "0 0 10px #22c55e" : "none" }} />

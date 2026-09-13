@@ -554,17 +554,17 @@
 }
 
 .authIcon {
-  width: 56px;
-  height: 56px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, var(--accent, #0ea5e9), var(--accent-dk, #0284c7));
+  width: 300px;
+  /* height: 100px; */
+  /* border-radius: 100%; */
+  /* background: linear-gradient(135deg, var(--accent, #0ea5e9), var(--accent-dk, #0284c7)); */
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 18px;
-  font-size: 24px;
+  /* font-size: 24px;
   box-shadow: 0 0 24px rgba(14, 165, 233, 0.35);
-  color: #fff;
+  color: #fff; */
 }
 
 .authTitle {
@@ -586,8 +586,83 @@
   line-height: 1.5;
 }
 
-.authInputGroup {
-  margin-bottom: 16px;
+.authForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+}
+
+.authField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.authLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink, #ffffff);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.authInputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.authInputIcon {
+  position: absolute;
+  left: 14px;
+  font-size: 15px;
+  color: var(--muted, #64748b);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.authInput {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 14px;
+  border-radius: 10px;
+  background: var(--bg2);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+  color: var(--ink, #ffffff);
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.authInput:focus {
+  /* border-color: var(--accent, #0ea5e9); */
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2);
+}
+
+.authInput::placeholder {
+  color: #475569;
+}
+
+.authTogglePassword {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  color: var(--muted, #64748b);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: color 0.2s ease;
+}
+
+.authTogglePassword:hover {
+  color: var(--ink, #ffffff);
 }
 
 .pinInput {
@@ -596,6 +671,19 @@
   font-size: 18px;
   text-align: center;
   letter-spacing: 4px;
+}
+
+.authErrorBox {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #fca5a5;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .pinError {
@@ -607,12 +695,32 @@
 
 .authSubmitBtn {
   width: 100%;
-  padding: 12px;
+  padding: 13px;
   border-radius: 10px;
   font-size: 14px;
   font-weight: 700;
   border: none;
   cursor: pointer;
+  background: linear-gradient(135deg, var(--accent, #0ea5e9), var(--accent-dk, #0284c7));
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(14, 165, 233, 0.35);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.authSubmitBtn:hover:not(:disabled) {
+  opacity: 0.92;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.45);
+}
+
+.authSubmitBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .authFooter {

@@ -574,9 +574,13 @@ function ActivityChart({ dailyData = [] }) {
 
 export default function AnalyticsDashboard() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [pinInput, setPinInput] = useState("");
-  const [pinError, setPinError] = useState("");
+  const [userIdInput, setUserIdInput] = useState("");
+  const [passwordInput, setPasswordInput] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [authError, setAuthError] = useState("");
+  const [isSubmittingAuth, setIsSubmittingAuth] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [adminUser, setAdminUser] = useState(null);
 
   const [range, setRange] = useState("7d");
   const [data, setData] = useState(null);
@@ -589,53 +593,98 @@ export default function AnalyticsDashboard() {
   const [isClearing, setIsClearing] = useState(false);
   const [copiedId, setCopiedId] = useState(null);
 
-  // Authentication Check
+  // Authentication Check on Mount
   useEffect(() => {
-    try {
-      const savedAuth = sessionStorage.getItem("_mt_admin_auth");
-      if (savedAuth === "verified") {
-        setIsAuthenticated(true);
+    const checkExistingAuth = async () => {
+      try {
+        const savedToken = sessionStorage.getItem("_mt_admin_token");
+        const legacyAuth = sessionStorage.getItem("_mt_admin_auth");
+
+        if (savedToken) {
+          const res = await fetch("/api/analytics/auth", {
+            headers: { Authorization: `Bearer ${savedToken}` },
+          });
+          const json = await res.json();
+          if (json.ok && json.verified) {
+            setIsAuthenticated(true);
+            setAdminUser(json.user || { userId: "admin", role: "admin" });
+            return;
+          } else {
+            sessionStorage.removeItem("_mt_admin_token");
+          }
+        } else if (legacyAuth === "verified") {
+          setIsAuthenticated(true);
+          return;
+        }
+      } catch (e) {
+        // ignore
+      } finally {
+        setIsCheckingAuth(false);
       }
-    } catch (e) {
-      // ignore
-    } finally {
-      setIsCheckingAuth(false);
-    }
+    };
+
+    checkExistingAuth();
   }, []);
 
-  const handlePinSubmit = async (e) => {
+  const handleLoginSubmit = async (e) => {
     if (e) e.preventDefault();
-    setPinError("");
+    setAuthError("");
+
+    if (!userIdInput.trim() || !passwordInput.trim()) {
+      setAuthError("Please enter both User ID and Password.");
+      return;
+    }
+
+    setIsSubmittingAuth(true);
     try {
-      const res = await fetch("/api/analytics/stats", {
+      const res = await fetch("/api/analytics/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "verify_pin", pin: pinInput.trim() }),
+        body: JSON.stringify({
+          userId: userIdInput.trim(),
+          password: passwordInput.trim(),
+        }),
       });
       const json = await res.json();
       if (json.ok && json.verified) {
         setIsAuthenticated(true);
+        if (json.token) {
+          sessionStorage.setItem("_mt_admin_token", json.token);
+        }
         sessionStorage.setItem("_mt_admin_auth", "verified");
+        if (json.user) {
+          setAdminUser(json.user);
+          sessionStorage.setItem("_mt_admin_user", JSON.stringify(json.user));
+        }
         fetchData(range, true);
       } else {
-        setPinError(json.error || "Incorrect PIN. Default is 1234.");
+        setAuthError(json.error || "Invalid User ID or Password.");
       }
     } catch (err) {
-      setPinError("Failed to verify PIN. Please try again.");
+      setAuthError("Failed to connect to authentication server. Please try again.");
+    } finally {
+      setIsSubmittingAuth(false);
     }
   };
 
   const handleLogout = () => {
+    sessionStorage.removeItem("_mt_admin_token");
     sessionStorage.removeItem("_mt_admin_auth");
+    sessionStorage.removeItem("_mt_admin_user");
     setIsAuthenticated(false);
-    setPinInput("");
+    setUserIdInput("");
+    setPasswordInput("");
+    setAdminUser(null);
   };
 
   const fetchData = useCallback(
     async (selectedRange = range, showSpinner = false) => {
       if (showSpinner) setLoading(true);
       try {
+        const token = sessionStorage.getItem("_mt_admin_token");
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
         const res = await fetch(`/api/analytics/stats?range=${selectedRange}`, {
+          headers,
           cache: "no-store",
         });
         const json = await res.json();
@@ -677,7 +726,9 @@ export default function AnalyticsDashboard() {
     }
     setIsClearing(true);
     try {
-      const res = await fetch("/api/analytics/stats", { method: "DELETE" });
+      const token = sessionStorage.getItem("_mt_admin_token");
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+      const res = await fetch("/api/analytics/stats", { method: "DELETE", headers });
       const json = await res.json();
       if (json.ok) {
         fetchData(range, true);
@@ -777,35 +828,100 @@ export default function AnalyticsDashboard() {
     return (
       <div className={`${styles.dashboardWrapper} ${styles.authCenterWrapper}`}>
         <div className={`${styles.panelCard} ${styles.authCard}`}>
-          <div className={styles.authIcon}>🔐</div>
+          {/* <div className={styles.authIcon}>🔐</div> */}
+          <img src="/logo-large.png" alt="Logo" className={styles.authIcon} />
           <h2 className={styles.authTitle}>MahaveerTrans Analytics</h2>
-          <div className={`${styles.proBadge} ${styles.authProBadge}`}>
+          {/* <div className={`${styles.proBadge} ${styles.authProBadge}`}>
             ENTERPRISE PRO
-          </div>
-          <p className={styles.authDesc}>
-            Enter your Admin PIN to unlock the live visitor tracking dashboard
-            and fleet telemetry metrics.
-          </p>
+          </div> */}
+          {/* <p className={styles.authDesc}>
+            Sign in with your Admin credentials to unlock the real-time visitor tracking and fleet telemetry metrics.
+          </p> */}
 
-          <form onSubmit={handlePinSubmit}>
-            <div className={styles.authInputGroup}>
-              <input
-                type="password"
-                placeholder="Enter PIN (Default: 1234)"
-                value={pinInput}
-                onChange={(e) => setPinInput(e.target.value)}
-                autoFocus
-                maxLength={12}
-                className={`${styles.textInput} ${styles.pinInput}`}
-              />
-              {pinError && <div className={styles.pinError}>⚠️ {pinError}</div>}
+          <form onSubmit={handleLoginSubmit} className={styles.authForm}>
+            {authError && (
+              <div className={styles.authErrorBox}>
+                <span>⚠️</span>
+                <span>{authError}</span>
+              </div>
+            )}
+
+            <div className={styles.authField}>
+              <label className={styles.authLabel}>User ID / Username</label>
+              <div className={styles.authInputWrapper}>
+                {/* <span className={styles.authInputIcon}>👤</span> */}
+                <input
+                  type="text"
+                  placeholder="Enter User ID (e.g. admin)"
+                  value={userIdInput}
+                  onChange={(e) => setUserIdInput(e.target.value)}
+                  autoFocus
+                  autoComplete="username"
+                  required
+                  className={styles.authInput}
+                />
+              </div>
+            </div>
+
+            <div className={styles.authField}>
+              <label className={styles.authLabel}>Password</label>
+              <div className={styles.authInputWrapper}>
+                {/* <span className={styles.authInputIcon}>🔒</span> */}
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter Password"
+                  value={passwordInput}
+                  onChange={(e) => setPasswordInput(e.target.value)}
+                  autoComplete="current-password"
+                  required
+                  className={styles.authInput}
+                />
+                <button
+                  type="button"
+                  className={styles.authTogglePassword}
+                  onClick={() => setShowPassword(!showPassword)}
+                  title={showPassword ? "Hide password" : "Show password"}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? (
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                      <line x1="1" y1="1" x2="23" y2="23" />
+                    </svg>
+                  ) : (
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  )}
+                </button>
+              </div>
             </div>
 
             <button
               type="submit"
-              className={`${styles.rangeBtnActive} ${styles.authSubmitBtn}`}
+              disabled={isSubmittingAuth}
+              className={styles.authSubmitBtn}
             >
-              Unlock Analytics Dashboard →
+              {isSubmittingAuth ? "Verifying Credentials..." : "Unlock Analytics Dashboard →"}
             </button>
           </form>
 
@@ -813,7 +929,6 @@ export default function AnalyticsDashboard() {
             <Link href="/" className={styles.authBackLink}>
               ← Return to Website
             </Link>
-            <span className={styles.authFooterText}>Default PIN: 1234</span>
           </div>
         </div>
       </div>

@@ -852,7 +852,7 @@ export default function AnalyticsDashboard() {
                 {/* <span className={styles.authInputIcon}>👤</span> */}
                 <input
                   type="text"
-                  placeholder="Enter User ID (e.g. admin)"
+                  placeholder="Enter User ID"
                   value={userIdInput}
                   onChange={(e) => setUserIdInput(e.target.value)}
                   autoFocus

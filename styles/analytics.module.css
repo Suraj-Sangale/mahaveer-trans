@@ -1344,11 +1344,76 @@
 .locationPrimary {
   color: var(--ink2, #e2e8f0);
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.locationPostal {
+  background: rgba(14, 165, 233, 0.12);
+  color: var(--accent, #38bdf8);
+  border: 1px solid rgba(14, 165, 233, 0.25);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-family: monospace;
+  font-weight: 600;
 }
 
 .locationCountry {
-  font-size: 10px;
+  font-size: 10.5px;
   color: var(--muted, #94a3b8);
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.locationIsp {
+  color: #a78bfa;
+  font-size: 10px;
+  background: rgba(167, 139, 250, 0.1);
+  padding: 1px 5px;
+  border-radius: 3px;
+  border: 1px solid rgba(167, 139, 250, 0.2);
+}
+
+.locationMapRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.coordsText {
+  font-size: 9.5px;
+  font-family: monospace;
+  color: #64748b;
+}
+
+.mapLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.28);
+  padding: 1.5px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.mapLink:hover {
+  background: rgba(16, 185, 129, 0.25);
+  color: #6ee7b7;
+  border-color: #34d399;
+  text-decoration: none;
+  transform: translateY(-1px);
 }
 
 .ipCell {

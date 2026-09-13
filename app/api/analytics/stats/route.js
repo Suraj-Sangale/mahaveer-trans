@@ -35,6 +35,10 @@ export async function GET(req) {
         "City",
         "State",
         "Country",
+        "Postal Code",
+        "Latitude",
+        "Longitude",
+        "ISP",
         "IP",
         "Meta",
       ];
@@ -53,6 +57,10 @@ export async function GET(req) {
         `"${e.city || ""}"`,
         `"${e.state || ""}"`,
         `"${e.country || ""}"`,
+        `"${e.postalCode || ""}"`,
+        `"${e.lat !== undefined && e.lat !== null ? e.lat : ""}"`,
+        `"${e.lon !== undefined && e.lon !== null ? e.lon : ""}"`,
+        `"${e.isp || ""}"`,
         `"${e.ip || ""}"`,
         `"${JSON.stringify(e.meta || {}).replace(/"/g, '""')}"`,
       ]);

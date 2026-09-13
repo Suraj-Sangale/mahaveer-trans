@@ -113,7 +113,9 @@ function generateSparkline(data = [], color = "#38bdf8", title = "") {
   let points;
   if (max === min) {
     const midY = max === 0 ? height - 4 : height / 2;
-    points = data.map((_, idx) => `${(idx * step).toFixed(1)},${midY.toFixed(1)}`);
+    points = data.map(
+      (_, idx) => `${(idx * step).toFixed(1)},${midY.toFixed(1)}`,
+    );
   } else {
     const range = max - min;
     points = data.map((val, idx) => {
@@ -135,13 +137,7 @@ function generateSparkline(data = [], color = "#38bdf8", title = "") {
       className={styles.sparklineSvg}
     >
       <defs>
-        <linearGradient
-          id={safeId}
-          x1="0"
-          y1="0"
-          x2="0"
-          y2="1"
-        >
+        <linearGradient id={safeId} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor={color} stopOpacity="0.28" />
           <stop offset="100%" stopColor={color} stopOpacity="0.0" />
         </linearGradient>
@@ -210,8 +206,6 @@ function KpiCard({
             </Tooltip>
           )}
         </div>
-
-        
       </div>
 
       {/* Primary Value */}
@@ -230,7 +224,7 @@ function KpiCard({
             LIVE
           </span>
         ) : (
-          <div>{generateSparkline(sparkData, color,title)}</div>
+          <div>{generateSparkline(sparkData, color, title)}</div>
         )}
       </div>
     </div>
@@ -246,8 +240,18 @@ function formatChartDate(dateStr) {
     const parts = dateStr.split("-");
     if (parts.length === 3) {
       const monthNames = [
-        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
       ];
       const m = parseInt(parts[1], 10) - 1;
       const d = parseInt(parts[2], 10);
@@ -499,9 +503,7 @@ function ActivityChart({ dailyData = [] }) {
               x={it.cx}
               y={zeroY + 18}
               className={
-                isHovered
-                  ? styles.chartAxisTextXActive
-                  : styles.chartAxisTextX
+                isHovered ? styles.chartAxisTextXActive : styles.chartAxisTextX
               }
             >
               {formatChartDate(it.date)}
@@ -586,7 +588,6 @@ export default function AnalyticsDashboard() {
   const [pageFilter, setPageFilter] = useState("all");
   const [isClearing, setIsClearing] = useState(false);
   const [copiedId, setCopiedId] = useState(null);
-
 
   // Authentication Check
   useEffect(() => {
@@ -732,6 +733,8 @@ export default function AnalyticsDashboard() {
         (v.city && v.city.toLowerCase().includes(q)) ||
         (v.state && v.state.toLowerCase().includes(q)) ||
         (v.country && v.country.toLowerCase().includes(q)) ||
+        (v.postalCode && v.postalCode.toLowerCase().includes(q)) ||
+        (v.isp && v.isp.toLowerCase().includes(q)) ||
         (v.visitorId && v.visitorId.toLowerCase().includes(q)) ||
         (v.referrer && v.referrer.toLowerCase().includes(q)) ||
         (v.type && v.type.toLowerCase().includes(q))
@@ -1517,12 +1520,46 @@ export default function AnalyticsDashboard() {
                           className={`${styles.tableCell} ${styles.cellNowrap}`}
                         >
                           <div className={styles.locationPrimary}>
-                            📍 {visit.city ? `${visit.city}, ` : ""}
-                            {visit.state || "Maharashtra"}
+                            <span>
+                              📍 {visit.city ? `${visit.city}, ` : ""}
+                              {visit.state || "-"}
+                            </span>
+                            {/* comment for now */}
+
+                            {/* {visit.postalCode && (
+                              <span className={styles.locationPostal}>
+                                PIN: {visit.postalCode}
+                              </span>
+                            )} */}
                           </div>
+
                           <div className={styles.locationCountry}>
-                            {visit.country || "India"}
+                            <span>{visit.country || "India"}</span>
+                            {/* comment for now */}
+
+                            {/* {visit.isp && (
+                              <span className={styles.locationIsp} title={`ISP / Carrier: ${visit.isp}`}>
+                                ⚡ {visit.isp}
+                              </span>
+                            )} */}
                           </div>
+                          {/* comment for now */}
+                          {/* {visit.lat !== undefined && visit.lat !== null && visit.lon !== undefined && visit.lon !== null && (
+                            <div className={styles.locationMapRow}>
+                              <span className={styles.coordsText}>
+                                {Number(visit.lat).toFixed(4)}, {Number(visit.lon).toFixed(4)}
+                              </span>
+                              <a
+                                href={`https://www.google.com/maps?q=${visit.lat},${visit.lon}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={styles.mapLink}
+                                title="Open precise coordinates in Google Maps"
+                              >
+                                🗺️ View Pin
+                              </a>
+                            </div>
+                          )} */}
                         </td>
 
                         <td className={`${styles.tableCell} ${styles.ipCell}`}>

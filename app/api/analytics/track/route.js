@@ -31,10 +31,14 @@ export async function POST(req) {
     let ip = (forwarded ? forwarded.split(",")[0].trim() : (realIp || cfIp || "127.0.0.1"));
     if (ip === "::1" || ip === "::ffff:127.0.0.1") ip = "127.0.0.1";
 
-    // Vercel Geolocation headers
+    // Vercel / Cloudflare Geolocation headers
     let country = req.headers.get("x-vercel-ip-country") || req.headers.get("cf-ipcountry");
     let state = req.headers.get("x-vercel-ip-country-region") || req.headers.get("cf-region");
     let city = req.headers.get("x-vercel-ip-city") || req.headers.get("cf-ipcity");
+    let postalCode = req.headers.get("x-vercel-ip-postal-code") || req.headers.get("cf-postal-code");
+    let lat = req.headers.get("x-vercel-ip-latitude") || req.headers.get("cf-iplatitude");
+    let lon = req.headers.get("x-vercel-ip-longitude") || req.headers.get("cf-iplongitude");
+    let isp = req.headers.get("x-vercel-ip-as-number");
 
     if (city) {
       try {
@@ -42,12 +46,16 @@ export async function POST(req) {
       } catch (e) {}
     }
 
-    // Fallback to IP lookup if no headers
-    if (!city || !country || country === "Unknown") {
+    // Fallback to IP lookup if no headers or incomplete location
+    if (!city || !country || country === "Unknown" || !lat || !postalCode) {
       const geo = await lookupGeo(ip);
       country = country || geo.country || "India";
       state = state || geo.state || "Maharashtra";
       city = city || geo.city || "Mumbai";
+      postalCode = postalCode || geo.postalCode || "";
+      lat = lat || geo.lat;
+      lon = lon || geo.lon;
+      isp = isp || geo.isp || "";
     }
 
     const event = await recordEvent({
@@ -62,6 +70,10 @@ export async function POST(req) {
       country,
       state,
       city,
+      postalCode,
+      lat,
+      lon,
+      isp,
       screen: screen || "",
       language: language || "",
       meta: meta || {},

@@ -72,7 +72,15 @@ const geoCache = new Map();
 
 export async function lookupGeo(ip) {
   if (!ip || ip === "127.0.0.1" || ip === "::1" || ip.startsWith("192.168.") || ip.startsWith("10.")) {
-    return { country: "India", state: "Maharashtra", city: "Mumbai" };
+    return {
+      country: "India",
+      state: "Maharashtra",
+      city: "Mumbai",
+      postalCode: "400001",
+      lat: 19.076,
+      lon: 72.8777,
+      isp: "Localhost / Local Network",
+    };
   }
 
   if (geoCache.has(ip)) {
@@ -81,8 +89,8 @@ export async function lookupGeo(ip) {
 
   try {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 1200);
-    const res = await fetch(`http://ip-api.com/json/${ip}?fields=status,country,regionName,city`, {
+    const timeout = setTimeout(() => controller.abort(), 1500);
+    const res = await fetch(`http://ip-api.com/json/${ip}?fields=status,country,regionName,city,zip,lat,lon,isp,org`, {
       signal: controller.signal,
     });
     clearTimeout(timeout);
@@ -93,6 +101,10 @@ export async function lookupGeo(ip) {
           country: data.country || "India",
           state: data.regionName || "Maharashtra",
           city: data.city || "Mumbai",
+          postalCode: data.zip || "",
+          lat: typeof data.lat === "number" ? data.lat : null,
+          lon: typeof data.lon === "number" ? data.lon : null,
+          isp: data.isp || data.org || "",
         };
         geoCache.set(ip, geo);
         return geo;
@@ -102,7 +114,15 @@ export async function lookupGeo(ip) {
     // fallback
   }
 
-  const fallback = { country: "India", state: "Maharashtra", city: "Mumbai" };
+  const fallback = {
+    country: "India",
+    state: "Maharashtra",
+    city: "Mumbai",
+    postalCode: "",
+    lat: null,
+    lon: null,
+    isp: "",
+  };
   geoCache.set(ip, fallback);
   return fallback;
 }
@@ -124,6 +144,10 @@ export async function recordEvent(eventData) {
     country: eventData.country || "India",
     state: eventData.state || "Maharashtra",
     city: eventData.city || "Mumbai",
+    postalCode: eventData.postalCode || "",
+    lat: typeof eventData.lat === "number" ? eventData.lat : (eventData.lat ? Number(eventData.lat) : null),
+    lon: typeof eventData.lon === "number" ? eventData.lon : (eventData.lon ? Number(eventData.lon) : null),
+    isp: eventData.isp || "",
     screen: eventData.screen || "",
     language: eventData.language || "",
     meta: eventData.meta || {},

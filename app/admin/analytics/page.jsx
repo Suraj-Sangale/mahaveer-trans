@@ -83,7 +83,7 @@ function getEventBadge(type) {
 }
 
 // Generates smooth SVG mini sparkline path
-function generateSparkline(data = [], color = "#38bdf8") {
+function generateSparkline(data = [], color = "#38bdf8", title = "") {
   if (!data || data.length < 2) {
     return (
       <svg
@@ -105,16 +105,23 @@ function generateSparkline(data = [], color = "#38bdf8") {
   }
   const min = Math.min(...data);
   const max = Math.max(...data);
-  const range = max - min || 1;
   const height = 24;
   const width = 68;
-  const step = width / (data.length - 1);
+  const step = width / Math.max(data.length - 1, 1);
+  const safeId = `grad-${(title || "spark").replace(/[^a-zA-Z0-9]/g, "").toLowerCase()}-${color.replace("#", "")}`;
 
-  const points = data.map((val, idx) => {
-    const x = idx * step;
-    const y = height - ((val - min) / range) * (height - 6) - 3;
-    return `${x.toFixed(1)},${y.toFixed(1)}`;
-  });
+  let points;
+  if (max === min) {
+    const midY = max === 0 ? height - 4 : height / 2;
+    points = data.map((_, idx) => `${(idx * step).toFixed(1)},${midY.toFixed(1)}`);
+  } else {
+    const range = max - min;
+    points = data.map((val, idx) => {
+      const x = idx * step;
+      const y = height - ((val - min) / range) * (height - 8) - 4;
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    });
+  }
 
   const pathD = `M ${points.join(" L ")}`;
   const areaD = `M 0,${height} L ${points.join(" L ")} L ${width},${height} Z`;
@@ -129,7 +136,7 @@ function generateSparkline(data = [], color = "#38bdf8") {
     >
       <defs>
         <linearGradient
-          id={`grad-${color.replace("#", "")}`}
+          id={safeId}
           x1="0"
           y1="0"
           x2="0"
@@ -139,7 +146,7 @@ function generateSparkline(data = [], color = "#38bdf8") {
           <stop offset="100%" stopColor={color} stopOpacity="0.0" />
         </linearGradient>
       </defs>
-      <path d={areaD} fill={`url(#grad-${color.replace("#", "")})`} />
+      <path d={areaD} fill={`url(#${safeId})`} />
       <path
         d={pathD}
         stroke={color}
@@ -204,14 +211,7 @@ function KpiCard({
           )}
         </div>
 
-        {isLive ? (
-          <span className={styles.kpiLiveBadge}>
-            <span className={styles.kpiLiveDot} />
-            LIVE
-          </span>
-        ) : (
-          <div>{generateSparkline(sparkData, color)}</div>
-        )}
+        
       </div>
 
       {/* Primary Value */}
@@ -219,10 +219,19 @@ function KpiCard({
         {value !== undefined && value !== null ? value : "—"}
       </div>
 
-      {/* Subtext and Trend */}
-      <div className={styles.kpiBottomRow}>
+      {/* Subtext and Trend 
         <span className={styles.kpiSubtext}>{subtext}</span>
+        */}
+      <div className={styles.kpiBottomRow}>
         {trend && <span className={trendClass}>{trend}</span>}
+        {isLive ? (
+          <span className={styles.kpiLiveBadge}>
+            <span className={styles.kpiLiveDot} />
+            LIVE
+          </span>
+        ) : (
+          <div>{generateSparkline(sparkData, color,title)}</div>
+        )}
       </div>
     </div>
   );
@@ -629,360 +638,7 @@ export default function AnalyticsDashboard() {
           cache: "no-store",
         });
         const json = await res.json();
-        if (json.ok) {
-        const sampl =  {
-  "isCloudStorage": true,
-  "realtimeActiveVisitors": 1,
-  "totalPageViews": 5,
-  "uniqueVisitors": 2,
-  "totalSessions": 3,
-  "avgPagesPerSession": 1.7,
-  "conversions": {
-    "quotes": 0,
-    "contacts": 0,
-    "phoneClicks": 1,
-    "whatsappClicks": 0,
-    "chatInteractions": 0,
-    "trackingLookups": 0,
-    "totalConversions": 1,
-    "conversionRate": 50
-  },
-  "cities": [
-    {
-      "name": "Mumbai",
-      "count": 9,
-      "percentage": 100
-    },
-    {
-      "name": "pune",
-      "count": 9,
-      "percentage": 101
-    },
-    {
-      "name": "Goa",
-      "count": 9,
-      "percentage": 10
-    },
-     {
-      "name": "Nashik",
-      "count": 9,
-      "percentage": 10
-    },
-  {
-      "name": "Kolkata",
-      "count": 9,
-      "percentage": 10
-    },
-  ],
-  "states": [
-    {
-      "name": "Maharashtra",
-      "count": 9,
-      "percentage": 100
-    }
-  ],
-  "countries": [
-    {
-      "name": "India",
-      "count": 9,
-      "percentage": 100
-    }
-  ],
-  "topPages": [
-    {
-      "path": "/contact",
-      "views": 3,
-      "uniqueVisitors": 2
-    },
-    {
-      "path": "/",
-      "views": 1,
-      "uniqueVisitors": 1
-    },
-    {
-      "path": "/services",
-      "views": 1,
-      "uniqueVisitors": 1
-    }
-  ],
-  "referrers": [
-    {
-      "source": "localhost",
-      "count": 4
-    },
-    {
-      "source": "Direct / Bookmark",
-      "count": 1
-    }
-  ],
-  "devices": [
-    {
-      "name": "Desktop",
-      "count": 9,
-      "percentage": 100
-    }
-  ],
-  "browsers": [
-    {
-      "name": "Chrome",
-      "count": 9,
-      "percentage": 100
-    }
-  ],
-  "operatingSystems": [
-    {
-      "name": "Windows",
-      "count": 9,
-      "percentage": 100
-    }
-  ],
-  "dailyActivity": [
-    {
-      "date": "2026-09-06",
-      "views": 1,
-      "visitors": 2,
-      "conversions": 3
-    },
-    {
-      "date": "2026-09-07",
-      "views": 0,
-      "visitors": 0,
-      "conversions": 0
-    },
-    {
-      "date": "2026-09-08",
-      "views": 0,
-      "visitors": 0,
-      "conversions": 0
-    },
-    {
-      "date": "2026-09-09",
-      "views": 20,
-      "visitors": 10,
-      "conversions": 50
-    },
-    {
-      "date": "2026-09-10",
-      "views": 0,
-      "visitors": 0,
-      "conversions": 0
-    },
-    {
-      "date": "2026-09-11",
-      "views": 0,
-      "visitors": 0,
-      "conversions": 0
-    },
-    {
-      "date": "2026-09-12",
-      "views": 5,
-      "visitors": 2,
-      "conversions": 4
-    }
-  ],
-  "recentVisits": [
-    {
-      "id": "1789234369485-s1ohk8c",
-      "type": "pageview",
-      "visitorId": "v_33rx80908mtyhyzjn",
-      "sessionId": "s_8rjh0nttjmtymlyed",
-      "path": "/",
-      "title": "MahaveerTrans — Modern Logistics",
-      "referrer": "http://localhost:3000/",
-      "browser": "Chrome",
-      "os": "Windows",
-      "device": "Desktop",
-      "ip": "127.0.0.1",
-      "country": "India",
-      "state": "Maharashtra",
-      "city": "Mumbai",
-      "screen": "1366x768",
-      "language": "en",
-      "meta": {
-        "path": "/"
-      },
-      "timestamp": "2026-09-12T17:32:49.485Z"
-    },
-    {
-      "id": "1789234360892-5gvv3aw",
-      "type": "pageview",
-      "visitorId": "v_33rx80908mtyhyzjn",
-      "sessionId": "s_azr7yk20nmtymu99m",
-      "path": "/contact",
-      "title": "Contact Us — MahaveerTrans",
-      "referrer": "http://localhost:3000/contact",
-      "browser": "Chrome",
-      "os": "Windows",
-      "device": "Desktop",
-      "ip": "127.0.0.1",
-      "country": "India",
-      "state": "Maharashtra",
-      "city": "Mumbai",
-      "screen": "1366x768",
-      "language": "en",
-      "meta": {
-        "path": "/contact"
-      },
-      "timestamp": "2026-09-12T17:32:40.892Z"
-    },
-    {
-      "id": "1789232986706-c9amapy",
-      "type": "heartbeat",
-      "visitorId": "v_ci4e4vgywmtyid4uo",
-      "sessionId": "s_drc7derdgmtyid4up",
-      "path": "/services",
-      "title": "MahaveerTrans — Modern Logistics",
-      "referrer": "http://localhost:3000/contact",
-      "browser": "Chrome",
-      "os": "Windows",
-      "device": "Desktop",
-      "ip": "127.0.0.1",
-      "country": "India",
-      "state": "Maharashtra",
-      "city": "Mumbai",
-      "screen": "1440x900",
-      "language": "en-US",
-      "meta": {
-        "path": "/services"
-      },
-      "timestamp": "2026-09-12T17:09:46.706Z"
-    },
-    {
-      "id": "1789232835761-37jupdp",
-      "type": "heartbeat",
-      "visitorId": "v_ci4e4vgywmtyid4uo",
-      "sessionId": "s_drc7derdgmtyid4up",
-      "path": "/services",
-      "title": "MahaveerTrans — Modern Logistics",
-      "referrer": "http://localhost:3000/contact",
-      "browser": "Chrome",
-      "os": "Windows",
-      "device": "Desktop",
-      "ip": "127.0.0.1",
-      "country": "India",
-      "state": "Maharashtra",
-      "city": "Mumbai",
-      "screen": "1440x900",
-      "language": "en-US",
-      "meta": {
-        "path": "/services"
-      },
-      "timestamp": "2026-09-12T17:07:15.761Z"
-    },
-    {
-      "id": "1789232685802-r89wzm1",
-      "type": "pageview",
-      "visitorId": "v_ci4e4vgywmtyid4uo",
-      "sessionId": "s_drc7derdgmtyid4up",
-      "path": "/services",
-      "title": "",
-      "referrer": "http://localhost:3000/contact",
-      "browser": "Chrome",
-      "os": "Windows",
-      "device": "Desktop",
-      "ip": "127.0.0.1",
-      "country": "India",
-      "state": "Maharashtra",
-      "city": "Mumbai",
-      "screen": "1440x900",
-      "language": "en-US",
-      "meta": {
-        "path": "/services"
-      },
-      "timestamp": "2026-09-12T17:04:45.803Z"
-    },
-    {
-      "id": "1789232683627-4j45zfl",
-      "type": "pageview",
-      "visitorId": "v_ci4e4vgywmtyid4uo",
-      "sessionId": "s_drc7derdgmtyid4up",
-      "path": "/contact",
-      "title": "Contact Us — MahaveerTrans",
-      "referrer": "http://localhost:3000/contact",
-      "browser": "Chrome",
-      "os": "Windows",
-      "device": "Desktop",
-      "ip": "127.0.0.1",
-      "country": "India",
-      "state": "Maharashtra",
-      "city": "Mumbai",
-      "screen": "1440x900",
-      "language": "en-US",
-      "meta": {
-        "path": "/contact"
-      },
-      "timestamp": "2026-09-12T17:04:43.627Z"
-    },
-    {
-      "id": "1789232680190-cq3zpb5",
-      "type": "heartbeat",
-      "visitorId": "v_33rx80908mtyhyzjn",
-      "sessionId": "s_azr7yk20nmtymu99m",
-      "path": "/contact",
-      "title": "Contact Us — MahaveerTrans",
-      "referrer": "",
-      "browser": "Chrome",
-      "os": "Windows",
-      "device": "Desktop",
-      "ip": "127.0.0.1",
-      "country": "India",
-      "state": "Maharashtra",
-      "city": "Mumbai",
-      "screen": "1366x768",
-      "language": "en",
-      "meta": {
-        "path": "/contact"
-      },
-      "timestamp": "2026-09-12T17:04:40.190Z"
-    },
-    {
-      "id": "1789232530188-qqcedfd",
-      "type": "pageview",
-      "visitorId": "v_33rx80908mtyhyzjn",
-      "sessionId": "s_azr7yk20nmtymu99m",
-      "path": "/contact",
-      "title": "",
-      "referrer": "",
-      "browser": "Chrome",
-      "os": "Windows",
-      "device": "Desktop",
-      "ip": "127.0.0.1",
-      "country": "India",
-      "state": "Maharashtra",
-      "city": "Mumbai",
-      "screen": "1366x768",
-      "language": "en",
-      "meta": {
-        "path": "/contact"
-      },
-      "timestamp": "2026-09-12T17:02:10.188Z"
-    },
-    {
-      "id": "1789232205391-s81vm0p",
-      "type": "phone_click",
-      "visitorId": "v_33rx80908mtyhyzjn",
-      "sessionId": "s_8rjh0nttjmtymlyed",
-      "path": "/",
-      "title": "MahaveerTrans — Modern Logistics",
-      "referrer": "",
-      "browser": "Chrome",
-      "os": "Windows",
-      "device": "Desktop",
-      "ip": "127.0.0.1",
-      "country": "India",
-      "state": "Maharashtra",
-      "city": "Mumbai",
-      "screen": "1366x768",
-      "language": "en",
-      "meta": {
-        "href": "tel:+917039529129",
-        "label": "Call"
-      },
-      "timestamp": "2026-09-12T16:56:45.391Z"
-    }
-  ]
-}
-          // setData(sampl);
+        if (json.ok && json.data) {
           setData(json.data);
           setLastRefreshed(new Date());
         }
@@ -1090,10 +746,16 @@ export default function AnalyticsDashboard() {
     return Math.max(...dailyData.map((d) => d.views), 1);
   }, [dailyData]);
 
-  // Sparkline arrays
-  const sparkViews = dailyData.map((d) => d.views);
-  const sparkVisitors = dailyData.map((d) => d.visitors);
+  // Sparkline arrays for each specific metric
+  const sparkViews = dailyData.map((d) => d.views || 0);
+  const sparkVisitors = dailyData.map((d) => d.visitors || 0);
+  const sparkSessions = dailyData.map((d) => d.sessions ?? d.visitors ?? 0);
   const sparkConversions = dailyData.map((d) => d.conversions || 0);
+  const sparkQuotes = dailyData.map((d) => d.quotes || 0);
+  const sparkContacts = dailyData.map((d) => d.contacts || 0);
+  const sparkPhone = dailyData.map((d) => d.phoneClicks || 0);
+  const sparkWhatsapp = dailyData.map((d) => d.whatsappClicks || 0);
+  const sparkPagesPerSession = dailyData.map((d) => d.pagesPerSession || 0);
 
   // ── PIN Screen ───────────────────────────────────────────────────────────────
 
@@ -1334,7 +996,7 @@ export default function AnalyticsDashboard() {
               value={conv.quotes}
               subtext="Full freight inquiries"
               trend={conv.quotes > 0 ? `+${conv.quotes} new` : "0 in period"}
-              sparkData={sparkConversions}
+              sparkData={sparkQuotes}
               color="#a855f7"
               tooltip="Total detailed freight quote requests submitted by potential clients"
             />
@@ -1346,7 +1008,7 @@ export default function AnalyticsDashboard() {
               trend={
                 conv.contacts > 0 ? `+${conv.contacts} new` : "0 in period"
               }
-              sparkData={sparkConversions}
+              sparkData={sparkContacts}
               color="#3b82f6"
               tooltip="Total submissions through the contact form"
             />
@@ -1360,7 +1022,7 @@ export default function AnalyticsDashboard() {
                   ? `+${conv.phoneClicks} calls`
                   : "0 in period"
               }
-              sparkData={sparkConversions}
+              sparkData={sparkPhone}
               color="#f59e0b"
               tooltip="Total times visitors clicked the telephone number to call"
             />
@@ -1374,7 +1036,7 @@ export default function AnalyticsDashboard() {
                   ? `+${conv.whatsappClicks} chats`
                   : "0 in period"
               }
-              sparkData={sparkConversions}
+              sparkData={sparkWhatsapp}
               color="#10b981"
               tooltip="Total clicks on WhatsApp chat buttons and floating contact links"
             />
@@ -1431,7 +1093,7 @@ export default function AnalyticsDashboard() {
               trend={
                 totalSessions > 0 ? `${totalSessions} sessions` : "0 sessions"
               }
-              sparkData={sparkVisitors}
+              sparkData={sparkSessions}
               color="#fb923c"
               tooltip="Total browsing sessions initiated by visitors"
             />
@@ -1441,7 +1103,7 @@ export default function AnalyticsDashboard() {
               value={avgPagesPerSession}
               subtext="Average depth per visit"
               trend={avgPagesPerSession >= 2 ? "High Engagement" : "Standard"}
-              sparkData={sparkViews}
+              sparkData={sparkPagesPerSession}
               color="#ec4899"
               tooltip="Average number of pages explored by a user during each visit"
             />

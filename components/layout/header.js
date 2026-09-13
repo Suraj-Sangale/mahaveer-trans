@@ -348,9 +348,9 @@ export default function Header() {
         <div className={css("drawer-actions")}>
           {/* Theme toggle */}
           <div className={css("drawer-settings")}>
-            <span className={css("drawer-settings-lbl")}>
+            {/* <span className={css("drawer-settings-lbl")}>
               {theme === "dark" ? "🌙 Dark mode" : "☀️ Light mode"}
-            </span>
+            </span> */}
             {/* <ThemeToggle
               key={theme}
               checked={theme === "dark"}

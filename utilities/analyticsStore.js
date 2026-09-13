@@ -357,12 +357,24 @@ export async function getAnalyticsSummary(timeRange = "7d") {
   // Daily / Hourly Activity
   let dailyActivity = [];
 
+  const isConversionEvent = (type) =>
+    ["quote_submit", "contact_submit", "phone_click", "whatsapp_click", "quote_intent"].includes(type);
+
   if (timeRange === "today") {
     // 24 Hourly Buckets for Today
     const hourlyMap = {};
     for (let h = 0; h < 24; h++) {
       const label = `${h.toString().padStart(2, "0")}:00`;
-      hourlyMap[label] = { views: 0, visitors: new Set(), conversions: 0 };
+      hourlyMap[label] = {
+        views: 0,
+        visitors: new Set(),
+        sessions: new Set(),
+        conversions: 0,
+        quotes: 0,
+        contacts: 0,
+        phoneClicks: 0,
+        whatsappClicks: 0,
+      };
     }
 
     events.forEach((e) => {
@@ -372,19 +384,42 @@ export async function getAnalyticsSummary(timeRange = "7d") {
       if (hourlyMap[label]) {
         if (!e.type || e.type === "pageview") {
           hourlyMap[label].views += 1;
-        } else {
+        } else if (e.type === "quote_submit") {
+          hourlyMap[label].quotes += 1;
+          hourlyMap[label].conversions += 1;
+        } else if (e.type === "contact_submit") {
+          hourlyMap[label].contacts += 1;
+          hourlyMap[label].conversions += 1;
+        } else if (e.type === "phone_click") {
+          hourlyMap[label].phoneClicks += 1;
+          hourlyMap[label].conversions += 1;
+        } else if (e.type === "whatsapp_click") {
+          hourlyMap[label].whatsappClicks += 1;
+          hourlyMap[label].conversions += 1;
+        } else if (isConversionEvent(e.type)) {
           hourlyMap[label].conversions += 1;
         }
+
         if (e.visitorId) hourlyMap[label].visitors.add(e.visitorId);
+        if (e.sessionId) hourlyMap[label].sessions.add(e.sessionId);
       }
     });
 
-    dailyActivity = Object.entries(hourlyMap).map(([date, d]) => ({
-      date,
-      views: d.views,
-      visitors: d.visitors.size,
-      conversions: d.conversions,
-    }));
+    dailyActivity = Object.entries(hourlyMap).map(([date, d]) => {
+      const sessCount = d.sessions.size;
+      return {
+        date,
+        views: d.views,
+        visitors: d.visitors.size,
+        sessions: sessCount,
+        conversions: d.conversions,
+        quotes: d.quotes,
+        contacts: d.contacts,
+        phoneClicks: d.phoneClicks,
+        whatsappClicks: d.whatsappClicks,
+        pagesPerSession: sessCount > 0 ? Number((d.views / sessCount).toFixed(1)) : (d.views > 0 ? d.views : 0),
+      };
+    });
   } else {
     // Daily Activity for 7d, 30d, all
     const dailyMap = {};
@@ -393,28 +428,69 @@ export async function getAnalyticsSummary(timeRange = "7d") {
     for (let i = daysToShow - 1; i >= 0; i--) {
       const d = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
       const key = d.toISOString().split("T")[0];
-      dailyMap[key] = { views: 0, visitors: new Set(), conversions: 0 };
+      dailyMap[key] = {
+        views: 0,
+        visitors: new Set(),
+        sessions: new Set(),
+        conversions: 0,
+        quotes: 0,
+        contacts: 0,
+        phoneClicks: 0,
+        whatsappClicks: 0,
+      };
     }
 
     events.forEach((e) => {
       const key = e.timestamp.split("T")[0];
       if (!dailyMap[key]) {
-        dailyMap[key] = { views: 0, visitors: new Set(), conversions: 0 };
+        dailyMap[key] = {
+          views: 0,
+          visitors: new Set(),
+          sessions: new Set(),
+          conversions: 0,
+          quotes: 0,
+          contacts: 0,
+          phoneClicks: 0,
+          whatsappClicks: 0,
+        };
       }
       if (!e.type || e.type === "pageview") {
         dailyMap[key].views += 1;
-      } else {
+      } else if (e.type === "quote_submit") {
+        dailyMap[key].quotes += 1;
+        dailyMap[key].conversions += 1;
+      } else if (e.type === "contact_submit") {
+        dailyMap[key].contacts += 1;
+        dailyMap[key].conversions += 1;
+      } else if (e.type === "phone_click") {
+        dailyMap[key].phoneClicks += 1;
+        dailyMap[key].conversions += 1;
+      } else if (e.type === "whatsapp_click") {
+        dailyMap[key].whatsappClicks += 1;
+        dailyMap[key].conversions += 1;
+      } else if (isConversionEvent(e.type)) {
         dailyMap[key].conversions += 1;
       }
+
       if (e.visitorId) dailyMap[key].visitors.add(e.visitorId);
+      if (e.sessionId) dailyMap[key].sessions.add(e.sessionId);
     });
 
-    dailyActivity = Object.entries(dailyMap).map(([date, d]) => ({
-      date,
-      views: d.views,
-      visitors: d.visitors.size,
-      conversions: d.conversions,
-    }));
+    dailyActivity = Object.entries(dailyMap).map(([date, d]) => {
+      const sessCount = d.sessions.size;
+      return {
+        date,
+        views: d.views,
+        visitors: d.visitors.size,
+        sessions: sessCount,
+        conversions: d.conversions,
+        quotes: d.quotes,
+        contacts: d.contacts,
+        phoneClicks: d.phoneClicks,
+        whatsappClicks: d.whatsappClicks,
+        pagesPerSession: sessCount > 0 ? Number((d.views / sessCount).toFixed(1)) : (d.views > 0 ? d.views : 0),
+      };
+    });
   }
 
   const recentVisits = [...events]

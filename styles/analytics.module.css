@@ -1025,7 +1025,7 @@
   position: absolute;
   top: 12px;
   transform: translateX(-50%);
-  background: var(--dark-bar, #0f172a);
+  background: var(--card, #0f172a);
   border: 1px solid var(--border, rgba(255, 255, 255, 0.18));
   border-radius: 8px;
   padding: 8px 12px;
@@ -1039,7 +1039,7 @@
 .chartTooltipTitle {
   font-size: 11px;
   font-weight: 700;
-  color: #f1f5f9;
+  /* color: #f1f5f9; */
   margin-bottom: 6px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   padding-bottom: 3px;

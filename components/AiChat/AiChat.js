@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import "./AiChat.css";
 
 // ── Icons (inline SVG — no extra deps) ────────────────────────────────────────
@@ -79,15 +80,171 @@ function IconBot() {
   );
 }
 
+function IconArrowRight() {
+  return (
+    <svg
+      width="13"
+      height="13"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <line x1="5" y1="12" x2="19" y2="12" />
+      <polyline points="12 5 19 12 12 19" />
+    </svg>
+  );
+}
+
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
 function formatTime(date) {
   return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 }
 
+// Quick navigation links available across the site
+const QUICK_NAV_ITEMS = [
+  { label: "📍 Track Cargo", path: "/tracking" },
+  { label: "💰 Request Quote", path: "/quote" },
+  { label: "🚛 Fleet Info", path: "/fleet" },
+  { label: "🛠️ Services", path: "/services" },
+  { label: "📞 Contact Us", path: "/contact" },
+];
+
+function renderMessageContent(content, onNavigate) {
+  if (!content) return null;
+
+  // Regex matches:
+  // 1. [Label](url_or_path)
+  // 2. **bold**
+  // 3. raw https:// URL
+  const regex = /(\[([^\]]+)\]\(([^)]+)\)|\*\*([^*]+)\*\*|(https?:\/\/[^\s]+))/g;
+  const tokens = [];
+  let lastIndex = 0;
+  let match;
+
+  while ((match = regex.exec(content)) !== null) {
+    if (match.index > lastIndex) {
+      tokens.push({ type: "text", value: content.slice(lastIndex, match.index) });
+    }
+
+    if (match[2] && match[3]) {
+      tokens.push({ type: "link", label: match[2], href: match[3] });
+    } else if (match[5]) {
+      tokens.push({ type: "bold", value: match[5] });
+    } else if (match[6]) {
+      tokens.push({ type: "rawUrl", href: match[6] });
+    }
+
+    lastIndex = match.index + match[0].length;
+  }
+
+  if (lastIndex < content.length) {
+    tokens.push({ type: "text", value: content.slice(lastIndex) });
+  }
+
+  return tokens.map((token, idx) => {
+    if (token.type === "bold") {
+      return <strong key={idx}>{token.value}</strong>;
+    }
+
+    if (token.type === "link") {
+      const isInternal = token.href.startsWith("/");
+      if (isInternal) {
+        return (
+          <button
+            key={idx}
+            type="button"
+            className="ai-nav-chip-inline"
+            onClick={(e) => {
+              e.preventDefault();
+              onNavigate(token.href);
+            }}
+            title={`Go to ${token.label}`}
+          >
+            <span>{token.label}</span>
+            <IconArrowRight />
+          </button>
+        );
+      }
+      return (
+        <a
+          key={idx}
+          href={token.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ai-link"
+        >
+          {token.label} ↗
+        </a>
+      );
+    }
+
+    if (token.type === "rawUrl") {
+      return (
+        <a
+          key={idx}
+          href={token.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ai-link"
+        >
+          {token.href}
+        </a>
+      );
+    }
+
+    return <React.Fragment key={idx}>{token.value}</React.Fragment>;
+  });
+}
+
+function detectNavigationIntent(text) {
+  if (!text) return null;
+  const lower = text.toLowerCase();
+
+  // 1. Direct tag match: [[NAVIGATE:/path]] or [NAVIGATE:/path]
+  const tagMatch = text.match(/\[\[?NAVIGATE:([a-zA-Z0-9_\-\/]+)\]?\]/i);
+  if (tagMatch) {
+    return tagMatch[1];
+  }
+
+  // 2. Fallback heuristic pattern matching if user explicitly typed a navigation command
+  const navCommands = ["go to", "goto", "take me to", "open", "navigate to", "redirect to", "show me", "take me", "show page", "view"];
+  const hasNavCommand = navCommands.some((cmd) => lower.includes(cmd));
+
+  if (hasNavCommand) {
+    if (lower.includes("quote") || lower.includes("price") || lower.includes("pricing") || lower.includes("rate") || lower.includes("estimate") || lower.includes("cost") || lower.includes("booking")) {
+      return "/quote";
+    }
+    if (lower.includes("track") || lower.includes("tracking") || lower.includes("cargo status") || lower.includes("consignment") || lower.includes("shipment")) {
+      return "/tracking";
+    }
+    if (lower.includes("fleet") || lower.includes("truck") || lower.includes("vehicle") || lower.includes("trailer") || lower.includes("container")) {
+      return "/fleet";
+    }
+    if (lower.includes("service") || lower.includes("services") || lower.includes("logistics") || lower.includes("warehousing")) {
+      return "/services";
+    }
+    if (lower.includes("contact") || lower.includes("call") || lower.includes("reach") || lower.includes("phone") || lower.includes("support")) {
+      return "/contact";
+    }
+    if (lower.includes("about") || lower.includes("company") || lower.includes("who are you")) {
+      return "/about";
+    }
+    if (lower.includes("home") || lower.includes("main page")) {
+      return "/";
+    }
+  }
+
+  return null;
+}
+
 // ── Component ──────────────────────────────────────────────────────────────────
 
 export default function AiChat() {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false); // controls DOM presence after close animation
   const [showBadge, setShowBadge] = useState(true);
@@ -95,6 +252,7 @@ export default function AiChat() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [navigatingToast, setNavigatingToast] = useState(null);
 
   const messagesEndRef = useRef(null);
   const textareaRef = useRef(null);
@@ -107,7 +265,7 @@ export default function AiChat() {
     if (open) {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages, loading, open]);
+  }, [messages, loading, open, navigatingToast]);
 
   // Focus textarea when opened
   useEffect(() => {
@@ -132,6 +290,17 @@ export default function AiChat() {
     setOpen(false);
     closingTimer.current = setTimeout(() => setMounted(false), 250);
   }, []);
+
+  const handleNavigate = useCallback(
+    (path) => {
+      router.push(path);
+      // On mobile screens, auto-close the chat panel so the destination page is visible
+      if (typeof window !== "undefined" && window.innerWidth <= 640) {
+        handleClose();
+      }
+    },
+    [router, handleClose]
+  );
 
   const handleToggle = () => (open ? handleClose() : handleOpen());
 
@@ -209,10 +378,33 @@ export default function AiChat() {
         throw new Error(data.error || "Failed to get response.");
       }
 
+      const rawReply = data.reply || "";
+
+      // 1. Extract navigation intent from AI response tag [[NAVIGATE:/path]]
+      const navTagMatch = rawReply.match(/\[\[?NAVIGATE:([a-zA-Z0-9_\-\/]+)\]?\]/i);
+      let targetPath = navTagMatch ? navTagMatch[1] : null;
+
+      // 2. Fallback: check user input for explicit navigation command
+      if (!targetPath) {
+        targetPath = detectNavigationIntent(text);
+      }
+
+      // 3. Clean any tag from the visible text
+      const cleanReply = rawReply.replace(/\[\[?NAVIGATE:[a-zA-Z0-9_\-\/]+\]?\]/gi, "").trim();
+
       setMessages((prev) => [
         ...prev,
-        { role: "ai", content: data.reply, time: new Date() },
+        { role: "ai", content: cleanReply, time: new Date() },
       ]);
+
+      // 4. Automatically navigate the page!
+      if (targetPath) {
+        setNavigatingToast(targetPath);
+        setTimeout(() => {
+          handleNavigate(targetPath);
+          setTimeout(() => setNavigatingToast(null), 1400);
+        }, 800);
+      }
     } catch (err) {
       setError(err.message || "Something went wrong. Please try again.");
     } finally {
@@ -300,38 +492,27 @@ export default function AiChat() {
                 </div>
                 <h4>Hi! I&apos;m your Mahaveer Trans assistant 👋</h4>
                 <p>
-                  Ask me about our logistics services, cargo tracking, freight
-                  quotes, or anything else we can help with.
+                  Ask me about our freight services, cargo tracking, quotes, or navigate to:
                 </p>
+                <div className="ai-quick-pills-list">
+                  {QUICK_NAV_ITEMS.map((item, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      className="ai-quick-pill"
+                      onClick={() => handleNavigate(item.path)}
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
 
             {messages.map((msg, i) => (
               <div key={i} className={`ai-msg ${msg.role}`}>
                 <div className="ai-msg-bubble">
-                  {msg.content
-                    ?.split(/(\*\*.*?\*\*|\bhttps?:\/\/[^\s]+)/g)
-                    .map((part, idx) => {
-                      if (part.match(/^\*\*.*\*\*$/)) {
-                        return <strong key={idx}>{part.slice(2, -2)}</strong>;
-                      }
-
-                      if (part.match(/^https?:\/\//)) {
-                        return (
-                          <a
-                            key={idx}
-                            href={part}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="ai-link"
-                          >
-                            {part}
-                          </a>
-                        );
-                      }
-
-                      return <React.Fragment key={idx}>{part}</React.Fragment>;
-                    })}
+                  {renderMessageContent(msg.content, handleNavigate)}
                 </div>
 
                 <span className="ai-msg-time">{formatTime(msg.time)}</span>
@@ -350,6 +531,16 @@ export default function AiChat() {
 
             <div ref={messagesEndRef} />
           </div>
+
+          {/* Navigation indicator toast */}
+          {navigatingToast && (
+            <div className="ai-nav-toast" role="status">
+              <span className="ai-nav-toast-dot" />
+              <span>
+                🚀 Navigating to <strong>{navigatingToast}</strong>…
+              </span>
+            </div>
+          )}
 
           {/* Error bar */}
           {error && (

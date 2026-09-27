@@ -10,6 +10,7 @@
     "convert": "node scripts/html-to-nextjs.js"
   },
   "dependencies": {
+    "@types/three": "^0.186.0",
     "leaflet": "^1.9.4",
     "mysql2": "^3.24.4",
     "next": "16.2.9",
@@ -20,7 +21,8 @@
     "react-leaflet": "^5.0.0",
     "sass": "^1.101.0",
     "styled-components": "^6.4.3",
-    "swiper": "^14.2.0"
+    "swiper": "^14.2.0",
+    "three": "^0.186.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

@@ -24,6 +24,7 @@ Key facts about Mahaveer Trans:
 
 Website Pages available for direct navigation:
 - Request a Quote / Pricing Inquiry: /quote
+- 3D AI Cargo & Load Planner: /load-planner
 - Live Cargo & Shipment Tracking: /tracking
 - Services Overview (FTL, Logistics, Warehousing): /services
 - Fleet & Vehicles: /fleet

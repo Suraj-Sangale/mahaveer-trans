@@ -473,7 +473,7 @@ function useCountUp(target, active, duration = 1400) {
   return val;
 }
 
-function useInView(threshold = 0.1) {
+function useInView(threshold = 0.1, rootMargin = "0px 0px -40px 0px") {
   const ref = useRef(null);
   const [inView, setInView] = useState(false);
   useEffect(() => {
@@ -486,17 +486,17 @@ function useInView(threshold = 0.1) {
           io.disconnect();
         }
       },
-      { threshold },
+      { threshold, rootMargin },
     );
     io.observe(el);
     return () => io.disconnect();
-  }, [threshold]);
+  }, [threshold, rootMargin]);
   return [ref, inView];
 }
 
 /* ─── COUNT UP NUMBER ─── */
 function AnimatedNumber({ target, suffix }) {
-  const [ref, inView] = useInView(0.4);
+  const [ref, inView] = useInView(0.3);
   const val = useCountUp(target, inView);
   return (
     <div className={cx("num-val")} ref={ref}>
@@ -507,12 +507,20 @@ function AnimatedNumber({ target, suffix }) {
 }
 
 /* ─── REVEAL WRAPPER ─── */
-function Reveal({ children, delay = 0, className = "" }) {
+function Reveal({ children, delay = 0, direction = "up", className = "" }) {
   const [ref, inView] = useInView(0.1);
+  const dirClass =
+    direction === "left"
+      ? "reveal-left"
+      : direction === "right"
+      ? "reveal-right"
+      : direction === "scale"
+      ? "reveal-scale"
+      : "reveal";
   return (
     <div
       ref={ref}
-      className={`${cx(`reveal ${inView ? "vis" : ""}`)} ${className}`}
+      className={`${cx(`${dirClass} ${inView ? "vis" : ""}`)} ${className}`}
       style={{ transitionDelay: `${delay}s` }}
     >
       {children}
@@ -564,7 +572,7 @@ export default function HomeWrapper() {
           io.disconnect();
         }
       },
-      { threshold: 0.3 },
+      { threshold: 0.2 },
     );
     io.observe(el);
     return () => io.disconnect();
@@ -585,69 +593,80 @@ export default function HomeWrapper() {
         <div className={cx("hero-glow")} />
         <div className={cx("hero-inner")}>
           <div className={cx("hero-left")}>
-            <div className={cx("hero-pill")}>
-              <span className={cx("live-dot")} />
-              {d.hero.pill}
-            </div>
-            <h1 className={cx("hero-h1")}>
-              {d.hero.titleLine1}
-              <br />
-              <span className={cx("hl")}>{d.hero.titleLine2Hl}</span>
-              <br />
-              {d.hero.titleLine3}
-              {/* <span className={cx("hero-chip")}>{d.hero.chip}</span> */}
-            </h1>
-            <p className={cx("hero-desc")}>{d.hero.description}</p>
-            <div className={cx("hero-actions")}>
-              <Link href={"/contact"} className={cx("btn-primary")}>
-                {d.hero.cta1}
-              </Link>
-              <Link href={"/services"} className={cx("hero-outline-cta")}>
-                {d.hero.cta2}
-              </Link>
-            </div>
-            <div className={cx("hero-trust")}>
-              <div className={cx("trust-avs")}>
-                {d.hero.trust.avatars.map((src, i) => (
-                  <img key={i} className={cx("t-av")} src={src} alt="" />
-                ))}
+            <Reveal delay={0}>
+              <div className={cx("hero-pill")}>
+                <span className={cx("live-dot")} />
+                {d.hero.pill}
               </div>
-              <div className={cx("trust-txt")}>
-                <strong>{d.hero.trust.count}</strong> {d.hero.trust.label}
+            </Reveal>
+            <Reveal delay={0.1}>
+              <h1 className={cx("hero-h1")}>
+                {d.hero.titleLine1}
+                <br />
+                <span className={cx("hl")}>{d.hero.titleLine2Hl}</span>
+                <br />
+                {d.hero.titleLine3}
+              </h1>
+            </Reveal>
+            <Reveal delay={0.2}>
+              <p className={cx("hero-desc")}>{d.hero.description}</p>
+            </Reveal>
+            <Reveal delay={0.3}>
+              <div className={cx("hero-actions")}>
+                <Link href={"/contact"} className={cx("btn-primary")}>
+                  {d.hero.cta1}
+                </Link>
+                <Link href={"/services"} className={cx("hero-outline-cta")}>
+                  {d.hero.cta2}
+                </Link>
               </div>
-            </div>
+            </Reveal>
+            <Reveal delay={0.35}>
+              <div className={cx("hero-trust")}>
+                <div className={cx("trust-avs")}>
+                  {d.hero.trust.avatars.map((src, i) => (
+                    <img key={i} className={cx("t-av")} src={src} alt="" />
+                  ))}
+                </div>
+                <div className={cx("trust-txt")}>
+                  <strong>{d.hero.trust.count}</strong> {d.hero.trust.label}
+                </div>
+              </div>
+            </Reveal>
           </div>
           <div className={cx("hero-right")}>
-            <div className={cx("hero-img-wrap")}>
-              <img
-                className={cx("hero-main-img")}
-                src={d.hero.image}
-                alt="Operations"
-              />
-              <div className={cx("hfloat hf1")}>
-                <div className={cx("hf-tag")}>{d.hero.statCard1.label}</div>
-                <div className={cx("hf-val")}>
-                  {heroActive ? shipVal.toLocaleString() : "0"}
+            <Reveal direction="scale" delay={0.15}>
+              <div className={cx("hero-img-wrap")}>
+                <img
+                  className={cx("hero-main-img")}
+                  src={d.hero.image}
+                  alt="Operations"
+                />
+                <div className={cx("hfloat hf1")}>
+                  <div className={cx("hf-tag")}>{d.hero.statCard1.label}</div>
+                  <div className={cx("hf-val")}>
+                    {heroActive ? shipVal.toLocaleString() : "0"}
+                  </div>
+                  <div className={cx("hf-sub")}>{d.hero.statCard1.sub}</div>
+                  <div className={cx("hf-badge")}>{d.hero.statCard1.badge}</div>
+                  <div className={cx("hf-bar-wrap")}>
+                    <div className={cx("hf-tag")} style={{ marginTop: ".55rem" }}>
+                      {d.hero.statCard1.capacityLabel}
+                    </div>
+                    <div className={cx("hf-bar")}>
+                      <div className={cx("hf-fill")} />
+                    </div>
+                  </div>
                 </div>
-                <div className={cx("hf-sub")}>{d.hero.statCard1.sub}</div>
-                <div className={cx("hf-badge")}>{d.hero.statCard1.badge}</div>
-                <div className={cx("hf-bar-wrap")}>
-                  <div className={cx("hf-tag")} style={{ marginTop: ".55rem" }}>
-                    {d.hero.statCard1.capacityLabel}
+                <div className={cx("hfloat hf2")}>
+                  <div className={cx("hf-tag")}>{d.hero.statCard2.label}</div>
+                  <div className={cx("hf-val")}>
+                    {heroActive ? pctVal + "%" : "0%"}
                   </div>
-                  <div className={cx("hf-bar")}>
-                    <div className={cx("hf-fill")} />
-                  </div>
+                  <div className={cx("hf-sub")}>{d.hero.statCard2.sub}</div>
                 </div>
               </div>
-              <div className={cx("hfloat hf2")}>
-                <div className={cx("hf-tag")}>{d.hero.statCard2.label}</div>
-                <div className={cx("hf-val")}>
-                  {heroActive ? pctVal + "%" : "0%"}
-                </div>
-                <div className={cx("hf-sub")}>{d.hero.statCard2.sub}</div>
-              </div>
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>
@@ -663,12 +682,14 @@ export default function HomeWrapper() {
       {/* CLIENTS */}
       <div className={cx("clients")}>
         <div className={cx("clients-inner")}>
-          <span className={cx("clients-lbl")}>{d.clients.label}</span>
+          <Reveal delay={0}>
+            <span className={cx("clients-lbl")}>{d.clients.label}</span>
+          </Reveal>
           <div className={cx("clients-logos")}>
             {d.clients.logos.map((l, i) => (
-              <div key={i} className={cx("clogo")}>
+              <AnimCard key={i} className={cx("clogo")} delay={i * 0.07}>
                 {l}
-              </div>
+              </AnimCard>
             ))}
           </div>
         </div>
@@ -676,7 +697,7 @@ export default function HomeWrapper() {
 
       {/* SERVICES */}
       <section id="services" className={cx("services")}>
-        <div className={cx("svc-top reveal")}>
+        <Reveal className={cx("svc-top")}>
           <div>
             <div className={cx("sec-tag")}>{d.services.sectionTag}</div>
             <h2 className={cx("sec-h")}>
@@ -707,7 +728,7 @@ export default function HomeWrapper() {
               {d.services.linkText}
             </Link>
           )}
-        </div>
+        </Reveal>
         <CardSwiper
           perView={3}
           perViewMd={2}
@@ -741,10 +762,10 @@ export default function HomeWrapper() {
       {/* NUMBERS */}
       <div className={cx("numbers")} id="numbers">
         {d.numbers.map((n, i) => (
-          <div key={i} className={cx("num-item")}>
+          <AnimCard key={i} className={cx("num-item")} delay={i * 0.08}>
             <AnimatedNumber target={n.value} suffix={n.suffix} />
             <div className={cx("num-lbl")}>{n.label}</div>
-          </div>
+          </AnimCard>
         ))}
       </div>
 
@@ -752,7 +773,7 @@ export default function HomeWrapper() {
       <section id="about" className={cx("about")}>
         <div className={cx("section-wrap")}>
           <div className={cx("about-grid")}>
-            <div className={cx("about-img-col")}>
+            <Reveal direction="left" className={cx("about-img-col")}>
               <div className={cx("about-tag-strip")}>{d.about.tagStrip}</div>
               <img
                 className={cx("about-main-img")}
@@ -763,7 +784,7 @@ export default function HomeWrapper() {
                 <div className={cx("ab-num")}>{d.company.rating}</div>
                 <div className={cx("ab-txt")}>{d.company.ratingLabel}</div>
               </div>
-            </div>
+            </Reveal>
             <div className={cx("about-content")}>
               <Reveal>
                 <div className={cx("sec-tag")}>{d.about.sectionTag}</div>
@@ -832,7 +853,7 @@ export default function HomeWrapper() {
       {/* FLEET */}
       <section id="fleet" className={cx("fleet")}>
         <div className={cx("section-wrap")}>
-          <div className={cx("fleet-head")}>
+          <Reveal className={cx("fleet-head")}>
             <div>
               <div className={cx("sec-tag")}>{d.fleet.sectionTag}</div>
               <h2 className={cx("sec-h")}>
@@ -843,17 +864,16 @@ export default function HomeWrapper() {
             <Link href={d.fleet.href} className={cx("btn-outline")}>
               {d.fleet.cta}
             </Link>
-          </div>
+          </Reveal>
           <div className={cx("gal-grid")}>
             {d.fleet.items.map((f, i) => (
-              <div key={i} className={`${cx(`gi ${f.tall ? "tall" : ""}`)}`}>
+              <AnimCard key={i} className={`${cx(`gi ${f.tall ? "tall" : ""}`)}`} delay={i * 0.08}>
                 <img src={f.image} alt={f.title} />
-                {/* <div className={cx("gi-tag")}>{f.tag}</div> */}
                 <div className={cx("gi-label")}>
                   <h4>{f.title}</h4>
                   <p>{f.sub}</p>
                 </div>
-              </div>
+              </AnimCard>
             ))}
           </div>
         </div>

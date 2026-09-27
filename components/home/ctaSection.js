@@ -1,19 +1,39 @@
+"use client";
 import { getConstant } from '@/utilities/utils';
 import Link from 'next/link';
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react';
 
 export default function CtaSection() {
+  const ref = useRef(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setInView(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
     <>
     <style>{styles}</style>
     <section id="cta">
-      <div className="cta-inner reveal">
+      <div ref={ref} className={`cta-inner reveal ${inView ? "vis" : ""}`}>
         <div className="sec-tag" id="ctaSectionTag">Get a Free Quote</div>
         <h2 className="sec-h" id="ctaTitle">Ready to Ship</h2>
         <p id="ctaDesc">Partner with MahaveerTrans for fast, reliable, and transparent logistics solutions that help your business scale.</p>
         <div className="cta-btns">
-          <Link  href={"/quote"} className="btn-w" id="ctaCta1">Get Free Quote →</Link>
-          <a href={`tel:${getConstant("CONTACT_NO")}`} className="btn-wg" id="ctaPhone">📞 Call us  at {getConstant("CONTACT_NO_DISPLAY")}</a>
+          <Link href={"/quote"} className="btn-w" id="ctaCta1">Get Free Quote →</Link>
+          <a href={`tel:${getConstant("CONTACT_NO")}`} className="btn-wg" id="ctaPhone">📞 Call us at {getConstant("CONTACT_NO_DISPLAY")}</a>
         </div>
       </div>
     </section>

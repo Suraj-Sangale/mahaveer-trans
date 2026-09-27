@@ -77,6 +77,131 @@
     color 0.3s;
 }
 
+/* ─── SCROLL ANIMATIONS ─── */
+.reveal,
+:global(.reveal) {
+  opacity: 0;
+  transform: translateY(35px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.vis,
+.reveal:global(.vis),
+:global(.reveal.vis) {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+.reveal-left,
+:global(.reveal-left) {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-left.vis,
+.reveal-left:global(.vis),
+:global(.reveal-left.vis) {
+  opacity: 1 !important;
+  transform: translateX(0) !important;
+}
+
+.reveal-right,
+:global(.reveal-right) {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-right.vis,
+.reveal-right:global(.vis),
+:global(.reveal-right.vis) {
+  opacity: 1 !important;
+  transform: translateX(0) !important;
+}
+
+.reveal-scale,
+:global(.reveal-scale) {
+  opacity: 0;
+  transform: scale(0.93);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-scale.vis,
+.reveal-scale:global(.vis),
+:global(.reveal-scale.vis) {
+  opacity: 1 !important;
+  transform: scale(1) !important;
+}
+
+/* Staggered Item Animation on Scroll */
+.pstep,
+.svc-card,
+.tc-card,
+.gi,
+.num-item,
+.clogo,
+:global(.pstep),
+:global(.svc-card),
+:global(.tc-card),
+:global(.gi) {
+  opacity: 0;
+  transform: translateY(30px) scale(0.98);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s ease,
+              border-color 0.3s ease;
+  will-change: opacity, transform;
+}
+
+.pstep.vis,
+.svc-card.vis,
+.tc-card.vis,
+.gi.vis,
+.num-item.vis,
+.clogo.vis,
+:global(.pstep.vis),
+:global(.svc-card.vis),
+:global(.tc-card.vis),
+:global(.gi.vis) {
+  opacity: 1 !important;
+  transform: translateY(0) scale(1) !important;
+}
+
+@keyframes floatSlow1 {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-9px);
+  }
+}
+
+@keyframes floatSlow2 {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(9px);
+  }
+}
+
+.hf1 {
+  animation: floatSlow1 4.2s ease-in-out infinite !important;
+}
+
+.hf2 {
+  animation: floatSlow2 5s ease-in-out infinite !important;
+}
+
 /* HERO */
 .hero {
   min-height: 100vh;
